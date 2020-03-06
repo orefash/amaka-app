@@ -38,19 +38,32 @@ db.serialize(() => {
       );
     });
   } else {
+    db.serialize(() => {
+      
+      db.run(
+      "DROP table nurses"
+    );
     
     db.run(
-      "CREATE TABLE IF NOT EXISTS nurses (" +
+      "DROP table std_complaints"
+    );
+    
+    db.run(
+      "DROP table students"
+    );
+    
+    db.run(
+      "CREATE TABLE  nurses (" +
         "nurse_id INTEGER PRIMARY KEY AUTOINCREMENT," +
         "fname varchar(30) NOT NULL," +
         "lname varchar(30) NOT NULL," +
-        "PRIMARY KEY (nurse_id)" +
+        "level varchar(30) NOT NULL"+ 
         ")"
     );
     
     db.run(
       
-      "CREATE TABLE IF NOT EXISTS students (" +
+      "CREATE TABLE students (" +
         "s_id varchar(30) NOT NULL," +
         "fname varchar(30) NOT NULL," +
         "lname varchar(30) NOT NULL," +
@@ -74,28 +87,23 @@ db.serialize(() => {
     
     db.run(
       
-      "CREATE TABLE IF NOT EXISTS std_complaints (" +
+      "CREATE TABLE std_complaints (" +
         "c_id INTEGER PRIMARY KEY AUTOINCREMENT," +
         "s_id varchar(30) NOT NULL," +
         "complaint text," +
         "treatment text," +
         "feedback text," +
+        "nurse_id INTEGER NOT NULL," +
         "date date," +
-        "phone varchar(15) DEFAULT NULL," +
-        "address text," +
-        "gender varchar(10) DEFAULT NULL," +
-        "bl_grp varchar(10) DEFAULT NULL," +
-        "bl_typ varchar(10) DEFAULT NULL," +
-        "class varchar(30) DEFAULT NULL," +
-        "prior_health text DEFAULT NULL," +
-        "prior_med text DEFAULT NULL," +
-        "weight decimal(10,2) DEFAULT NULL," +
-        "height decimal(10,2)," +
-        "date date NOT NULL," +
-        "PRIMARY KEY (s_id)" +
+        "PRIMARY KEY (c_id)" +
+        "FOREIGN KEY (s_id) REFERENCES students (s_id)" +
+        "FOREIGN KEY (nurse_id) REFERENCES nurses (nurse_id)" +
         ")"
       
     );
+      
+    });
+    
     
     console.log('Database "Dreams" ready to go!');
     db.each("SELECT * from Dreams", (err, row) => {
@@ -128,16 +136,16 @@ app.post("/addDream", (request, response) => {
 
   // DISALLOW_WRITE is an ENV variable that gets reset for new projects
   // so they can write to the database
-  if (!process.env.DISALLOW_WRITE) {
-    const cleansedDream = cleanseString(request.body.dream);
-    db.run(`INSERT INTO Dreams (dream) VALUES (?)`, cleansedDream, error => {
-      if (error) {
-        response.send({ message: "error!" });
-      } else {
-        response.send({ message: "success" });
-      }
-    });
-  }
+  // if (!process.env.DISALLOW_WRITE) {
+  //   const cleansedDream = cleanseString(request.body.dream);
+  //   db.run(`INSERT INTO Dreams (dream) VALUES (?)`, cleansedDream, error => {
+  //     if (error) {
+  //       response.send({ message: "error!" });
+  //     } else {
+  //       response.send({ message: "success" });
+  //     }
+  //   });
+  // }
 });
 
 // endpoint to clear dreams from the database
