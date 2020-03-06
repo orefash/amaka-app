@@ -19,5 +19,16 @@ module.exports = {
   },
   add_student: function(data) {
     
+    var query_vals = `("${oid}", "${oid}", "${fname}", "${lname}", "${date}", "${email}", "${address}", "${phone}", "${user_id}")`;
+  var query =
+    "INSERT INTO students (s_id, fname, lname, dob, address, gender, bl_grp, bl_typ, class, prior_health, prior_med, weight) VALUES " +
+    query_vals;
+  db.serialize(() => {
+    db.run(query);
+  });
+
+    
+    
+    
   }
 };

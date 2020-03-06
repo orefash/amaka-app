@@ -72,7 +72,6 @@ db.serialize(() => {
         "fname varchar(30) NOT NULL," +
         "lname varchar(30) NOT NULL," +
         "dob date," +
-        "phone varchar(15) DEFAULT NULL," +
         "address text," +
         "gender varchar(10) DEFAULT NULL," +
         "bl_grp varchar(10) DEFAULT NULL," +
