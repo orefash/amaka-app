@@ -26,34 +26,38 @@ const db = new sqlite3.Database(dbFile);
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
 db.serialize(() => {
   if (!exists) {
-    db.run(
-      "CREATE TABLE Dreams (id INTEGER PRIMARY KEY AUTOINCREMENT, dream TEXT)"
-    );
-    console.log("New table Dreams created!");
+//     db.run(
+//       "CREATE TABLE Dreams (id INTEGER PRIMARY KEY AUTOINCREMENT, dream TEXT)"
+//     );
+//     console.log("New table Dreams created!");
 
-    // insert default dreams
-    db.serialize(() => {
-      db.run(
-        'INSERT INTO Dreams (dream) VALUES ("Find and count some sheep"), ("Climb a really tall mountain"), ("Wash the dishes")'
-      );
-    });
+//     // insert default dreams
+//     db.serialize(() => {
+//       db.run(
+//         'INSERT INTO Dreams (dream) VALUES ("Find and count some sheep"), ("Climb a really tall mountain"), ("Wash the dishes")'
+//       );
+//     });
   } else {
     db.serialize(() => {
       
-      db.run(
-      "DROP table nurses"
-    );
+    //   db.run(
+    //   "DELETE from  nurses"
+    // );
+      
+//       db.run(
+//       "DROP table nurses"
+//     );
+    
+//     db.run(
+//       "DROP table std_complaints"
+//     );
+    
+//     db.run(
+//       "DROP table students"
+//     );
     
     db.run(
-      "DROP table std_complaints"
-    );
-    
-    db.run(
-      "DROP table students"
-    );
-    
-    db.run(
-      "CREATE TABLE  nurses (" +
+      "CREATE TABLE IF NOT EXISTS  nurses (" +
         "nurse_id INTEGER PRIMARY KEY AUTOINCREMENT," +
         "fname varchar(30) NOT NULL," +
         "lname varchar(30) NOT NULL," +
@@ -63,7 +67,7 @@ db.serialize(() => {
     
     db.run(
       
-      "CREATE TABLE students (" +
+      "CREATE TABLE IF NOT EXISTS students (" +
         "s_id varchar(30) NOT NULL," +
         "fname varchar(30) NOT NULL," +
         "lname varchar(30) NOT NULL," +
@@ -87,7 +91,7 @@ db.serialize(() => {
     
     db.run(
       
-      "CREATE TABLE std_complaints (" +
+      "CREATE TABLE IF NOT EXISTS std_complaints (" +
         "c_id INTEGER PRIMARY KEY AUTOINCREMENT," +
         "s_id varchar(30) NOT NULL," +
         "complaint text," +
@@ -95,22 +99,25 @@ db.serialize(() => {
         "feedback text," +
         "nurse_id INTEGER NOT NULL," +
         "date date," +
-        "PRIMARY KEY (c_id)" +
         "FOREIGN KEY (s_id) REFERENCES students (s_id)" +
         "FOREIGN KEY (nurse_id) REFERENCES nurses (nurse_id)" +
         ")"
       
     );
       
+      // db.run(
+      //   'INSERT INTO nurses (fname, lname, level) VALUES ("JOhn", "Freecs", "1"), ("ken", "francis", "2")'
+      // );
+      
     });
     
     
-    console.log('Database "Dreams" ready to go!');
-    db.each("SELECT * from Dreams", (err, row) => {
-      if (row) {
-        console.log(`record: ${row.dream}`);
-      }
-    });
+    console.log('Databases ready to go!');
+    // db.each("SELECT * from nurses", (err, row) => {
+    //   if (row) {
+    //     console.log(`record: ${row.fname}`);
+    //   }
+    // });
   }
 });
 
