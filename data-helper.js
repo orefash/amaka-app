@@ -75,9 +75,20 @@ module.exports = {
     });
   },
   add_complaint: function(data) {
-    var query_vals = `("${data.s_id}", "${data.complaint}", "${data.lname}", "${data.level}")`;
+    
+    var now = new Date();
+  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+  const dateLocal = new Date(now.getTime() - offsetMs);
+  var date = dateLocal
+    .toISOString()
+    .slice(0, 19)
+    .replace(/-/g, "/")
+    .replace("T", " ")
+    .split(" ")[0];
+    
+    var query_vals = `("${data.s_id}", "${data.complaint}", "${data.treatment}", "${data.feedback}", ${data.nurse_id}, "${date}")`;
     var query =
-      "INSERT INTO nurses (nurse_id, fname, lname, level) VALUES " + query_vals;
+      "INSERT INTO std_complaints (s_id, complaint, treatment, feedback, nurse_id, date) VALUES " + query_vals;
     db.serialize(() => {
       db.run(query, function(err) {
         if (err) {
@@ -90,5 +101,30 @@ module.exports = {
         // get the last insert id
       });
     });
+  },
+  get_complaints: function() {
+    db.all("SELECT * from std_complaints", (err, rows) => {
+      return rows;
+    });
+  },
+  get_complaint: function(c_id) {
+    db.all("SELECT * from std_complaints where c_id = "+c_id, (err, rows) => {
+      return rows[0];
+    });
+  },
+  update_complaint: function(data) {
+    db.run(
+      `UPDATE std_complaints SET treatment = ?, feedback = ?, nurse_id = ?, date = ?  WHERE c_id = ?`,
+      [data.treatment, data.feedback, data.nurse_id, data.date, data.c_id],
+      function(err) {
+        if (err) {
+          console.error(err.message);
+          return -1;
+        } else {
+          console.log(`Row(s) updated: ${this.changes}`);
+          return 0;
+        }
+      }
+    );
   }
 };
