@@ -19,6 +19,8 @@ app.use(express.static("public"));
 const dbFile = "./.data/sqlite.db";
 const exists = fs.existsSync(dbFile);
 const sqlite3 = require("sqlite3").verbose();
+
+
 const db = new sqlite3.Database(dbFile);
 
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
