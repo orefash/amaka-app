@@ -113,9 +113,20 @@ module.exports = {
     });
   },
   update_complaint: function(data) {
+    
+    var now = new Date();
+  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+  const dateLocal = new Date(now.getTime() - offsetMs);
+  var date = dateLocal
+    .toISOString()
+    .slice(0, 19)
+    .replace(/-/g, "/")
+    .replace("T", " ")
+    .split(" ")[0];
+    
     db.run(
       `UPDATE std_complaints SET treatment = ?, feedback = ?, nurse_id = ?, date = ?  WHERE c_id = ?`,
-      [data.treatment, data.feedback, data.nurse_id, data.date, data.c_id],
+      [data.treatment, data.feedback, data.nurse_id, date, data.c_id],
       function(err) {
         if (err) {
           console.error(err.message);
