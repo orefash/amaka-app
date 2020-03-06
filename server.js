@@ -44,7 +44,17 @@ db.serialize(() => {
         "nurse_id INTEGER PRIMARY KEY AUTOINCREMENT," +
         "fname varchar(30) NOT NULL," +
         "lname varchar(30) NOT NULL," +
-        "email varchar(50) DEFAULT NULL," +
+        "PRIMARY KEY (nurse_id)" +
+        ")"
+    );
+    
+    db.run(
+      
+      "CREATE TABLE IF NOT EXISTS students (" +
+        "s_id varchar(30) NOT NULL," +
+        "fname varchar(30) NOT NULL," +
+        "lname varchar(30) NOT NULL," +
+        "dob date," +
         "phone varchar(15) DEFAULT NULL," +
         "address text," +
         "delivery_district varchar(30) DEFAULT NULL," +
@@ -55,8 +65,9 @@ db.serialize(() => {
         "chat_id varchar(30) DEFAULT NULL," +
         "order_info text," +
         "date date NOT NULL," +
-        "PRIMARY KEY (nurse_id)" +
+        "PRIMARY KEY (order_id)" +
         ")"
+      
     );
     
     
