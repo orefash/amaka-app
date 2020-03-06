@@ -52,6 +52,10 @@ app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
 });
 
+app.get("/name", (request, response) => {
+  response.send(JSON.stringify(1));
+});
+
 // endpoint to get all the dreams in the database
 app.get("/getDreams", (request, response) => {
   db.all("SELECT * from Dreams", (err, rows) => {
@@ -102,10 +106,7 @@ app.get("/clearDreams", (request, response) => {
   }
 });
 
-// helper function that prevents html/css/script malice
-const cleanseString = function(string) {
-  return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-};
+
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, () => {
