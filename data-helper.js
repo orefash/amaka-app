@@ -58,7 +58,24 @@ module.exports = {
     );
   },
   add_nurse: function(data) {
-    var query_vals = `("${data.nurse_id}", "${data.fname}", "${data.lname}", "${data.level}")`;
+    var query_vals = `("${data.fname}", "${data.lname}", "${data.level}")`;
+    var query =
+      "INSERT INTO nurses ( fname, lname, level) VALUES " + query_vals;
+    db.serialize(() => {
+      db.run(query, function(err) {
+        if (err) {
+          console.log(err.message);
+          return 1;
+        } else {
+          console.log(`A row has been inserted with rowid ${this.lastID}`);
+          return 0;
+        }
+        // get the last insert id
+      });
+    });
+  },
+  add_complaint: function(data) {
+    var query_vals = `("${data.s_id}", "${data.complaint}", "${data.lname}", "${data.level}")`;
     var query =
       "INSERT INTO nurses (nurse_id, fname, lname, level) VALUES " + query_vals;
     db.serialize(() => {

@@ -1,4 +1,5 @@
 dependencies:
+  ejs: 1.0.0
   express: 4.17.1
   sqlite3: 4.1.1
 packages:
@@ -237,6 +238,11 @@ packages:
     dev: false
     resolution:
       integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
+  /ejs/1.0.0:
+    deprecated: Critical security bugs fixed in 2.5.5
+    dev: false
+    resolution:
+      integrity: sha1-ycYKSKRu5FL7MqccMXuV5aofyz0=
   /encodeurl/1.0.2:
     dev: false
     engines:
@@ -1127,5 +1133,6 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
+  ejs: ^1.0.0
   express: ^4.17.1
   sqlite3: ^4.1.1
