@@ -42,9 +42,9 @@ db.serialize(() => {
   } else {
     db.serialize(() => {
       
-    //   db.run(
-    //   "DELETE from  nurses"
-    // );
+//       db.run(
+//       "DELETE from  nurses"
+//     );
       
 //       db.run(
 //       "DROP table nurses"
@@ -63,7 +63,9 @@ db.serialize(() => {
         "nurse_id INTEGER PRIMARY KEY AUTOINCREMENT," +
         "fname varchar(30) NOT NULL," +
         "lname varchar(30) NOT NULL," +
-        "level varchar(30) NOT NULL"+ 
+        "level varchar(30) NOT NULL,"+
+        "uname varchar(30) NOT NULL,"+ 
+        "upass varchar(30) NOT NULL"+ 
         ")"
     );
     

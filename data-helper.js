@@ -15,7 +15,7 @@ module.exports = {
     });
   },
   get_student: function(s_id) {
-    db.all("SELECT * from students where sid='" + s_id + "'", (err, rows) => {
+    db.all("SELECT * from students where s_id='" + s_id + "'", (err, rows) => {
       if (!err) {
         return rows[0];
       } else {
@@ -58,9 +58,9 @@ module.exports = {
     );
   },
   add_nurse: function(data) {
-    var query_vals = `("${data.fname}", "${data.lname}", "${data.level}")`;
+    var query_vals = `("${data.fname}", "${data.lname}", "${data.level}", "${data.uname}", "${data.upass}")`;
     var query =
-      "INSERT INTO nurses ( fname, lname, level) VALUES " + query_vals;
+      "INSERT INTO nurses ( fname, lname, level, uname, upass) VALUES " + query_vals;
     db.serialize(() => {
       db.run(query, function(err) {
         if (err) {
