@@ -57,20 +57,45 @@ db.serialize(() => {
         "dob date," +
         "phone varchar(15) DEFAULT NULL," +
         "address text," +
-        "delivery_district varchar(30) DEFAULT NULL," +
-        "total_price decimal(10,2) DEFAULT NULL," +
-        "takeaway decimal(10,2) DEFAULT NULL," +
-        "status varchar(30) DEFAULT NULL," +
-        "time_slot varchar(30) DEFAULT NULL," +
-        "chat_id varchar(30) DEFAULT NULL," +
-        "order_info text," +
+        "gender varchar(10) DEFAULT NULL," +
+        "bl_grp varchar(10) DEFAULT NULL," +
+        "bl_typ varchar(10) DEFAULT NULL," +
+        "class varchar(30) DEFAULT NULL," +
+        "prior_health text DEFAULT NULL," +
+        "prior_med text DEFAULT NULL," +
+        "weight decimal(10,2) DEFAULT NULL," +
+        "height decimal(10,2)," +
         "date date NOT NULL," +
-        "PRIMARY KEY (order_id)" +
+        "PRIMARY KEY (s_id)" +
         ")"
       
     );
     
     
+    db.run(
+      
+      "CREATE TABLE IF NOT EXISTS std_complaints (" +
+        "c_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+        "s_id varchar(30) NOT NULL," +
+        "complaint text," +
+        "treatment text," +
+        "feedback text," +
+        "date date," +
+        "phone varchar(15) DEFAULT NULL," +
+        "address text," +
+        "gender varchar(10) DEFAULT NULL," +
+        "bl_grp varchar(10) DEFAULT NULL," +
+        "bl_typ varchar(10) DEFAULT NULL," +
+        "class varchar(30) DEFAULT NULL," +
+        "prior_health text DEFAULT NULL," +
+        "prior_med text DEFAULT NULL," +
+        "weight decimal(10,2) DEFAULT NULL," +
+        "height decimal(10,2)," +
+        "date date NOT NULL," +
+        "PRIMARY KEY (s_id)" +
+        ")"
+      
+    );
     
     console.log('Database "Dreams" ready to go!');
     db.each("SELECT * from Dreams", (err, row) => {
