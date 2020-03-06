@@ -38,6 +38,29 @@ db.serialize(() => {
       );
     });
   } else {
+    
+    db.run(
+      "CREATE TABLE IF NOT EXISTS nurses (" +
+        "nurse_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+        "fname varchar(30) NOT NULL," +
+        "lname varchar(30) NOT NULL," +
+        "email varchar(50) DEFAULT NULL," +
+        "phone varchar(15) DEFAULT NULL," +
+        "address text," +
+        "delivery_district varchar(30) DEFAULT NULL," +
+        "total_price decimal(10,2) DEFAULT NULL," +
+        "takeaway decimal(10,2) DEFAULT NULL," +
+        "status varchar(30) DEFAULT NULL," +
+        "time_slot varchar(30) DEFAULT NULL," +
+        "chat_id varchar(30) DEFAULT NULL," +
+        "order_info text," +
+        "date date NOT NULL," +
+        "PRIMARY KEY (nurse_id)" +
+        ")"
+    );
+    
+    
+    
     console.log('Database "Dreams" ready to go!');
     db.each("SELECT * from Dreams", (err, row) => {
       if (row) {
