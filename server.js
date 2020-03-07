@@ -130,6 +130,25 @@ app.get("/login", (request, response) => {
   response.render("login");
 });
 
+app.get("/register", (request, response) => {
+  response.render("register");
+});
+
+app.post("/new-nurse", (request, response) => {
+  var params = request.body;
+
+  console.log(params);
+  
+  add_nurse(params, function (status) {
+    if (status == 0) {
+    return response.redirect("/view-student/"+params.s_id);
+  } else {
+    return response.render("add-student");
+  }
+});
+  
+});
+
 app.get("/nurse-profile", (request, response) => {
   response.render("n-profile");
 });
@@ -359,7 +378,7 @@ function update_student(data, status) {
   );
 };
   
-function add_nurse(data) {
+function add_nurse(data, status) {
   var query_vals = `("${data.fname}", "${data.lname}", "${data.level}", "${data.uname}", "${data.upass}")`;
   var query =
     "INSERT INTO nurses ( fname, lname, level, uname, upass) VALUES " +
@@ -368,10 +387,10 @@ function add_nurse(data) {
     db.run(query, function(err) {
       if (err) {
         console.log(err.message);
-        return 1;
+        status(1);
       } else {
         console.log(`A row has been inserted with rowid ${this.lastID}`);
-        return 0;
+        status(0);
       }
       // get the last insert id
     });
