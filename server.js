@@ -193,15 +193,15 @@ app.post("/new-student", (request, response) => {
 
   add_student(params, function(status) {
     if (status == 0) {
-      return response.redirect("/view-student/" + params.s_id);
+      return response.redirect("/view-student/?sid=" + params.s_id);
     } else {
       return response.render("add-student");
     }
   });
 });
 
-app.get("/view-student/:sid", (request, response) => {
-  var sid = request.params.sid;
+app.get("/view-student/", (request, response) => {
+  var sid = request.query.sid;
 
   get_student(sid, function(data) {
     if (data == -1) {
