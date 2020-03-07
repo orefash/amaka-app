@@ -244,7 +244,7 @@ app.get("/view-complaints/:s_id", (request, response) => {
     // response.redirect("/");
   } else {
     console.log(data);
-    response.render('search-complaint', {students: data});
+    response.render('search-complaint', {complaints: data});
   }
 });
   
@@ -259,7 +259,7 @@ app.get("/view-complaints", (request, response) => {
     // response.redirect("/");
   } else {
     console.log(data);
-    response.render('search-complaint', {students: data});
+    response.render('search-complaint', {complaints: data});
   }
   });
   
@@ -394,7 +394,7 @@ function add_complaint(data, status) {
 };
   
 function get_complaints(data) {
-  db.all("SELECT * from std_complaints", (err, rows) => {
+  db.all("SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id", (err, rows) => {
     data(rows);
   });
 };
