@@ -163,6 +163,35 @@ app.get("/view-student/:sid", (request, response) => {
   
 });
 
+app.get("/view-students", (request, response) => {
+  
+  
+  get_students(function (data) {
+    if (data == -1) {
+    // response.redirect("/");
+  } else {
+    console.log(data);
+    response.render('view-students', {students: data});
+  }
+});
+  
+});
+
+app.post("/update-student", (request, response) => {
+  var params = request.body;
+
+  console.log("in update:",params);
+  
+  update_student(params, function (status) {
+    // if (status == 0) {
+    response.redirect("/view-student/"+params.s_id);
+  // } 
+});
+  
+  
+});
+
+
 app.get("/add-complaint", (request, response) => {
   response.render("add-complaint");
 });
@@ -183,9 +212,9 @@ app.get("/name", (request, response) => {
   response.send(JSON.stringify(1));
 });
 
-function get_students() {
+function get_students(data) {
   db.all("SELECT * from students", (err, rows) => {
-    return rows;
+    data(rows);
   });
 }
 
@@ -234,17 +263,19 @@ function add_student(data, status) {
   });
       
 }
-function update_student(data) {
+function update_student(data, status) {
   db.run(
     `UPDATE students SET class = ?, weight = ?, height = ?  WHERE s_id = ?`,
-    [data.class, data.weight, data.height],
+    [data.class, data.weight, data.height, data.s_id],
     function(err) {
       if (err) {
         console.error(err.message);
-        return -1;
+        // return -1;
+        status(1);
       } else {
         console.log(`Row(s) updated: ${this.changes}`);
-        return 0;
+        // return 0;
+        status(0);
       }
     }
   );
