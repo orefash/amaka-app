@@ -138,16 +138,41 @@ app.post("/new-nurse", (request, response) => {
   var params = request.body;
 
   console.log(params);
-  
-  add_nurse(params, function (status) {
+  if(params.pass == params.rpass) {
+    add_nurse(params, function (status) {
     if (status == 0) {
-    return response.redirect("/view-student/"+params.s_id);
+    return response.redirect("/login");
   } else {
-    return response.render("add-student");
+    return response.render("register");
+  }
+});
+  } else {
+    return response.render("register");
+  }
+  
+  
+  
+});
+
+app.post("/sign-in", (request, response) => {
+  var params = request.body;
+  var sess= request.session;
+
+  console.log(params);
+  
+    add_nurse(params, function (status) {
+    if (status == 0) {
+    return response.redirect("/login");
+  } else {
+    return response.render("register");
   }
 });
   
+  
+  
+  
 });
+
 
 app.get("/nurse-profile", (request, response) => {
   response.render("n-profile");
@@ -394,6 +419,17 @@ function add_nurse(data, status) {
       }
       // get the last insert id
     });
+  });
+};
+
+function get_nurse(un, pass, data) {
+  db.all("SELECT * from nurses uname = '" + un+"' AND upass = '"+ pass + "'", (err, rows) => {
+    if (err) {
+      data(-1);
+    }else {
+      data(rows[0]);
+    }
+    
   });
 };
   
