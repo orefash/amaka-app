@@ -75,6 +75,15 @@
                                     <div class="col col-md-12"><label for="select" class=" form-control-label">Class</label></div>
                                     <div class="col-12 col-md-12">
                                         <select name="class" id="class-select" class="form-control">
+                                          
+                                          <%
+var options = [ "JS 1", "JS 2", "JS 3", "SS 1", "SS 2", "SS 3" ];
+for ( var i = 0; i < options.length; i++ )
+{
+    var selected = ( config[0].volume == i ) ? "selected" : "";
+    %><option value="<%=options[ i ] %>" <%=selected %>><%=i %></option><%
+}
+%>
                                             <option value="0">Please select</option>
                                             <option value="JS 1">JS 1</option>
                                             <option value="JS 2">JS 2</option>
@@ -89,20 +98,17 @@
                                 <div class="row form-group">
                                     <div class="col col-md-12"><label for="select" class=" form-control-label">House</label></div>
                                     <div class="col-12 col-md-12">
-                                        <select name="colujarnch" id="house-select" class="form-control" disabled="">
-                                            <option value="0">Please select</option>
-                                            <option value="House of Faith (Red)">House of Faith (Red)</option>
-                                            <option value="House of Joy (Yellow)">House of Joy (Yellow)</option>
-                                            <option value="House of Love (Blue)">House of Love (Hope)</option>
-                                            <option value="House of Grace (Purple)">House of Grace (Purple)</option>
-                                        </select>
+                                      
+                                      <input disabled="" name="house" type="text" id="" placeholder="" class="form-control" value="<%= student.house %>">
                                     </div>
                                 </div>
 
                                 <div class="row form-group">
                                     <div class="col col-md-12"><label for="select" class=" form-control-label">Gender</label></div>
                                     <div class="col-12 col-md-12">
-                                        <select name="gender" id="gender-select" class="form-control" disabled="">
+                                      <input disabled="" name="dob" type="text" id="" placeholder="" class="form-control" value="<%= student.gender %>">
+                              
+<!--                                         <select name="gender" id="gender-select" class="form-control" disabled="">
                                             <option value="0">Please select</option>
                                             <option value="Male">
                                                 Male
@@ -110,34 +116,40 @@
                                             <option value="Female">
                                                 Female
                                             </option>
-                                        </select>
+                                        </select> -->
                                     </div>
                                 </div>
 
                                 <div class="form-group"><label for="Date_of_Birth" class=" form-control-label">D.O.B (DD/MM/YYYY)</label>
-                                    <input disabled="" name="dob" type="text" id="Date_of_Birth" placeholder="Enter Student's Date of Birth" class="form-control">
+                                    <input disabled="" name="dob" type="text" id="Date_of_Birth" placeholder="Enter Student's Date of Birth" class="form-control" value="<%= student.dob %>">
                                 </div>
 
                                 <div class="form-group"><label for="Height" class=" form-control-label">Height(cm)</label>
-                                    <input  name="height" type="number" id="Height" placeholder="Enter Student's Height" class="form-control">
+                                    <input  name="height" type="number" id="Height" placeholder="Enter Student's Height" class="form-control" value="<%= student.height %>">
                                 </div>
                                 <div class="form-group"><label for="Weight" class=" form-control-label">Weight(kg)</label>
-                                    <input name="weight" type="text" id="Blood_type" placeholder="Enter Student's Blood type" class="form-control">
+                                    <input name="weight" type="text" id="Blood_type" placeholder="Enter Student's Blood type" class="form-control" value="<%= student.weight %>">
                                 </div>
                                 
                                 <div class="form-group"><label for="Allergies" class=" form-control-label">Allergies</label>
                                     
-                                    <textarea disabled="" name="allergy" id="allergy" rows="6" placeholder="Enter Student's Allergies" class="form-control"></textarea>
+                                    <textarea disabled="" name="allergy" id="allergy" rows="6" placeholder="Enter Student's Allergies" class="form-control" value="">
+                                  <%= student.allergy %>
+                                  </textarea>
                                 </div>
                                 
                                 
                                 <div class="form-group"><label for="Prior_health_issues" class=" form-control-label">Prior health issues</label>
-                                    <textarea disabled="" name="prior-h" id="prior-h" rows="6" placeholder="Enter Student's Health Issues" class="form-control"></textarea>
+                                    <textarea disabled="" name="prior-h" id="prior-h" rows="6" placeholder="Enter Student's Health Issues" class="form-control" value="">
+                                  <%= student.prior_health %>
+                                  </textarea>
                                 </div>
                                 
                                 
                                 <div class="form-group"><label for="Prior_med" class=" form-control-label">Prior Medication</label>
-                                    <textarea disabled="" name="pr-med" id="pr-med" rows="6" placeholder="Enter Student's Medication" class="form-control"></textarea>
+                                    <textarea disabled="" name="pr-med" id="pr-med" rows="6" placeholder="Enter Student's Medication" class="form-control" >
+                                      <%= student.prior_med %>
+                                  </textarea>
                                 </div>
                                 
                                 
