@@ -43,9 +43,17 @@ db.serialize(() => {
     //     });
   } else {
     db.serialize(() => {
-      //       db.run(
-      //       "DELETE from  nurses"
-      //     );
+//             db.run(
+//             "DELETE from  nurses"
+//           );
+//        db.run(
+//             "DELETE from  std_complaints"
+//           );
+
+//        db.run(
+//             "DELETE from  students"
+//           );
+
 
       //       db.run(
       //       "DROP table nurses"
@@ -171,7 +179,7 @@ app.post("/sign-in", (request, response) => {
       sess.lname = status.lname;
       sess.nid = status.nurse_id;
       sess.uname = status.uname;
-      return response.redirect("/get-students");
+      return response.redirect("/view-students");
     } else {
       return response.redirect("/register");
     }
@@ -236,8 +244,8 @@ app.post("/update-student", (request, response) => {
   });
 });
 
-app.get("/add-complaint/:s_id/:fname/:lname", (request, response) => {
-  var sid = request.params.s_id;
+app.get("/add-complaint/:fname/:lname/", (request, response) => {
+  var sid = request.query.sid;
   var fname = request.params.fname;
   var lname = request.params.lname;
 
@@ -246,8 +254,12 @@ app.get("/add-complaint/:s_id/:fname/:lname", (request, response) => {
 
 app.post("/new-complaint", (request, response) => {
   var params = request.body;
+  
+  var sess = request.session;
 
-  // console.log(params);
+  params.n_id = sess.nid;
+  
+  console.log(params);
 
   add_complaint(params, function(status) {
     console.log(status);
@@ -257,6 +269,7 @@ app.post("/new-complaint", (request, response) => {
       return response.render("add-student");
     }
   });
+  
 });
 
 app.get("/view-complaint/:c_id", (request, response) => {
@@ -275,8 +288,8 @@ app.get("/view-complaint/:c_id", (request, response) => {
   // response.render("view-complaint");
 });
 
-app.get("/view-complaints/:s_id", (request, response) => {
-  var sid = request.params.sid;
+app.get("/view-s-complaints/", (request, response) => {
+  var sid = request.query.sid;
 
   get_s_complaints(sid, function(data) {
     if (data == -1) {
@@ -305,6 +318,11 @@ app.get("/view-complaints", (request, response) => {
 
 app.post("/update-complaint", (request, response) => {
   var params = request.body;
+  
+  var sess = request.session;
+
+  params.n_id = sess.nid;
+  
 
   console.log("in update:", params);
 
@@ -435,8 +453,8 @@ function add_complaint(data, status) {
     .replace("T", " ")
     .split(" ")[0];
 
-  var query_vals = `("${data.s_id}", "${data.complaint}", "${data.treatment}", "${data.feedback}", 1, "${date}")`;
-  // var query_vals = `("${data.s_id}", "${data.complaint}", "${data.treatment}", "${data.feedback}", ${data.nurse_id}, "${date}")`;
+  // var query_vals = `("${data.s_id}", "${data.complaint}", "${data.treatment}", "${data.feedback}", 1, "${date}")`;
+  var query_vals = `("${data.s_id}", "${data.complaint}", "${data.treatment}", "${data.feedback}", ${data.n_id}, "${date}")`;
   var query =
     "INSERT INTO std_complaints (s_id, complaint, treatment, feedback, nurse_id, date) VALUES " +
     query_vals;
@@ -497,7 +515,7 @@ function update_complaint(data, status) {
 
   db.run(
     `UPDATE std_complaints SET treatment = ?, feedback = ?, nurse_id = ?, date = ?  WHERE c_id = ?`,
-    [data.treatment, data.feedback, 1, date, data.cid],
+    [data.treatment, data.feedback, data.n_id, date, data.cid],
     // [data.treatment, data.feedback, 1, date, data.cid],
     function(err) {
       if (err) {
