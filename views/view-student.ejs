@@ -60,7 +60,9 @@
                         <div class="card">
                             <div class="card-header"><strong>Student Information</strong></div>
                             <div class="card-body card-block">
-
+                              
+                              <form method="POST" action="/update-student"> 
+                                
                                 <div class="form-group"><label for="Sid" class=" form-control-label">Admission No.</label>
                                     <input disabled="" name="sid" type="text" id="sid" placeholder="Enter Student's Admission No." class="form-control" value="<%= student.s_id %>"></div>
                                 
@@ -80,17 +82,11 @@
 var options = [ "JS 1", "JS 2", "JS 3", "SS 1", "SS 2", "SS 3" ];
 for ( var i = 0; i < options.length; i++ )
 {
-    var selected = ( config[0].volume == i ) ? "selected" : "";
-    %><option value="<%=options[ i ] %>" <%=selected %>><%=i %></option><%
+    var selected = ( student.class == i ) ? "selected" : "";
+    %><option value="<%=options[ i ] %>" <%=selected %>><%= options[ i ] %></option><%
 }
 %>
-                                            <option value="0">Please select</option>
-                                            <option value="JS 1">JS 1</option>
-                                            <option value="JS 2">JS 2</option>
-                                            <option value="JS 3">JS 3</option>
-                                            <option value="SS 1">SS 1</option>
-                                            <option value="SS 2">SS 2</option>
-                                            <option value="SS 3">SS 3</option>
+                                          
                                         </select>
                                     </div>
                                 </div>
@@ -156,6 +152,10 @@ for ( var i = 0; i < options.length; i++ )
                                 
                                 <div class="form-actions form-group"><button type="submit" class="btn btn-success btn-sm">Save</button></div>
 
+                                
+                              </form>
+
+                                
                             </div>
                         </div>
                     </div>
