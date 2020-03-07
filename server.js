@@ -150,7 +150,7 @@ app.post("/new-student", (request, response) => {
   var params = request.body;
   
   console.log(params);
-  var status = helper.add_student(params);
+  var status = add_student(params);
   
   console.log(status);
   
@@ -190,56 +190,150 @@ app.get("/name", (request, response) => {
   response.send(JSON.stringify(1));
 });
 
-// endpoint to get all the dreams in the database
-app.get("/getDreams", (request, response) => {
-  db.all("SELECT * from Dreams", (err, rows) => {
-    response.send(JSON.stringify(rows));
-  });
-});
 
-// endpoint to add a dream to the database
-app.post("/addDream", (request, response) => {
-  console.log(`add to dreams ${request.body.dream}`);
+function get_students() {
+    db.all("SELECT * from students", (err, rows) => {
+      return rows;
+    });
+  };
 
-  // DISALLOW_WRITE is an ENV variable that gets reset for new projects
-  // so they can write to the database
-  // if (!process.env.DISALLOW_WRITE) {
-  //   const cleansedDream = cleanseString(request.body.dream);
-  //   db.run(`INSERT INTO Dreams (dream) VALUES (?)`, cleansedDream, error => {
-  //     if (error) {
-  //       response.send({ message: "error!" });
-  //     } else {
-  //       response.send({ message: "success" });
-  //     }
-  //   });
-  // }
-});
-
-// endpoint to clear dreams from the database
-app.get("/clearDreams", (request, response) => {
-  // DISALLOW_WRITE is an ENV variable that gets reset for new projects so you can write to the database
-  if (!process.env.DISALLOW_WRITE) {
-    db.each(
-      "SELECT * from Dreams",
-      (err, row) => {
-        console.log("row", row);
-        db.run(`DELETE FROM Dreams WHERE ID=?`, row.id, error => {
-          if (row) {
-            console.log(`deleted row ${row.id}`);
-          }
-        });
-      },
-      err => {
+  function get_student(s_id) {
+    db.all("SELECT * from students where s_id='" + s_id + "'", (err, rows) => {
+      if (!err) {
+        return rows[0];
+      } else {
+        console.log(err.message);
+        return -1;
+      }
+    });
+  };
+  function add_student(data) {
+    var now = new Date();
+  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+  const dateLocal = new Date(now.getTime() - offsetMs);
+  var date = dateLocal
+    .toISOString()
+    .slice(0, 19)
+    .replace(/-/g, "/")
+    .replace("T", " ")
+    .split(" ")[0];
+    
+    
+    var query_vals = `("${data.s_id}", "${data.fname}", "${data.lname}", "${data.dob}", "${data.address}", "${data.house}", "${data.allergy}", "${data.gender}", "${data.bl_grp}", "${data.bl_typ}", "${data.class}", "${data.prior_health}", "${data.prior_med}", ${data.weight}, ${data.height}, "${date}")`;
+    var query =
+      "INSERT INTO students (s_id, fname, lname, dob, address, house, allergy, gender, bl_grp, bl_typ, class, prior_health, prior_med, weight, height, date) VALUES " +
+      query_vals;
+    db.serialize(() => {
+      db.run(query, function(err) {
         if (err) {
-          response.send({ message: "error!" });
+          console.log(err.message);
+          return 1;
         } else {
-          response.send({ message: "success" });
+          console.log(`A row has been inserted with rowid ${this.lastID}`);
+          return 0;
+        }
+        // get the last insert id
+      });
+    });
+  };
+  function update_student(data) {
+    db.run(
+      `UPDATE students SET class = ?, weight = ?, height = ?  WHERE s_id = ?`,
+      [data.class, data.weight, data.height],
+      function(err) {
+        if (err) {
+          console.error(err.message);
+          return -1;
+        } else {
+          console.log(`Row(s) updated: ${this.changes}`);
+          return 0;
         }
       }
     );
-  }
-});
+  };
+   function add_nurse(data) {
+    var query_vals = `("${data.fname}", "${data.lname}", "${data.level}", "${data.uname}", "${data.upass}")`;
+    var query =
+      "INSERT INTO nurses ( fname, lname, level, uname, upass) VALUES " + query_vals;
+    db.serialize(() => {
+      db.run(query, function(err) {
+        if (err) {
+          console.log(err.message);
+          return 1;
+        } else {
+          console.log(`A row has been inserted with rowid ${this.lastID}`);
+          return 0;
+        }
+        // get the last insert id
+      });
+    });
+  };
+function add_complaint(data) {
+    
+    var now = new Date();
+  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+  const dateLocal = new Date(now.getTime() - offsetMs);
+  var date = dateLocal
+    .toISOString()
+    .slice(0, 19)
+    .replace(/-/g, "/")
+    .replace("T", " ")
+    .split(" ")[0];
+    
+    var query_vals = `("${data.s_id}", "${data.complaint}", "${data.treatment}", "${data.feedback}", ${data.nurse_id}, "${date}")`;
+    var query =
+      "INSERT INTO std_complaints (s_id, complaint, treatment, feedback, nurse_id, date) VALUES " + query_vals;
+    db.serialize(() => {
+      db.run(query, function(err) {
+        if (err) {
+          console.log(err.message);
+          return 1;
+        } else {
+          console.log(`A row has been inserted with rowid ${this.lastID}`);
+          return 0;
+        }
+        // get the last insert id
+      });
+    });
+  };
+  function get_complaints() {
+    db.all("SELECT * from std_complaints", (err, rows) => {
+      return rows;
+    });
+  };
 
+  function get_complaint(c_id) {
+    db.all("SELECT * from std_complaints where c_id = "+c_id, (err, rows) => {
+      return rows[0];
+    });
+  };
+
+  function update_complaint (data) {
+    
+    var now = new Date();
+  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+  const dateLocal = new Date(now.getTime() - offsetMs);
+  var date = dateLocal
+    .toISOString()
+    .slice(0, 19)
+    .replace(/-/g, "/")
+    .replace("T", " ")
+    .split(" ")[0];
+    
+    db.run(
+      `UPDATE std_complaints SET treatment = ?, feedback = ?, nurse_id = ?, date = ?  WHERE c_id = ?`,
+      [data.treatment, data.feedback, data.nurse_id, date, data.c_id],
+      function(err) {
+        if (err) {
+          console.error(err.message);
+          return -1;
+        } else {
+          console.log(`Row(s) updated: ${this.changes}`);
+          return 0;
+        }
+      }
+    );
+  };
 
 
 // listen for requests :)
