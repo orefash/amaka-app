@@ -150,6 +150,11 @@ app.get("/view-complaint", (request, response) => {
   response.render('view-complaint');
 });
 
+
+app.get("/search-student", (request, response) => {
+  response.render('search-students');
+});
+
 app.get("/name", (request, response) => {
   response.send(JSON.stringify(1));
 });
