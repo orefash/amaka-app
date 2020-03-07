@@ -36,7 +36,7 @@ module.exports = {
     .split(" ")[0];
     
     
-    var query_vals = `("${data.s_id}", "${data.fname}", "${data.lname}", "${data.dob}", "${data.dob}", "${data.address}", "${data.house}", "${data.allergy}", "${data.gender}", "${data.bl_grp}", "${data.bl_typ}", "${data.class}", "${data.prior_health}", "${data.prior_med}", ${data.weight}, ${data.height}, "${date}")`;
+    var query_vals = `("${data.s_id}", "${data.fname}", "${data.lname}", "${data.dob}", "${data.address}", "${data.house}", "${data.allergy}", "${data.gender}", "${data.bl_grp}", "${data.bl_typ}", "${data.class}", "${data.prior_health}", "${data.prior_med}", ${data.weight}, ${data.height}, "${date}")`;
     var query =
       "INSERT INTO students (s_id, fname, lname, dob, address, house, allergy, gender, bl_grp, bl_typ, class, prior_health, prior_med, weight, height, date) VALUES " +
       query_vals;

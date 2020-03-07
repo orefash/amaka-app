@@ -85,6 +85,7 @@ db.serialize(() => {
         "bl_grp varchar(10) DEFAULT NULL," +
         "bl_typ varchar(10) DEFAULT NULL," +
         "class varchar(30) DEFAULT NULL," +
+        "house varchar(30) DEFAULT NULL," +
         "allergy text DEFAULT NULL," +
         "prior_health text DEFAULT NULL," +
         "prior_med text DEFAULT NULL," +
@@ -150,6 +151,8 @@ app.post("/new-student", (request, response) => {
   
   console.log(params);
   var status = helper.add_student(params);
+  
+  console.log(status);
   
   if(status ==0){
     
