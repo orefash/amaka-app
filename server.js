@@ -145,6 +145,22 @@ app.get("/add-student", (request, response) => {
   response.render('add-student');
 });
 
+app.post("/new-student", (request, response) => {
+  var params = request.body;
+  
+  console.log(params);
+  var status = helper.add_student(params);
+  
+  if(status ==0){
+    
+    response.redirect('/view-student');
+  }else{
+    response.render('add-student');
+  }
+  
+  
+});
+
 app.get("/view-student", (request, response) => {
   response.render('view-student');
 });
