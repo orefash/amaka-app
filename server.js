@@ -146,6 +146,10 @@ app.get("/add-complaint", (request, response) => {
   response.render('add-complaint');
 });
 
+app.get("/view-complaint", (request, response) => {
+  response.render('view-complaint');
+});
+
 app.get("/name", (request, response) => {
   response.send(JSON.stringify(1));
 });
