@@ -122,7 +122,12 @@ db.serialize(() => {
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
-  response.sendFile(`${__dirname}/views/index.html`);
+  response.redirect("/view-students");
+});
+
+
+app.get("/login", (request, response) => {
+  response.render("login");
 });
 
 app.get("/nurse-profile", (request, response) => {
@@ -228,11 +233,8 @@ app.get("/view-complaint/:c_id", (request, response) => {
     // response.redirect("/");
   } else {
     console.log(data);
-    var feedbacks = data.feedback.split('||');
     
-    var treatments = data.treatment.split('||');
-    console.log(feedbacks);
-    response.render('view-complaint', {complaint: data, feedbacks: feedbacks, treatments: treatments});
+    response.render('view-complaint', {complaint: data});
   }
 });
   
@@ -273,9 +275,6 @@ app.get("/view-complaints", (request, response) => {
 app.post("/update-complaint", (request, response) => {
   var params = request.body;
   
-  params.treatment = params.p_treatment + " || " + params.treatment;
-  
-  params.feedback = params.p_feedback + " || " + params.feedback;
 
   console.log("in update:",params);
   
@@ -288,9 +287,7 @@ app.post("/update-complaint", (request, response) => {
   
 });
 
-app.get("/name", (request, response) => {
-  response.send(JSON.stringify(1));
-});
+
 
 function get_students(data) {
   db.all("SELECT * from students", (err, rows) => {
