@@ -69,15 +69,30 @@
                                             <th>Name</th>
                                             <th>Class</th>
                                             <th>Gender</th>
+                                          
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1678/99</td>
-                                            <td>B.Fernandes</td>
-                                            <td>SSS2</td>
-                                            <td>H</td>
+                                      
+                                       <% students.forEach(function(s) { %>
+                                      <tr>
+                                            <td><%= s.s_id %></td>
+                                            <td><%= s.fname %> <%= s.lname %></td>
+                                            <td><%= s.class %></td>
+                                            <td><%= s.gender %></td>
+                                            <td>
+                                          
+                                          <a href="/view-student/<%= s.s_id %>" class="btn btn-sn btn-primary">
+                                            View Student
+                                            </a>
+                                        </td>
                                         </tr>
+                                      
+                                      
+                                      <% }); %>
+                                      
+                                        
                                         
                                     </tbody>
                                 </table>

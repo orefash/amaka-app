@@ -171,7 +171,7 @@ app.get("/view-students", (request, response) => {
     // response.redirect("/");
   } else {
     console.log(data);
-    response.render('view-students', {students: data});
+    response.render('search-students', {students: data});
   }
 });
   
@@ -196,12 +196,16 @@ app.get("/add-complaint", (request, response) => {
   response.render("add-complaint");
 });
 
-app.get("/view-complaint", (request, response) => {
+app.get("/view-complaint/:c_id", (request, response) => {
   response.render("view-complaint");
 });
 
-app.get("/search-student", (request, response) => {
-  response.render("search-students");
+app.get("/view-complaints/:s_id", (request, response) => {
+  response.render("view-complaint");
+});
+
+app.get("/view-complaints/:s_id", (request, response) => {
+  response.render("view-complaint");
 });
 
 app.get("/search-compliant", (request, response) => {
