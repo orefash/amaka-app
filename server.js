@@ -129,6 +129,11 @@ app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
 });
 
+
+app.get("/nurse-profile", (request, response) => {
+  response.render('n-profile');
+});
+
 app.get("/name", (request, response) => {
   response.send(JSON.stringify(1));
 });
