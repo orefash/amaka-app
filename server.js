@@ -138,6 +138,14 @@ app.get("/add-student", (request, response) => {
   response.render('add-student');
 });
 
+app.get("/view-student", (request, response) => {
+  response.render('view-student');
+});
+
+app.get("/add-complaint", (request, response) => {
+  response.render('add-complaint');
+});
+
 app.get("/name", (request, response) => {
   response.send(JSON.stringify(1));
 });
