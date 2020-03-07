@@ -197,15 +197,39 @@ app.get("/add-complaint", (request, response) => {
 });
 
 app.get("/view-complaint/:c_id", (request, response) => {
+  
   response.render("view-complaint");
 });
 
 app.get("/view-complaints/:s_id", (request, response) => {
-  response.render("view-complaint");
+  
+  var sid = request.params.sid;
+  
+  get_s_complaints(sid, function (data) {
+    if (data == -1) {
+    // response.redirect("/");
+  } else {
+    console.log(data);
+    response.render('search-complaint', {students: data});
+  }
+});
+  
+  // response.render("search-complaint");
 });
 
-app.get("/view-complaints/:s_id", (request, response) => {
-  response.render("view-complaint");
+app.get("/view-complaints", (request, response) => {
+  
+  
+  get_complaints(function (data) {
+    if (data == -1) {
+    // response.redirect("/");
+  } else {
+    console.log(data);
+    response.render('search-complaint', {students: data});
+  }
+  });
+  
+  // response.render("search-complaint");
 });
 
 app.get("/search-compliant", (request, response) => {
@@ -266,7 +290,8 @@ function add_student(data, status) {
     });
   });
       
-}
+};
+  
 function update_student(data, status) {
   db.run(
     `UPDATE students SET class = ?, weight = ?, height = ?  WHERE s_id = ?`,
@@ -283,7 +308,8 @@ function update_student(data, status) {
       }
     }
   );
-}
+};
+  
 function add_nurse(data) {
   var query_vals = `("${data.fname}", "${data.lname}", "${data.level}", "${data.uname}", "${data.upass}")`;
   var query =
@@ -301,7 +327,8 @@ function add_nurse(data) {
       // get the last insert id
     });
   });
-}
+};
+  
 function add_complaint(data) {
   var now = new Date();
   const offsetMs = now.getTimezoneOffset() * 60 * 1000;
@@ -329,18 +356,29 @@ function add_complaint(data) {
       // get the last insert id
     });
   });
-}
-function get_complaints() {
+};
+  
+function get_complaints(data) {
   db.all("SELECT * from std_complaints", (err, rows) => {
-    return rows;
+    data(rows);
   });
-}
+};
 
-function get_complaint(c_id) {
-  db.all("SELECT * from std_complaints where c_id = " + c_id, (err, rows) => {
-    return rows[0];
+
+function get_s_complaints(sid, data) {
+  
+  db.all("SELECT * from std_complaints where s_id='"+sid+"'", (err, rows) => {
+   data(rows);
   });
-}
+  
+};
+
+
+function get_complaint(c_id, data) {
+  db.all("SELECT * from std_complaints where c_id = " + c_id, (err, rows) => {
+    data(rows[0]);
+  });
+};
 
 function update_complaint(data) {
   var now = new Date();
@@ -366,7 +404,7 @@ function update_complaint(data) {
       }
     }
   );
-}
+};
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, () => {
