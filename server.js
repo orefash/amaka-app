@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
 
-var mailer = require("./data-helper.js");
+var helper = require("./data-helper.js");
 
 app.set('view engine', 'ejs');
 
@@ -87,7 +87,7 @@ db.serialize(() => {
         "prior_med text DEFAULT NULL," +
         "weight decimal(10,2) DEFAULT NULL," +
         "height decimal(10,2)," +
-        "date date NOT NULL," +
+        "date date ," +
         "PRIMARY KEY (s_id)" +
         ")"
       
@@ -137,6 +137,8 @@ app.get("/nurse-profile", (request, response) => {
 });
 
 app.get("/add-student", (request, response) => {
+  
+  
   response.render('add-student');
 });
 

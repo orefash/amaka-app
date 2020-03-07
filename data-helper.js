@@ -25,7 +25,18 @@ module.exports = {
     });
   },
   add_student: function(data) {
-    var query_vals = `("${data.s_id}", "${data.fname}", "${data.lname}", "${data.dob}", "${data.dob}", "${data.address}", "${data.gender}", "${data.bl_grp}", "${data.bl_typ}", "${data.class}", "${data.prior_health}", "${data.prior_med}", ${data.weight}, ${data.height}, "${data.date}")`;
+    var now = new Date();
+  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+  const dateLocal = new Date(now.getTime() - offsetMs);
+  var date = dateLocal
+    .toISOString()
+    .slice(0, 19)
+    .replace(/-/g, "/")
+    .replace("T", " ")
+    .split(" ")[0];
+    
+    
+    var query_vals = `("${data.s_id}", "${data.fname}", "${data.lname}", "${data.dob}", "${data.dob}", "${data.address}", "${data.gender}", "${data.bl_grp}", "${data.bl_typ}", "${data.class}", "${data.prior_health}", "${data.prior_med}", ${data.weight}, ${data.height}, "${date}")`;
     var query =
       "INSERT INTO students (s_id, fname, lname, dob, address, gender, bl_grp, bl_typ, class, prior_health, prior_med, weight, height, date) VALUES " +
       query_vals;
