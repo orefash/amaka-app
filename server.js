@@ -163,14 +163,17 @@ app.post("/sign-in", (request, response) => {
   console.log(params);
 
   get_nurse(params.uname, params.upass, function(status) {
+    
+  console.log(status);
+    
     if (status !== -1) {
       sess.fname = status.fname;
       sess.lname = status.lname;
       sess.nid = status.nurse_id;
       sess.uname = status.uname;
-      return response.redirect("/");
+      return response.redirect("/get-students");
     } else {
-      return response.render("register");
+      return response.redirect("/register");
     }
   });
 });
@@ -391,6 +394,7 @@ function add_nurse(data, status) {
         console.log(err.message);
         status(1);
       } else {
+        console.log("insert: ",data);
         console.log(`A row has been inserted with rowid ${this.lastID}`);
         status(0);
       }
@@ -401,9 +405,12 @@ function add_nurse(data, status) {
 
 function get_nurse(un, pass, data) {
   db.all(
-    "SELECT * from nurses uname = '" + un + "' AND upass = '" + pass + "'",
+    "SELECT * from nurses",
+    // "SELECT * from nurses where uname = '" + un + "' AND upass = '" + pass + "'",
     (err, rows) => {
+      console.log(rows);
       if (err) {
+        console.log(err.message);
         data(-1);
       } else {
         if(rows.length>0){          
