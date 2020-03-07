@@ -15,6 +15,8 @@ app.use(bodyParser.json());
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
 
+var mailer = require("./data-helper.js");
+
 app.set('view engine', 'ejs');
 
 // init sqlite db
@@ -153,6 +155,11 @@ app.get("/view-complaint", (request, response) => {
 
 app.get("/search-student", (request, response) => {
   response.render('search-students');
+});
+
+
+app.get("/search-compliant", (request, response) => {
+  response.render('search-complaint');
 });
 
 app.get("/name", (request, response) => {
