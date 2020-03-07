@@ -160,7 +160,7 @@ app.post("/sign-in", (request, response) => {
 
   console.log(params);
   
-    add_nurse(params, function (status) {
+    get_nurse(params.uname, params.upass, function (status) {
     if (status == 0) {
     return response.redirect("/login");
   } else {
