@@ -171,7 +171,7 @@ for ( var i = 0; i < options.length; i++ )
 <!--                                 <button class="btn btn-success btn-block">View Complaints</button> -->
                               <a href="/view-complaints/<%= student.s_id %>" class="btn btn-success btn-block">View Complaints</a>
                                 
-                                <a href="/add-complaint" class="mt-4 btn btn-primary btn-block">Add Complaint</a>
+                                <a href="/add-complaint/<%= student.s_id %>/<%= student.fname %>/<%= student.lname %>" class="mt-4 btn btn-primary btn-block">Add Complaint</a>
                                 
                             </div>
                         </div>

@@ -193,12 +193,30 @@ app.post("/update-student", (request, response) => {
 
 
 app.get("/add-complaint/:s_id/:fname/:lname", (request, response) => {
-  var sid = request.params.sid;
+  var sid = request.params.s_id;
   var fname = request.params.fname;
   var lname = request.params.lname;
   
   response.render("add-complaint", {sid: sid, fname: fname, lname: lname});
 });
+
+
+app.post("/new-complaint", (request, response) => {
+  var params = request.body;
+
+  console.log(params);
+  
+  add_student(params, function (status) {
+    if (status == 0) {
+    return response.redirect("/view-complaint/"+params.s_id);
+  } else {
+    return response.render("add-student");
+  }
+});
+  
+  
+});
+
 
 app.get("/view-complaint/:c_id", (request, response) => {
   
