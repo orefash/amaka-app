@@ -81,13 +81,15 @@
                             <div class="card-header"><strong>Update Complaint Information</strong></div>
                             <div class="card-body card-block">
                                 
-                                <form>
+                                <form method="POST" action="/update-complaint">
                                   
                                   <div class="form-group"><label for="feedback" class=" form-control-label">Nurse Feedback</label>
                                     <textarea name="feedback" id="feedback" rows="6" placeholder="Enter Feedback" class="form-control"></textarea>
                                 </div>
                                   
+                                  <input hidden name="cid" type="text" value="<%= complaint.c_id %>"  >
                                   
+                                  <input hidden name="p_feedback" type="text" value="<%= complaint.feedback %>"  >
                                 
                                 
                                 <div class="form-group"><label for="treatment" class=" form-control-label">Treatment Administered</label>
@@ -95,6 +97,7 @@
                                 </div>
                                 
                                 
+                                  <input hidden name="p_treatment" type="text" value="<%= complaint.treatment %>" >
                                 
                                 <div class="form-actions form-group"><button type="submit" class="btn btn-success btn-sm">Save</button></div>
 

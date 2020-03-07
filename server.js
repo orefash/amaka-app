@@ -266,8 +266,22 @@ app.get("/view-complaints", (request, response) => {
   // response.render("search-complaint");
 });
 
-app.get("/search-compliant", (request, response) => {
-  response.render("search-complaint");
+app.post("/update-complaint", (request, response) => {
+  var params = request.body;
+  
+  params.treatment = params.p_treatment + " || " + params.treatment;
+  
+  params.feedback = params.p_feedback + "  || " + params.feedback;
+
+  console.log("in update:",params);
+  
+  update_complaint(params, function (status) {
+    // if (status == 0) {
+    response.redirect("/view-complaint/"+params.cid);
+  // } 
+});
+  
+  
 });
 
 app.get("/name", (request, response) => {
@@ -415,7 +429,7 @@ function get_complaint(c_id, data) {
   });
 };
 
-function update_complaint(data) {
+function update_complaint(data, status) {
   var now = new Date();
   const offsetMs = now.getTimezoneOffset() * 60 * 1000;
   const dateLocal = new Date(now.getTime() - offsetMs);
@@ -428,14 +442,15 @@ function update_complaint(data) {
 
   db.run(
     `UPDATE std_complaints SET treatment = ?, feedback = ?, nurse_id = ?, date = ?  WHERE c_id = ?`,
-    [data.treatment, data.feedback, data.nurse_id, date, data.c_id],
+    [data.treatment, data.feedback, 1, date, data.cid],
+    // [data.treatment, data.feedback, 1, date, data.cid],
     function(err) {
       if (err) {
         console.error(err.message);
-        return -1;
+        status(1);
       } else {
         console.log(`Row(s) updated: ${this.changes}`);
-        return 0;
+        status(0);
       }
     }
   );
