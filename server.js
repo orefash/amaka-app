@@ -3,11 +3,13 @@
 
 // init project
 const express = require("express");
+const session = require('express-session');
 const bodyParser = require("body-parser");
 const app = express();
 const fs = require("fs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(session({secret: 'fash'}));
 
 // we've started you off with Express,
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -44,21 +46,21 @@ db.serialize(() => {
   } else {
     db.serialize(() => {
       
-      db.run(
-      "DELETE from  nurses"
-    );
+//       db.run(
+//       "DELETE from  nurses"
+//     );
       
-      db.run(
-      "DROP table nurses"
-    );
+//       db.run(
+//       "DROP table nurses"
+//     );
     
-    db.run(
-      "DROP table std_complaints"
-    );
+//     db.run(
+//       "DROP table std_complaints"
+//     );
     
-    db.run(
-      "DROP table students"
-    );
+//     db.run(
+//       "DROP table students"
+//     );
     
     db.run(
       "CREATE TABLE IF NOT EXISTS  nurses (" +
@@ -83,6 +85,7 @@ db.serialize(() => {
         "bl_grp varchar(10) DEFAULT NULL," +
         "bl_typ varchar(10) DEFAULT NULL," +
         "class varchar(30) DEFAULT NULL," +
+        "allergy text DEFAULT NULL," +
         "prior_health text DEFAULT NULL," +
         "prior_med text DEFAULT NULL," +
         "weight decimal(10,2) DEFAULT NULL," +
