@@ -44,21 +44,21 @@ db.serialize(() => {
   } else {
     db.serialize(() => {
       
-//       db.run(
-//       "DELETE from  nurses"
-//     );
+      db.run(
+      "DELETE from  nurses"
+    );
       
-//       db.run(
-//       "DROP table nurses"
-//     );
+      db.run(
+      "DROP table nurses"
+    );
     
-//     db.run(
-//       "DROP table std_complaints"
-//     );
+    db.run(
+      "DROP table std_complaints"
+    );
     
-//     db.run(
-//       "DROP table students"
-//     );
+    db.run(
+      "DROP table students"
+    );
     
     db.run(
       "CREATE TABLE IF NOT EXISTS  nurses (" +
