@@ -122,9 +122,14 @@ db.serialize(() => {
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
-  response.redirect("/view-students");
-});
+  var sess = request.session;
 
+  if (sess.uname) {
+    response.redirect("/view-students");
+  } else {
+    response.redirect("/login");
+  }
+});
 
 app.get("/login", (request, response) => {
   response.render("login");
@@ -138,41 +143,37 @@ app.post("/new-nurse", (request, response) => {
   var params = request.body;
 
   console.log(params);
-  if(params.pass == params.rpass) {
-    add_nurse(params, function (status) {
-    if (status == 0) {
-    return response.redirect("/login");
+  if (params.pass == params.rpass) {
+    add_nurse(params, function(status) {
+      if (status == 0) {
+        return response.redirect("/login");
+      } else {
+        return response.render("register");
+      }
+    });
   } else {
     return response.render("register");
   }
-});
-  } else {
-    return response.render("register");
-  }
-  
-  
-  
 });
 
 app.post("/sign-in", (request, response) => {
   var params = request.body;
-  var sess= request.session;
+  var sess = request.session;
 
   console.log(params);
-  
-    get_nurse(params.uname, params.upass, function (status) {
-    if (status == 0) {
-    return response.redirect("/login");
-  } else {
-    return response.render("register");
-  }
-});
-  
-  
-  
-  
-});
 
+  get_nurse(params.uname, params.upass, function(status) {
+    if (status !== -1) {
+      sess.fname = status.fname;
+      sess.lname = status.lname;
+      sess.nid = status.nurse_id;
+      sess.uname = status.uname;
+      return response.redirect("/");
+    } else {
+      return response.render("register");
+    }
+  });
+});
 
 app.get("/nurse-profile", (request, response) => {
   response.render("n-profile");
@@ -186,152 +187,130 @@ app.post("/new-student", (request, response) => {
   var params = request.body;
 
   console.log(params);
-  
-  add_student(params, function (status) {
+
+  add_student(params, function(status) {
     if (status == 0) {
-    return response.redirect("/view-student/"+params.s_id);
-  } else {
-    return response.render("add-student");
-  }
-});
-  
-  
+      return response.redirect("/view-student/" + params.s_id);
+    } else {
+      return response.render("add-student");
+    }
+  });
 });
 
 app.get("/view-student/:sid", (request, response) => {
   var sid = request.params.sid;
-  
-  get_student(sid, function (data) {
+
+  get_student(sid, function(data) {
     if (data == -1) {
-    // response.redirect("/");
-  } else {
-    console.log(data);
-    response.render('view-student', {student: data});
-  }
-});
-  
+      // response.redirect("/");
+    } else {
+      console.log(data);
+      response.render("view-student", { student: data });
+    }
+  });
 });
 
 app.get("/view-students", (request, response) => {
-  
-  
-  get_students(function (data) {
+  get_students(function(data) {
     if (data == -1) {
-    // response.redirect("/");
-  } else {
-    console.log(data);
-    response.render('search-students', {students: data});
-  }
-});
-  
+      // response.redirect("/");
+    } else {
+      console.log(data);
+      response.render("search-students", { students: data });
+    }
+  });
 });
 
 app.post("/update-student", (request, response) => {
   var params = request.body;
 
-  console.log("in update:",params);
-  
-  update_student(params, function (status) {
-    // if (status == 0) {
-    response.redirect("/view-student/"+params.s_id);
-  // } 
-});
-  
-  
-});
+  console.log("in update:", params);
 
+  update_student(params, function(status) {
+    // if (status == 0) {
+    response.redirect("/view-student/" + params.s_id);
+    // }
+  });
+});
 
 app.get("/add-complaint/:s_id/:fname/:lname", (request, response) => {
   var sid = request.params.s_id;
   var fname = request.params.fname;
   var lname = request.params.lname;
-  
-  response.render("add-complaint", {sid: sid, fname: fname, lname: lname});
-});
 
+  response.render("add-complaint", { sid: sid, fname: fname, lname: lname });
+});
 
 app.post("/new-complaint", (request, response) => {
   var params = request.body;
 
   // console.log(params);
-  
-  add_complaint(params, function (status) {
+
+  add_complaint(params, function(status) {
     console.log(status);
     if (status[0] == 0) {
-    return response.redirect("/view-complaint/"+status[1]);
-  } else {
-    return response.render("add-student");
-  }
+      return response.redirect("/view-complaint/" + status[1]);
+    } else {
+      return response.render("add-student");
+    }
+  });
 });
-  
-  
-});
-
 
 app.get("/view-complaint/:c_id", (request, response) => {
-  
   var cid = request.params.c_id;
-  
-  get_complaint(cid, function (data) {
+
+  get_complaint(cid, function(data) {
     if (data == -1) {
-    // response.redirect("/");
-  } else {
-    console.log(data);
-    
-    response.render('view-complaint', {complaint: data});
-  }
-});
-  
+      // response.redirect("/");
+    } else {
+      console.log(data);
+
+      response.render("view-complaint", { complaint: data });
+    }
+  });
+
   // response.render("view-complaint");
 });
 
 app.get("/view-complaints/:s_id", (request, response) => {
-  
   var sid = request.params.sid;
-  
-  get_s_complaints(sid, function (data) {
+
+  get_s_complaints(sid, function(data) {
     if (data == -1) {
-    // response.redirect("/");
-  } else {
-    console.log(data);
-    response.render('search-complaint', {complaints: data});
-  }
-});
-  
+      // response.redirect("/");
+    } else {
+      console.log(data);
+      response.render("search-complaint", { complaints: data });
+    }
+  });
+
   // response.render("search-complaint");
 });
 
 app.get("/view-complaints", (request, response) => {
-  
-  
-  get_complaints(function (data) {
+  get_complaints(function(data) {
     if (data == -1) {
-    // response.redirect("/");
-  } else {
-    console.log(data);
-    response.render('search-complaint', {complaints: data});
-  }
+      // response.redirect("/");
+    } else {
+      console.log(data);
+      response.render("search-complaint", { complaints: data });
+    }
   });
-  
+
   // response.render("search-complaint");
 });
 
 app.post("/update-complaint", (request, response) => {
   var params = request.body;
-  
 
-  console.log("in update:",params);
-  
-  update_complaint(params, function (status) {
+  console.log("in update:", params);
+
+  update_complaint(params, function(status) {
     // if (status == 0) {
-    response.redirect("/view-complaint/"+params.cid);
-  // } 
+    response.redirect("/view-complaint/" + params.cid);
+    // }
+  });
 });
-  
-  
-});
-
-
 
 function get_students(data) {
   db.all("SELECT * from students", (err, rows) => {
@@ -367,8 +346,7 @@ function add_student(data, status) {
     "INSERT INTO students (s_id, fname, lname, dob, address, house, allergy, gender, bl_grp, bl_typ, class, prior_health, prior_med, weight, height, date) VALUES " +
     query_vals;
 
-
-    db.serialize(() => {
+  db.serialize(() => {
     db.run(query, function(err) {
       if (err) {
         console.log(err.message);
@@ -382,9 +360,8 @@ function add_student(data, status) {
       // get the last insert id
     });
   });
-      
-};
-  
+}
+
 function update_student(data, status) {
   db.run(
     `UPDATE students SET class = ?, weight = ?, height = ?  WHERE s_id = ?`,
@@ -401,8 +378,8 @@ function update_student(data, status) {
       }
     }
   );
-};
-  
+}
+
 function add_nurse(data, status) {
   var query_vals = `("${data.fname}", "${data.lname}", "${data.level}", "${data.uname}", "${data.upass}")`;
   var query =
@@ -420,19 +397,26 @@ function add_nurse(data, status) {
       // get the last insert id
     });
   });
-};
+}
 
 function get_nurse(un, pass, data) {
-  db.all("SELECT * from nurses uname = '" + un+"' AND upass = '"+ pass + "'", (err, rows) => {
-    if (err) {
-      data(-1);
-    }else {
-      data(rows[0]);
+  db.all(
+    "SELECT * from nurses uname = '" + un + "' AND upass = '" + pass + "'",
+    (err, rows) => {
+      if (err) {
+        data(-1);
+      } else {
+        if(rows.length>0){          
+        data(rows[0]);
+        }else{
+          
+        data(-1);
+        }
+      }
     }
-    
-  });
-};
-  
+  );
+}
+
 function add_complaint(data, status) {
   var now = new Date();
   const offsetMs = now.getTimezoneOffset() * 60 * 1000;
@@ -461,29 +445,37 @@ function add_complaint(data, status) {
       // get the last insert id
     });
   });
-};
-  
-function get_complaints(data) {
-  db.all("SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id", (err, rows) => {
-    data(rows);
-  });
-};
+}
 
+function get_complaints(data) {
+  db.all(
+    "SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id",
+    (err, rows) => {
+      data(rows);
+    }
+  );
+}
 
 function get_s_complaints(sid, data) {
-  
-  db.all("SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id where std_complaints.s_id='"+sid+"'", (err, rows) => {
-   data(rows);
-  });
-  
-};
-
+  db.all(
+    "SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id where std_complaints.s_id='" +
+      sid +
+      "'",
+    (err, rows) => {
+      data(rows);
+    }
+  );
+}
 
 function get_complaint(c_id, data) {
-  db.all("SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id where std_complaints.c_id = " + c_id, (err, rows) => {
-    data(rows[0]);
-  });
-};
+  db.all(
+    "SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id where std_complaints.c_id = " +
+      c_id,
+    (err, rows) => {
+      data(rows[0]);
+    }
+  );
+}
 
 function update_complaint(data, status) {
   var now = new Date();
@@ -510,7 +502,7 @@ function update_complaint(data, status) {
       }
     }
   );
-};
+}
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, () => {
