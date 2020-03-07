@@ -134,6 +134,10 @@ app.get("/nurse-profile", (request, response) => {
   response.render('n-profile');
 });
 
+app.get("/add-student", (request, response) => {
+  response.render('add-student');
+});
+
 app.get("/name", (request, response) => {
   response.send(JSON.stringify(1));
 });
