@@ -204,15 +204,15 @@ app.get("/add-complaint/:s_id/:fname/:lname", (request, response) => {
 app.post("/new-complaint", (request, response) => {
   var params = request.body;
 
-  console.log(params);
+  // console.log(params);
   
   add_complaint(params, function (status) {
     console.log(status);
-  //   if (status == 0) {
-  //   return response.redirect("/view-complaint/"+params.s_id);
-  // } else {
-  //   return response.render("add-student");
-  // }
+    if (status[0] == 0) {
+    return response.redirect("/view-complaint/"+status[1]);
+  } else {
+    return response.render("add-student");
+  }
 });
   
   
@@ -220,6 +220,17 @@ app.post("/new-complaint", (request, response) => {
 
 
 app.get("/view-complaint/:c_id", (request, response) => {
+  
+  var cid = request.params.cid;
+  
+  get_complaint(cid, function (data) {
+    if (data == -1) {
+    // response.redirect("/");
+  } else {
+    console.log(data);
+    response.render('view-complaint', {complaint: data});
+  }
+});
   
   response.render("view-complaint");
 });
