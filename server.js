@@ -228,7 +228,11 @@ app.get("/view-complaint/:c_id", (request, response) => {
     // response.redirect("/");
   } else {
     console.log(data);
-    response.render('view-complaint', {complaint: data});
+    var feedbacks = data.feedback.split('||');
+    
+    var treatments = data.treatment.split('||');
+    console.log(feedbacks);
+    response.render('view-complaint', {complaint: data, feedbacks: feedbacks, treatments: treatments});
   }
 });
   
@@ -271,7 +275,7 @@ app.post("/update-complaint", (request, response) => {
   
   params.treatment = params.p_treatment + " || " + params.treatment;
   
-  params.feedback = params.p_feedback + "  || " + params.feedback;
+  params.feedback = params.p_feedback + " || " + params.feedback;
 
   console.log("in update:",params);
   
