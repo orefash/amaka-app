@@ -206,12 +206,13 @@ app.post("/new-complaint", (request, response) => {
 
   console.log(params);
   
-  add_student(params, function (status) {
-    if (status == 0) {
-    return response.redirect("/view-complaint/"+params.s_id);
-  } else {
-    return response.render("add-student");
-  }
+  add_complaint(params, function (status) {
+    console.log(status);
+  //   if (status == 0) {
+  //   return response.redirect("/view-complaint/"+params.s_id);
+  // } else {
+  //   return response.render("add-student");
+  // }
 });
   
   
@@ -351,7 +352,7 @@ function add_nurse(data) {
   });
 };
   
-function add_complaint(data) {
+function add_complaint(data, status) {
   var now = new Date();
   const offsetMs = now.getTimezoneOffset() * 60 * 1000;
   const dateLocal = new Date(now.getTime() - offsetMs);
@@ -362,7 +363,8 @@ function add_complaint(data) {
     .replace("T", " ")
     .split(" ")[0];
 
-  var query_vals = `("${data.s_id}", "${data.complaint}", "${data.treatment}", "${data.feedback}", ${data.nurse_id}, "${date}")`;
+  var query_vals = `("${data.s_id}", "${data.complaint}", "${data.treatment}", "${data.feedback}", 1, "${date}")`;
+  // var query_vals = `("${data.s_id}", "${data.complaint}", "${data.treatment}", "${data.feedback}", ${data.nurse_id}, "${date}")`;
   var query =
     "INSERT INTO std_complaints (s_id, complaint, treatment, feedback, nurse_id, date) VALUES " +
     query_vals;
@@ -370,10 +372,10 @@ function add_complaint(data) {
     db.run(query, function(err) {
       if (err) {
         console.log(err.message);
-        return 1;
+        status([1]);
       } else {
         console.log(`A row has been inserted with rowid ${this.lastID}`);
-        return 0;
+        status([0, this.lastID]);
       }
       // get the last insert id
     });
