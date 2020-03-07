@@ -137,18 +137,30 @@ app.post("/new-student", (request, response) => {
   var params = request.body;
 
   console.log(params);
-  var status = add_student(params);
-
-  console.log(status);
-
-  if (status == 0) {
-    response.redirect("/view-student");
+  
+  add_student(params, function (status) {
+    if (status == 0) {
+    response.redirect("/view-student/"+params.s_id);
   } else {
     response.render("add-student");
   }
 });
+  
+  
+});
 
-app.get("/view-student", (request, response) => {
+app.get("/view-student/:sid", (request, response) => {
+  var sid = request.params.sid;
+  
+  get_student(sid, function (data) {
+    if (data == -1) {
+    response.redirect("/");
+  } else {
+    response.render("view-student", {student: data});
+  }
+});
+  
+  
   response.render("view-student");
 });
 
@@ -178,13 +190,13 @@ function get_students() {
   });
 }
 
-function get_student(s_id) {
+function get_student(s_id, data) {
   db.all("SELECT * from students where s_id='" + s_id + "'", (err, rows) => {
     if (!err) {
-      return rows[0];
+      data(rows[0]);
     } else {
       console.log(err.message);
-      return -1;
+      data(-1);
     }
   });
 }
@@ -204,29 +216,20 @@ function add_student(data, status) {
     "INSERT INTO students (s_id, fname, lname, dob, address, house, allergy, gender, bl_grp, bl_typ, class, prior_health, prior_med, weight, height, date) VALUES " +
     query_vals;
 
-  var status = -1;
 
-  // function dpOP(cb) {
     db.serialize(() => {
     db.run(query, function(err) {
       if (err) {
         console.log(err.message);
-        cb(1);
+        status(1);
       } else {
         console.log(`A row has been inserted with rowid ${this.lastID}`);
-        cb(0);
+        status(0);
       }
       // get the last insert id
     });
   });
-    
-  // }
-
-  dpOP( function (status) {
-    console.log(wi
-});
-
-  return status;
+      
 }
 function update_student(data) {
   db.run(
