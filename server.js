@@ -140,9 +140,9 @@ app.post("/new-student", (request, response) => {
   
   add_student(params, function (status) {
     if (status == 0) {
-    response.redirect("/view-student/"+params.s_id);
+    return response.redirect("/view-student/"+params.s_id);
   } else {
-    response.render("add-student");
+    return response.render("add-student");
   }
 });
   
@@ -154,14 +154,13 @@ app.get("/view-student/:sid", (request, response) => {
   
   get_student(sid, function (data) {
     if (data == -1) {
-    response.redirect("/");
+    // response.redirect("/");
   } else {
-    response.render("view-student", {student: data});
+    console.log(data);
+    response.render('view-student', {student: data});
   }
 });
   
-  
-  response.render("view-student");
 });
 
 app.get("/add-complaint", (request, response) => {
@@ -194,9 +193,11 @@ function get_student(s_id, data) {
   db.all("SELECT * from students where s_id='" + s_id + "'", (err, rows) => {
     if (!err) {
       data(rows[0]);
+      return;
     } else {
       console.log(err.message);
       data(-1);
+      return;
     }
   });
 }
@@ -222,9 +223,11 @@ function add_student(data, status) {
       if (err) {
         console.log(err.message);
         status(1);
+        return;
       } else {
         console.log(`A row has been inserted with rowid ${this.lastID}`);
         status(0);
+        return;
       }
       // get the last insert id
     });
