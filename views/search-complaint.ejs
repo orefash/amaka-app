@@ -74,14 +74,26 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1678/99</td>
-                                            <td>B.Fernandes</td>
-                                            <td>SS 2</td>
-                                            <td>Male</td>
-                                            <td>Stomach Ache</td>
-                                            <td>02/10/2012</td>
+                                       
+                                      
+                                       <% complaints.forEach(function(s) { %>
+                                      <tr>
+                                            <td><%= s.s_id %></td>
+                                            <td><%= s.fname %> <%= s.lname %></td>
+                                            <td><%= s.class %></td>
+                                            <td><%= s.gender %></td>
+                                            <td><%= s.complaint %></td>
+                                            <td><%= s.date %></td>
+                                            <td>
+                                          
+                                          <a href="/view-student/<%= s.s_id %>" class="btn btn-sm btn-danger">
+                                            View Complaint
+                                            </a>
+                                        </td>
                                         </tr>
+                                      
+                                      
+                                      <% }); %>
                                       
                                       
                                         

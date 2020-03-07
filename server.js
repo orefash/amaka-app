@@ -221,7 +221,7 @@ app.post("/new-complaint", (request, response) => {
 
 app.get("/view-complaint/:c_id", (request, response) => {
   
-  var cid = request.params.cid;
+  var cid = request.params.c_id;
   
   get_complaint(cid, function (data) {
     if (data == -1) {
@@ -232,7 +232,7 @@ app.get("/view-complaint/:c_id", (request, response) => {
   }
 });
   
-  response.render("view-complaint");
+  // response.render("view-complaint");
 });
 
 app.get("/view-complaints/:s_id", (request, response) => {
@@ -402,7 +402,7 @@ function get_complaints(data) {
 
 function get_s_complaints(sid, data) {
   
-  db.all("SELECT * from std_complaints where s_id='"+sid+"'", (err, rows) => {
+  db.all("SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id where std_complaints.s_id='"+sid+"'", (err, rows) => {
    data(rows);
   });
   
@@ -410,7 +410,7 @@ function get_s_complaints(sid, data) {
 
 
 function get_complaint(c_id, data) {
-  db.all("SELECT * from std_complaints where c_id = " + c_id, (err, rows) => {
+  db.all("SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id where std_complaints.c_id = " + c_id, (err, rows) => {
     data(rows[0]);
   });
 };

@@ -61,16 +61,16 @@
                             <div class="card-header"><strong>Student Information</strong></div>
                             <div class="card-body card-block">
 
-                                <p class="">Admission No: 123/123/123</p>
+                                <p class="">Admission No: <%= complaint.s_id %></p>
 
-                                <p class="card-text">Name: Oreoluwa Faseru</p>
+                                <p class="card-text">Name: <%= complaint.fname %> <%= complaint.lname %></p>
                                 
-                                <p class="card-text">Class: SS 1</p>
+                                <p class="card-text">Class: <%= complaint.class %></p>
 
-                                <p class="card-text">Complaint: Complaint</p>
-                                <p class="card-text">Date Attended to: 20/12/3444</p>
-                                <p class="card-text">Nurse Feedback: </p>
-                                <p class="card-text">Treatment Administered: </p>
+                                <p class="card-text">Complaint: <%= complaint.complaint %></p>
+                                <p class="card-text">Date Attended to: <%= complaint.date %></p>
+                                <p class="card-text">Nurse Feedback: <%= complaint.feedback %></p>
+                                <p class="card-text">Treatment Administered: <%= complaint.treatment %></p>
                                 
                             </div>
                         </div>
@@ -81,10 +81,13 @@
                             <div class="card-header"><strong>Update Complaint Information</strong></div>
                             <div class="card-body card-block">
                                 
-                                
-                                <div class="form-group"><label for="feedback" class=" form-control-label">Nurse Feedback</label>
+                                <form>
+                                  
+                                  <div class="form-group"><label for="feedback" class=" form-control-label">Nurse Feedback</label>
                                     <textarea name="feedback" id="feedback" rows="6" placeholder="Enter Feedback" class="form-control"></textarea>
                                 </div>
+                                  
+                                  
                                 
                                 
                                 <div class="form-group"><label for="treatment" class=" form-control-label">Treatment Administered</label>
@@ -95,6 +98,9 @@
                                 
                                 <div class="form-actions form-group"><button type="submit" class="btn btn-success btn-sm">Save</button></div>
 
+                                  
+                              </form>
+                                
                             </div>
                         </div>
                     </div>
