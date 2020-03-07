@@ -223,18 +223,23 @@ function get_students() {
     var query =
       "INSERT INTO students (s_id, fname, lname, dob, address, house, allergy, gender, bl_grp, bl_typ, class, prior_health, prior_med, weight, height, date) VALUES " +
       query_vals;
+    
+    var status = -1;
+    
     db.serialize(() => {
       db.run(query, function(err) {
         if (err) {
           console.log(err.message);
-          return 1;
+          status = 1;
         } else {
           console.log(`A row has been inserted with rowid ${this.lastID}`);
-          return 0;
+          status = 0;
         }
         // get the last insert id
       });
     });
+    
+    return status;
   };
   function update_student(data) {
     db.run(
