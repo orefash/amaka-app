@@ -55,9 +55,9 @@ db.serialize(() => {
 //           );
 
 
-      //       db.run(
-      //       "DROP table nurses"
-      //     );
+//             db.run(
+//             "DROP table nurses"
+//           );
 
       //     db.run(
       //       "DROP table std_complaints"
@@ -70,8 +70,8 @@ db.serialize(() => {
       db.run(
         "CREATE TABLE IF NOT EXISTS  nurses (" +
           "nurse_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-          "fname varchar(30) NOT NULL," +
-          "lname varchar(30) NOT NULL," +
+          "nfname varchar(30) NOT NULL," +
+          "nlname varchar(30) NOT NULL," +
           "level varchar(30) NOT NULL," +
           "uname varchar(30) NOT NULL," +
           "upass varchar(30) NOT NULL" +
@@ -474,7 +474,7 @@ function add_complaint(data, status) {
 
 function get_complaints(data) {
   db.all(
-    "SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id",
+    "SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id JOIN nurses on nurses.nurse_id = std_complaints.nurse_id",
     (err, rows) => {
       data(rows);
     }
@@ -483,7 +483,7 @@ function get_complaints(data) {
 
 function get_s_complaints(sid, data) {
   db.all(
-    "SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id where std_complaints.s_id='" +
+    "SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id JOIN nurses on nurses.nurse_id = std_complaints.nurse_id where std_complaints.s_id='" +
       sid +
       "'",
     (err, rows) => {
@@ -494,7 +494,7 @@ function get_s_complaints(sid, data) {
 
 function get_complaint(c_id, data) {
   db.all(
-    "SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id where std_complaints.c_id = " +
+    "SELECT * from std_complaints JOIN students on students.s_id = std_complaints.s_id JOIN nurses on nurses.nurse_id = std_complaints.nurse_id where std_complaints.c_id = " +
       c_id,
     (err, rows) => {
       data(rows[0]);
