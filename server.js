@@ -192,8 +192,12 @@ app.post("/update-student", (request, response) => {
 });
 
 
-app.get("/add-complaint", (request, response) => {
-  response.render("add-complaint");
+app.get("/add-complaint/:s_id/:fname/:lname", (request, response) => {
+  var sid = request.params.sid;
+  var fname = request.params.fname;
+  var lname = request.params.lname;
+  
+  response.render("add-complaint", {sid: sid, fname: fname, lname: lname});
 });
 
 app.get("/view-complaint/:c_id", (request, response) => {
