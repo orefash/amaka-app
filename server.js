@@ -1942,7 +1942,7 @@ app.get("/cgatey", function(req, res) {
   // let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
   // console.log(cdate);
 
-    db.all("SELECT * from userorders ", (err, rows) => {
+    db.all("SELECT * from order_items ", (err, rows) => {
       console.log("in test - -  row", rows);
 
       res.send(JSON.stringify(rows));

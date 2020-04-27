@@ -52,8 +52,9 @@
 
           <p class="text-dark">
             <b>
-              Cart Total: N <%= total %> <br /><br />
-              Delivery Fee: <%= district %> <br />
+              Cart Total: N <%= total %> <br />
+              Discount: -N <%= discount %> <br /><br />
+              Delivery Fee: <%= delivery %> <br />
               Total Due: <%= ctotal %>
             </b>
           </p>
@@ -61,6 +62,7 @@
           <p class="mt-2">
             Customer Name: <%= nm %> <br />
             Delivery Time: <%= slot %> <br />
+            Delivery District: <%= district %> <br />
             Delivery Address: <%= address %> <br />
             Transaction ID/Ref: <%= orderid %>
           </p>
