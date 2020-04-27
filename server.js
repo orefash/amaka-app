@@ -1938,24 +1938,24 @@ app.get("/updateQuantity", (request, response) => {
 app.get("/cgatey", function(req, res) {
   console.log("In test");
 
-  const now = new Date();
-  let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
-  console.log(cdate);
+  // const now = new Date();
+  // let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
+  // console.log(cdate);
 
-  //   db.all("SELECT * from userorders ", (err, rows) => {
-  //     console.log("in test - -  row", rows);
+    db.all("SELECT * from userorders ", (err, rows) => {
+      console.log("in test - -  row", rows);
 
-  //     res.send(JSON.stringify(rows));
-  //   });
+      res.send(JSON.stringify(rows));
+    });
 });
 
 // endpoint to get all the dreams in the database
 app.get("/updateTable", (request, response) => {
   db.serialize(() => {
-    // db.run("ALTER TABLE userorders ADD tstatus INTEGER");
-    // db.run("ALTER TABLE userorders ADD itotal decimal(10,2)");
-    // db.run("ALTER TABLE userorders ADD discount decimal(10,2)");
-    // db.run("ALTER TABLE userorders ADD odetails text");
+    db.run("ALTER TABLE userorders ADD tstatus INTEGER");
+    db.run("ALTER TABLE userorders ADD itotal decimal(10,2)");
+    db.run("ALTER TABLE userorders ADD discount decimal(10,2)");
+    db.run("ALTER TABLE userorders ADD odetails text");
     db.run("ALTER TABLE userorders ADD delivery decimal(10,2)");
   });
 
