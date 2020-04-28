@@ -38,10 +38,10 @@ module.exports = {
     sum: function(a,b) {
         return a+b
     },
-    send_mail: function(mail_params) {
+    send_mail: function(mail_params, rec) {
         mailer.sendMail({
             from: 'kingfash5@gmail.com',
-            to: mail_params.cmail,
+            to: rec,
             subject: mail_params.subject,
             template: mail_params.template, //Name email file template
             context: mail_params

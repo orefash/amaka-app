@@ -687,17 +687,17 @@ function sendConfirmMails(request_response, init_oid) {
 
         console.log("Mail Params: %j", params);
 
-        mailer.send_mail(params);
+        mailer.send_mail(params, request_response.email);
 
         params.template = "order";
         params.subject = "New Product Order - " + init_oid;
-        params.cmail = "kingfash5@gmail.com";
+        // params.cmail = "kingfash5@gmail.com";
         // params.cmail = "chopnownoworders@gmail.com";
 
-        mailer.send_mail(params);
+        mailer.send_mail(params, "kingfash5@gmail.com");
 
-        params.cmail = "chopnownoworders@gmail.com";
-        mailer.send_mail(params);
+        // params.cmail = "chopnownoworders@gmail.com";
+        mailer.send_mail(params, "chopnownoworders@gmail.com");
 
         console.log("mails sent");
       } else {
