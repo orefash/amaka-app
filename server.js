@@ -781,22 +781,19 @@ app.post("/check-coupon", (req, response) => {
   let pobj = {
     coupon: coupon,
     transaction_id: oid,
-    amount: amount
+    total_due: parseInt(amount)
   };
 
   var url_st = "https://chopxpress.com/sandbox/api/fb-bot/validate-coupon";
   
-  const querystring = require('querystring');
 
   let options = {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: url_st,
     // method: "POST",
-    // json: true,
+    json: true,
     body: pobj
   };
   
-  options = querystring.stringify(options);
   
   console.log("Options: "+options);
   
