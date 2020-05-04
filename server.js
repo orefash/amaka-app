@@ -1924,7 +1924,7 @@ app.get("/showCart", (request, response) => {
               buttons: [
                 {
                   type: "web_url",
-                  url: "https://amaka-server.glitch.me/show-form/" + oid,
+                  url: "https://amaka-server.glitch.me/sf/" + oid,
                   title: "Checkout",
                   messenger_extensions: true,
                   webview_height_ratio: "tall"
