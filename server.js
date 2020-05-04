@@ -623,6 +623,10 @@ app.post("/ps-mail", function(req, res) {
         uid: row.chat_id,
         slot: row.slot,
         district: row.delivery_district,
+            disc: row.discount,
+            itotal: row.itotal,
+            delivery: row.delivery,
+            tprice: row.total_price,
         c_amt: formatNaira(amount / 100)
       };
 
