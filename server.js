@@ -175,6 +175,8 @@ app.get("/mailing", (request, response) => {
 app.get("/receipt", (request, response) => {
   var oid = request.query.oid;
   // var oid = "20200118173554";
+  
+  console.log("Item rec");
 
   var district = "";
 
@@ -190,7 +192,7 @@ app.get("/receipt", (request, response) => {
     db.each(
       "SELECT * from userorders where order_id='" + oid + "'",
       (err, row) => {
-        // console.log("row", row);
+        console.log("row", row);
         address = row.address;
         cname = row.fname + " " + row.lname;
         phone = row.phone;
@@ -231,7 +233,7 @@ app.get("/receipt", (request, response) => {
                   payload: {
                     template_type: "receipt",
                     recipient_name: cname,
-                    merchant_name: "ChopNowNow",
+                    merchant_name: "Chopnownow",
                     order_number: oid,
                     currency: "NGN",
                     payment_method: "Online Payment",
@@ -242,7 +244,7 @@ app.get("/receipt", (request, response) => {
                     address: {
                       street_1: address,
                       street_2: "",
-                      city: ", " + district.split("+")[0].toLowerCase(),
+                      city: ", " + district,
                       postal_code: "0000",
                       state: "Lagos",
                       country: "Nigeria"
