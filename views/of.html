@@ -210,9 +210,12 @@
         
         console.log("total: ",itotal);
         var tamt = itotal.split("N")[1];
-        document.getElementById('itotal').value = tamt.replace(',','').trim();
-        console.log("Ittotal: ", document.getElementById('itotal').value);
-        console.log(tamt);
+        console.log("TAnt: ", tamt);
+        tamt = tamt.replace(',','').trim();
+        
+        document.getElementById('itotal').value = tamt;
+        // console.log("Ittotal: ", document.getElementById('itotal').value);
+        // console.log(tamt);
         
         var fr = "";
       
