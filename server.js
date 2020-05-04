@@ -1061,6 +1061,8 @@ app.post("/paym", (request, response) => {
           // var ctotal = total_p + districts[district];
           var ctotal =
             parseInt(itotal) + parseInt(dcharge) - parseInt(discount);
+          
+          console.log("paym CTotal: ",ctotal);
 
           var query =
             "update userorders set time_slot = '" +

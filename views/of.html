@@ -210,8 +210,8 @@
         
         console.log("total: ",itotal);
         var tamt = itotal.split("N")[1];
-        document.getElementById('itotal').value = tamt.trim();
-        
+        document.getElementById('itotal').value = tamt.replace(',','').trim();
+        console.log("Ittotal: ", document.getElementById('itotal').value);
         console.log(tamt);
         
         var fr = "";
@@ -243,7 +243,7 @@
           });
         } else {
           console.log("no COupon");
-          document.getElementById('form').submit();
+          // document.getElementById('form').submit();
         }
         
         
