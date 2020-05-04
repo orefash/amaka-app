@@ -20,7 +20,7 @@
         >
           <div class="clearfix ">
             <img
-              style="float:left, width:80%"
+              style="float:left; width:80%"
               src="https://cdn.glitch.com/11cdb0eb-be82-41ef-820d-46c73f500ac1%2Fchoplogo.png?v=1579883798548"
             />
           </div>
@@ -151,6 +151,9 @@
               Confirm Order
             </button>
           </div>
+            
+            
+          
       </div>
     </div>
 
@@ -223,12 +226,20 @@
           
           console.log(cdata);
 
-          $.post("/check-coupon", cdata, function(data, status) {
-            console.log("Data: ",JSON.parse(data).disc);
+          $.post("/cc", cdata, function(data, status) {
+            console.log("Data: ",data.disc);
+
+            var disc = data.disc;
+            if(disc<0){
+              alert("Invalid Coupon Code");
+              document.getElementById('vcoupon').value = "";
+            }else{
+              document.getElementById('dvalue').value = disc;
+              console.log(document.getElementById('dvalue').value);
+              document.getElementById('form').submit();
+            }
             
-            document.getElementById('dvalue').value = JSON.parse(data).disc;
-            console.log(document.getElementById('dvalue').value);
-            document.getElementById('form').submit();
+            
           });
         } else {
           console.log("no COupon");
@@ -242,7 +253,11 @@
     </script>
             
             <script>
-              
+
+
+
+
+
               
             
             

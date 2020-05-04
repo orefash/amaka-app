@@ -33,6 +33,7 @@ var m_security = require("./security.js");
 const { fetch_loc } = require("./fetch.js");
 
 //Interswitch params
+
 const mac = process.env.INTERSWITCH_KEY_DEMO;
 
 const prodid = process.env.PRODID_DEMO;
@@ -42,7 +43,7 @@ const qurl = process.env.QURL_DEMO;
 const ps_key = process.env.PAYSTACK_KEY;
 // const ps_key= process.env.CHOP_PAYSTACK_KEY;
 
-//Interswitch params end
+//Pay params end
 
 const fs = require("fs");
 
@@ -396,6 +397,12 @@ app.post("/confirm", function(req, res) {
             uid: row.chat_id,
             slot: row.slot,
             district: row.delivery_district,
+            disc: row.discount,
+            itotal: row.itotal,
+            delivery: row.delivery,
+            tprice: row.total_price,
+
+
 
             qurl: qurl,
             prodid: prodid,
@@ -460,7 +467,11 @@ app.get("/cgate-callback", function(req, res) {
             slot: row.slot,
             amt: amt,
             oid: oid,
-            district: row.delivery_district
+            district: row.delivery_district,
+            disc: row.discount,
+            itotal: row.itotal,
+            delivery: row.delivery,
+            tprice: row.total_price
           };
 
           sendConfirmMails(request_response, oid);
@@ -670,6 +681,13 @@ function sendConfirmMails(request_response, init_oid) {
           "ddd, MMM DD YYYY HH:mm:ss"
         );
 
+
+        // district: row.delivery_district,
+        // disc: row.discount,
+        // itotal: row.itotal,
+        // delivery: row.delivery,
+        // tprice: row.total_price,
+
         var params = {
           subject: "ChopNowNow Order Successful",
           template: "customer",
@@ -680,6 +698,10 @@ function sendConfirmMails(request_response, init_oid) {
           phone: request_response.phone,
           cmail: request_response.email,
           c_amt: request_response.c_amt,
+          district: request_response.district,
+          disc: request_response.disc,
+          delivery: request_response.delivery,
+
           oid: init_oid,
           cdate: cdate,
           slot: request_response.slot
@@ -687,7 +709,8 @@ function sendConfirmMails(request_response, init_oid) {
 
         console.log("Mail Params: %j", params);
 
-        mailer.send_mail(params, request_response.email);
+        // mailer.send_mail(params, request_response.email);
+        mailer.send_mail(params, "orefash@gmail.com");
 
         params.template = "order";
         params.subject = "New Product Order - " + init_oid;
@@ -697,9 +720,10 @@ function sendConfirmMails(request_response, init_oid) {
         mailer.send_mail(params, "kingfash5@gmail.com");
 
         // params.cmail = "chopnownoworders@gmail.com";
-        mailer.send_mail(params, "chopnownoworders@gmail.com");
+        // mailer.send_mail(params, "chopnownoworders@gmail.com");
 
         console.log("mails sent");
+        
       } else {
       }
     }
@@ -770,62 +794,83 @@ var districts = {
   "VICTORIA ISLAND": 0
 };
 
-
-app.post("/check-coupon", (req, response) => {
+app.post("/cc", (req, response) => {
   var coupon = req.body.coupon;
   var amount = req.body.amount;
   var oid = req.body.transaction_id;
 
   console.log("coupon: " + coupon + " amount: " + amount);
 
-  let pobj = {
-    coupon: coupon,
-    transaction_id: oid,
-    total_due: parseInt(amount)
-  };
 
   var url_st = "https://chopxpress.com/sandbox/api/fb-bot/validate-coupon";
-  
 
-  let options = {
-    url: url_st,
-    // method: "POST",
-    json: true,
-    body: pobj
-  };
   
-  
-  console.log("Options: "+options);
-  
-  request.post(options, function(error, res, body){
-  // console.log(body);
-    
-    console.log("Coupon: ", body);
+  request.post(url_st,
+    {
+      body:{
+        coupon: coupon,
+        transaction_id: oid,
+        total_due: amount
+      },
+      json:true,
+    }, function(err, res, body){
+      if(err)
+        response.json({error: err});
+      else{
+        console.log("in coupon fetch resp: ",body);
 
-    let namt = parseInt(amount) - 50;
-    
-    let disc = parseInt(amount) - namt;
-    
-    let robj = { disc: disc};
-    
-    console.log("in coupon fetch: ",robj)
-    
-    response.send(JSON.stringify(robj));
+
+        let disc =  -1;
+        if(body.code == '01'){
+          console.log("Error resp");
+        
+
+        }else if(body.code == '00'){
+          
+          console.log("succ resp");
+
+          disc = parseInt(amount) - parseInt(body.amount_due);
+      
+        }      
+          
+        let robj = { disc: disc};
+          
+        console.log("in coupon fetch: ",robj);
+
+        
+        response.json(robj);
+      }
+
+      
+      
+    }
+  )
+
+
+
+
 });
 
-//   requestPromise(options).then(function(data) {
-//     console.log("Coupon: ", data);
+app.get("/cmm", (req, response) => {
+  
+  var url_st = "https://chopxpress.com/sandbox/api/fb-bot/validate-coupon";
 
-//     let namt = parseInt(amount) - 50;
-    
-//     let disc = parseInt(amount) - namt;
-    
-//     let robj = { disc: disc};
-    
-//     console.log("in coupon fetch: ",robj)
-    
-//     response.send(JSON.stringify(robj));
-//   });
+  
+  request.post(url_st,
+    {
+      body:{
+        coupon: "CHOPRST",
+        transaction_id: "huihi7",
+        total_due: 4000
+      },
+      json:true,
+    }, function(err, res, body){
+      if(err)
+        response.json({error: err});
+      response.json({d:body});
+    }
+  )
+
 });
 
 app.get("/sf/:oid", (req, response) => {
@@ -902,11 +947,11 @@ app.get("/sf/:oid", (req, response) => {
                 del = ds;
 
                 // console.log("dis del: ", del);
-                
-                for(var key in del){
-                  del[key] = key +":"+del[key];
-                };                
-                
+
+                for (var key in del) {
+                  del[key] = key + ":" + del[key];
+                }
+
                 // console.log("describe del: ", del);
 
                 response.render("of.html", {
@@ -947,11 +992,22 @@ app.post("/paym", (request, response) => {
   var payment = request.body.payment;
   var discount = request.body.discount;
   var itotal = request.body.itotal;
-  
+
+  console.log("District: "+ district);
+
   var dcharge = parseInt(district.split(":")[1]);
   district = district.split(":")[0];
-  
-  console.log("District: "+district+" charge: "+dcharge+" discount: "+discount+" itotal: "+itotal);
+
+  console.log(
+    "District: " +
+      district +
+      " charge: " +
+      dcharge +
+      " discount: " +
+      discount +
+      " itotal: " +
+      itotal
+  );
 
   var address = "";
   var cname = "";
@@ -1000,9 +1056,9 @@ app.post("/paym", (request, response) => {
           // total_p+= districts[district];
           console.log("District: " + district);
 
-          
           // var ctotal = total_p + districts[district];
-          var ctotal = parseInt(itotal)+parseInt(dcharge)-parseInt(discount);
+          var ctotal =
+            parseInt(itotal) + parseInt(dcharge) - parseInt(discount);
 
           var query =
             "update userorders set time_slot = '" +
@@ -1021,7 +1077,7 @@ app.post("/paym", (request, response) => {
             info +
             "'  where order_id=" +
             oid;
-          
+
           console.log("Udpdate query: ", query);
 
           // db.serialize(() => {
@@ -1036,7 +1092,7 @@ app.post("/paym", (request, response) => {
           console.log("AMTT: ", amtt);
           var amount = +(Math.round(amtt + "e+2") + "e-2");
           console.log("AMOUNT: ", amount);
-          
+
           var site_redirect_url =
             "https://amaka-server.glitch.me/confirm?oid=" + oid;
 
@@ -1072,7 +1128,7 @@ app.post("/paym", (request, response) => {
             uid: uid
           };
 
-          // console.log("PAY DATA: ", resp_data);
+          console.log("PAY DATA: ", resp_data);
 
           response.render("confirm.html", resp_data);
         }
@@ -1080,9 +1136,7 @@ app.post("/paym", (request, response) => {
     );
   });
 
-  // response.render("confirm.html");
 });
-
 
 app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
   var chat_bot_id = process.env.CB_ID;
@@ -1935,24 +1989,24 @@ app.get("/updateQuantity", (request, response) => {
 app.get("/cgatey", function(req, res) {
   console.log("In test");
 
-  // const now = new Date();
-  // let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
-  // console.log(cdate);
+  const now = new Date();
+  let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
+  console.log(cdate);
 
-    db.all("SELECT * from order_items ", (err, rows) => {
-      console.log("in test - -  row", rows);
+  //   db.all("SELECT * from userorders ", (err, rows) => {
+  //     console.log("in test - -  row", rows);
 
-      res.send(JSON.stringify(rows));
-    });
+  //     res.send(JSON.stringify(rows));
+  //   });
 });
 
 // endpoint to get all the dreams in the database
 app.get("/updateTable", (request, response) => {
   db.serialize(() => {
-    db.run("ALTER TABLE userorders ADD tstatus INTEGER");
-    db.run("ALTER TABLE userorders ADD itotal decimal(10,2)");
-    db.run("ALTER TABLE userorders ADD discount decimal(10,2)");
-    db.run("ALTER TABLE userorders ADD odetails text");
+    // db.run("ALTER TABLE userorders ADD tstatus INTEGER");
+    // db.run("ALTER TABLE userorders ADD itotal decimal(10,2)");
+    // db.run("ALTER TABLE userorders ADD discount decimal(10,2)");
+    // db.run("ALTER TABLE userorders ADD odetails text");
     db.run("ALTER TABLE userorders ADD delivery decimal(10,2)");
   });
 
@@ -1972,6 +2026,7 @@ app.get("/formatable", (request, response) => {
 const cleanseString = function(string) {
   return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 };
+
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, () => {
