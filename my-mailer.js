@@ -11,12 +11,11 @@ var auth = {
 
 var mailer = nodemailer.createTransport({
     service: 'gmail',  // More at https://nodemailer.com/smtp/well-known/#supported-services
-    // secure: false,//true
-    // port: 25,//465
-    auth: auth
-  // tls: {
-  //   rejectUnauthorized: false
-  // }
+    // auth: auth
+  auth: {
+        user: 'amakabot@gmail.com',
+        pass: 'Godsno1son@123'
+    }
 });
 
 const handlebarOptions = {

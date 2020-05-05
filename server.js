@@ -166,7 +166,7 @@ app.get("/mailing", (request, response) => {
     cmail: "orefash@gmail.com",
     template: "customer"
   };
-  mailer.send_mail(params);
+  mailer.send_mail(params, params.cmail);
   // console.log("Value: "+value);
 
   response.send(JSON.stringify("DOne"));
@@ -726,7 +726,7 @@ function sendConfirmMails(request_response, init_oid) {
         mailer.send_mail(params, "kingfash5@gmail.com");
 
         // params.cmail = "chopnownoworders@gmail.com";
-        mailer.send_mail(params, "chopnownoworders@gmail.com
+        mailer.send_mail(params, "chopnownoworders@gmail.com");
 
         console.log("mails sent");
         
