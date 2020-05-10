@@ -695,7 +695,7 @@ function sendConfirmMails(request_response, init_oid) {
         // tprice: row.total_price,
 
         var params = {
-          subject: "ChopNowNow Order Successful",
+          subject: "Chopnownow Order Successful",
           template: "customer",
           items: elements,
           item_total: total_p,
