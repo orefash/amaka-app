@@ -39,7 +39,7 @@ module.exports = {
     },
     send_mail: function(mail_params, rec) {
         mailer.sendMail({
-            from: 'Chopnownow <noreply@chopnownow.com>',
+            from: 'Chopnownow <no-reply@chopnownow.com>',
             to: rec,
             subject: mail_params.subject,
             template: mail_params.template, //Name email file template
