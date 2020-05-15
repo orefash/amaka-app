@@ -158,6 +158,10 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/confirm.html");
 });
 
+app.get("/push-notifications", (request, response) => {
+  response.sendFile(__dirname + "/views/push.html");
+});
+
 // endpoint to get all the dreams in the database
 app.get("/mailing", (request, response) => {
   var params = {
