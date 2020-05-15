@@ -165,8 +165,12 @@ app.get("/push-notifications", (request, response) => {
 
 function get_uid(){
   
+    db.all("SELECT * from userorders ", (err, rows) => {
+      console.log("in test - -  row", rows);
+
+    });
   
-}
+  }
 
 
 app.post("/n-broadcast", (request, response) => {
