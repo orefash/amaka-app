@@ -163,11 +163,13 @@ app.get("/push-notifications", (request, response) => {
 });
 
 
-function get_uid(callback){
+function get_uid(){
+  var chat_bot_id = process.env.CB_ID;
+  var chat_token = process.env.CB_TOKEN;
   
     db.all("SELECT DISTINCT chat_id FROM userorders where chat_id != 'undefined' ", (err, rows) => {
       // console.log("in test - -  row", rows);
-      return callback(rows);
+      // return callback(rows);
     });
   }
 
@@ -175,9 +177,11 @@ function get_uid(callback){
 function broadcast_n(){
   console.log("in fun");
   
-  get_uid( function(response){
-    console.log(response);
-  });
+  get_uid();
+  
+  // get_uid(function(response){
+  //   console.log(response);
+  // });
   
 }
 
