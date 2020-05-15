@@ -163,15 +163,27 @@ app.get("/push-notifications", (request, response) => {
 });
 
 
-function get_uid(){
+function get_uid(callback){
   
-    db.all("SELECT * from userorders ", (err, rows) => {
+    db.all("SELECT DISTINCT chat_id FROM userorders ", (err, rows) => {
       console.log("in test - -  row", rows);
-
+      return callback(rows);
     });
   
   }
 
+
+function broadcast_n(){
+  
+  console.log(get_uid());
+}
+
+
+// endpoint to get all the dreams in the database
+app.get("/testingr", (request, response) => {
+  broadcast_n();
+  response.send(JSON.stringify("DOne"));
+});
 
 app.post("/n-broadcast", (request, response) => {
   var chat_bot_id = process.env.CB_ID;
