@@ -1174,78 +1174,78 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
 
 function checkTStatus(oid, res) {}
 
-app.get("/show-form/:oid", (request, response) => {
-  response.setHeader("Access-Control-Allow-Origin", "*");
+// app.get("/show-form/:oid", (request, response) => {
+//   response.setHeader("Access-Control-Allow-Origin", "*");
 
-  var oid = request.params.oid;
+//   var oid = request.params.oid;
 
-  let query = "SELECT * from userorders where order_id='" + oid + "'";
+//   let query = "SELECT * from userorders where order_id='" + oid + "'";
 
-  // console.log("Select q: ", query);
+//   // console.log("Select q: ", query);
 
-  db.all(query, (err, rows) => {
-    console.log("in redirect - -  row", rows);
-    var row = rows[0];
+//   db.all(query, (err, rows) => {
+//     console.log("in redirect - -  row", rows);
+//     var row = rows[0];
 
-    if (row.tstatus == 1) {
-      let request_response = {
-        address: row.address,
-        cname: row.fname + " " + row.lname,
-        phone: row.phone,
-        email: row.email,
-        uid: row.chat_id,
-        slot: row.slot,
-        amt: row.total_price,
-        oid: oid
-      };
+//     if (row.tstatus == 1) {
+//       let request_response = {
+//         address: row.address,
+//         cname: row.fname + " " + row.lname,
+//         phone: row.phone,
+//         email: row.email,
+//         uid: row.chat_id,
+//         slot: row.slot,
+//         amt: row.total_price,
+//         oid: oid
+//       };
 
-      response.render("cpay.html", request_response);
-    } else {
-      var elements = [];
-      var total_p = 0;
+//       response.render("cpay.html", request_response);
+//     } else {
+//       var elements = [];
+//       var total_p = 0;
 
-      db.all(
-        "SELECT * from order_items where order_id='" +
-          oid +
-          "' AND quantity > 0",
-        (err, rows) => {
-          console.log("Row ln: " + rows.length);
-          if (rows.length > 0) {
-            rows.forEach(row => {
-              var price = row.price;
-              var quantity = row.quantity;
-              var t_price = price * quantity;
+//       db.all(
+//         "SELECT * from order_items where order_id='" +
+//           oid +
+//           "' AND quantity > 0",
+//         (err, rows) => {
+//           console.log("Row ln: " + rows.length);
+//           if (rows.length > 0) {
+//             rows.forEach(row => {
+//               var price = row.price;
+//               var quantity = row.quantity;
+//               var t_price = price * quantity;
 
-              total_p += t_price;
-              row.price = formatNaira(price);
-              elements.push(row);
-            });
-            total_p = formatNaira(total_p);
+//               total_p += t_price;
+//               row.price = formatNaira(price);
+//               elements.push(row);
+//             });
+//             total_p = formatNaira(total_p);
 
-            var timeslot = getTimeSlots();
+//             var timeslot = getTimeSlots();
 
-            response.render("order-form.html", {
-              items: elements,
-              total: total_p,
-              districts: districts,
-              timeslots: timeslot,
-              orderid: oid
-            });
-          } else {
-            response.json({
-              messages: [
-                {
-                  text: "There are no items in your cart"
-                }
-              ],
-              redirect_to_blocks: ["order-opt"]
-            });
-          }
-        }
-      );
-    }
-  });
-});
+//             response.render("order-form.html", {
+//               items: elements,
+//               total: total_p,
+//               districts: districts,
+//               timeslots: timeslot,
+//               orderid: oid
+//             });
+//           } else {
+//             response.json({
+//               messages: [
+//                 {
+//                   text: "There are no items in your cart"
+//                 }
+//               ],
+//               redirect_to_blocks: ["order-opt"]
+//             });
+//           }
+//         }
+//       );
+//     }
+//   });
+// });
 
 function formatNaira(num) {
   var p = num.toFixed(2).split(".");
@@ -1263,138 +1263,138 @@ function formatNaira(num) {
   );
 }
 
-app.post("/payment", (request, response) => {
-  var oid = request.body.oid;
-  // var oid = "20200118173554";
+// app.post("/payment", (request, response) => {
+//   var oid = request.body.oid;
+//   // var oid = "20200118173554";
 
-  console.log("From confirm: ", request.body);
+//   console.log("From confirm: ", request.body);
 
-  var slot = request.body.slot;
-  var coupon = request.body.coupon;
-  var district = request.body.district;
-  var info = request.body.info;
-  var payment = request.body.payment;
+//   var slot = request.body.slot;
+//   var coupon = request.body.coupon;
+//   var district = request.body.district;
+//   var info = request.body.info;
+//   var payment = request.body.payment;
 
-  var address = "";
-  var cname = "";
-  var phone = "";
-  var email = "";
-  var pay_ref = "";
-  var uid = "";
+//   var address = "";
+//   var cname = "";
+//   var phone = "";
+//   var email = "";
+//   var pay_ref = "";
+//   var uid = "";
 
-  var elements = [];
-  var total_p = 0;
+//   var elements = [];
+//   var total_p = 0;
 
-  db.serialize(() => {
-    db.each(
-      "SELECT * from userorders where order_id='" + oid + "'",
-      (err, row) => {
-        console.log("row", row);
-        address = row.address;
-        cname = row.fname + " " + row.lname;
-        phone = row.phone;
-        email = row.email;
-        pay_ref = row.pay_ref;
-        uid = row.chat_id;
-      }
-    );
+//   db.serialize(() => {
+//     db.each(
+//       "SELECT * from userorders where order_id='" + oid + "'",
+//       (err, row) => {
+//         console.log("row", row);
+//         address = row.address;
+//         cname = row.fname + " " + row.lname;
+//         phone = row.phone;
+//         email = row.email;
+//         pay_ref = row.pay_ref;
+//         uid = row.chat_id;
+//       }
+//     );
 
-    db.all(
-      "SELECT * from order_items where order_id='" + oid + "' AND quantity > 0",
-      (err, rows) => {
-        console.log("Row ln: " + rows.length);
-        if (rows.length > 0) {
-          rows.forEach(row => {
-            var price = row.price;
-            var t_price = price * row.quantity;
+//     db.all(
+//       "SELECT * from order_items where order_id='" + oid + "' AND quantity > 0",
+//       (err, rows) => {
+//         console.log("Row ln: " + rows.length);
+//         if (rows.length > 0) {
+//           rows.forEach(row => {
+//             var price = row.price;
+//             var t_price = price * row.quantity;
 
-            total_p += t_price;
-            row.price = formatNaira(price);
-            var item =
-              formatNaira(price) +
-              " * " +
-              row.quantity +
-              ": " +
-              formatNaira(t_price);
+//             total_p += t_price;
+//             row.price = formatNaira(price);
+//             var item =
+//               formatNaira(price) +
+//               " * " +
+//               row.quantity +
+//               ": " +
+//               formatNaira(t_price);
 
-            elements.push([row.title, item]);
-          });
-          // total_p+= districts[district];
-          console.log("District: " + district);
+//             elements.push([row.title, item]);
+//           });
+//           // total_p+= districts[district];
+//           console.log("District: " + district);
 
-          var ctotal = total_p + districts[district];
+//           var ctotal = total_p + districts[district];
 
-          var query =
-            "update userorders set time_slot = '" +
-            slot +
-            "', total_price = " +
-            ctotal +
-            ", delivery_district = '" +
-            district +
-            "', order_info = '" +
-            info +
-            "'  where order_id=" +
-            oid;
+//           var query =
+//             "update userorders set time_slot = '" +
+//             slot +
+//             "', total_price = " +
+//             ctotal +
+//             ", delivery_district = '" +
+//             district +
+//             "', order_info = '" +
+//             info +
+//             "'  where order_id=" +
+//             oid;
 
-          // db.serialize(() => {
-          db.run(query, function(err) {
-            if (err) {
-              console.log("Update userorder Error: ", err);
-            }
-          });
+//           // db.serialize(() => {
+//           db.run(query, function(err) {
+//             if (err) {
+//               console.log("Update userorder Error: ", err);
+//             }
+//           });
 
-          var amtt = +(Math.round(ctotal + "e+2") + "e-2") * 100;
+//           var amtt = +(Math.round(ctotal + "e+2") + "e-2") * 100;
 
-          console.log("AMTT: ", amtt);
-          var amount = +(Math.round(amtt + "e+2") + "e-2");
-          console.log("AMOUNT: ", amount);
-          // var user_nm = "User";
-          // var item_b = req.body.item;
+//           console.log("AMTT: ", amtt);
+//           var amount = +(Math.round(amtt + "e+2") + "e-2");
+//           console.log("AMOUNT: ", amount);
+//           // var user_nm = "User";
+//           // var item_b = req.body.item;
 
-          // redirect url from webpay
-          var site_redirect_url =
-            "https://amaka-server.glitch.me/confirm?oid=" + oid;
+//           // redirect url from webpay
+//           var site_redirect_url =
+//             "https://amaka-server.glitch.me/confirm?oid=" + oid;
 
-          // hash value computation
-          var hashv =
-            pay_ref + prodid + "101" + amount + site_redirect_url + mac;
-          var hash = sha512(hashv);
+//           // hash value computation
+//           var hashv =
+//             pay_ref + prodid + "101" + amount + site_redirect_url + mac;
+//           var hash = sha512(hashv);
 
-          ctotal = formatNaira(ctotal);
-          total_p = formatNaira(total_p);
+//           ctotal = formatNaira(ctotal);
+//           total_p = formatNaira(total_p);
 
-          var resp_data = {
-            amt: amount,
-            hash: hash,
-            nm: cname,
-            address: address,
-            phone: phone,
-            email: email,
-            url: site_redirect_url,
-            prodid: prodid,
-            qurl: qurl,
-            items: elements,
-            total: total_p,
-            district: district.replace("+", ""),
-            slot: slot,
-            orderid: oid,
-            ctotal: ctotal,
-            pay_ref: pay_ref,
-            ps_key: ps_key,
-            ptype: payment,
-            uid: uid
-          };
+//           var resp_data = {
+//             amt: amount,
+//             hash: hash,
+//             nm: cname,
+//             address: address,
+//             phone: phone,
+//             email: email,
+//             url: site_redirect_url,
+//             prodid: prodid,
+//             qurl: qurl,
+//             items: elements,
+//             total: total_p,
+//             district: district.replace("+", ""),
+//             slot: slot,
+//             orderid: oid,
+//             ctotal: ctotal,
+//             pay_ref: pay_ref,
+//             ps_key: ps_key,
+//             ptype: payment,
+//             uid: uid
+//           };
 
-          // console.log("PAY DATA: ", resp_data);
+//           // console.log("PAY DATA: ", resp_data);
 
-          response.render("confirm.html", resp_data);
-        }
-      }
-    );
-  });
+//           response.render("confirm.html", resp_data);
+//         }
+//       }
+//     );
+//   });
 
-  // response.render("confirm.html");
-});
+//   // response.render("confirm.html");
+// });
 
 app.get("/get-order", (request, response) => {
   response.sendFile(__dirname + "/view/order-form.html");
@@ -2015,7 +2015,11 @@ app.get("/updateTable", (request, response) => {
     // db.run("ALTER TABLE userorders ADD itotal decimal(10,2)");
     // db.run("ALTER TABLE userorders ADD discount decimal(10,2)");
     // db.run("ALTER TABLE userorders ADD odetails text");
-    db.run("ALTER TABLE userorders ADD delivery decimal(10,2)");
+    // db.run("ALTER TABLE userorders ADD delivery decimal(10,2)");
+    
+    
+    db.run("ALTER TABLE userorders ADD pay_choice text");
+    
   });
 
   response.send(JSON.stringify("DOne"));
