@@ -166,15 +166,14 @@ app.get("/push-notifications", (request, response) => {
 function get_uid(callback){
   
     db.all("SELECT DISTINCT chat_id FROM userorders ", (err, rows) => {
-      console.log("in test - -  row", rows);
-      return callback(rows);
+      // console.log("in test - -  row", rows);
+      return rows;
     });
-  
   }
 
 
 function broadcast_n(){
-  
+  console.log("in fun");
   console.log(get_uid());
 }
 
