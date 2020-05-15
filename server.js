@@ -163,6 +163,35 @@ app.get("/push-notifications", (request, response) => {
 });
 
 
+function send_msgs(cid){
+  
+  var chat_bot_id = process.env.CB_ID;
+  var chat_token = process.env.CB_TOKEN;
+  var user_id = request.params.uid;
+
+  var url_st =
+    "https://api.chatfuel.com/bots/" +
+    cid +
+    "/users/" +
+    user_id +
+    "/send?chatfuel_token=" +
+    chat_token +
+    "&chatfuel_block_name=order_confirm";
+
+  const options = {
+    uri: url_st,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  requestPromise.post(options).then(() => {
+  });
+  
+  
+}
+
+
 function get_uid(){
   var chat_bot_id = process.env.CB_ID;
   var chat_token = process.env.CB_TOKEN;
@@ -172,7 +201,10 @@ function get_uid(){
       
       if (rows.length > 0) {
           rows.forEach(row => {
-            console.log(row.chat_id);
+            let cid = row.chat_id;
+            
+            
+            
           });
                        
       }
@@ -182,21 +214,12 @@ function get_uid(){
   }
 
 
-function broadcast_n(){
-  console.log("in fun");
-  
-  get_uid();
-  
-  // get_uid(function(response){
-  //   console.log(response);
-  // });
-  
-}
+
 
 
 // endpoint to get all the dreams in the database
 app.get("/testingr", (request, response) => {
-  broadcast_n();
+  get_uid();
   response.send(JSON.stringify("DOne"));
 });
 
