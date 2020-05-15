@@ -165,7 +165,7 @@ app.get("/push-notifications", (request, response) => {
 
 function get_uid(callback){
   
-    db.all("SELECT DISTINCT chat_id FROM userorders ", (err, rows) => {
+    db.all("SELECT DISTINCT chat_id FROM userorders where chat_id != 'undefined' ", (err, rows) => {
       // console.log("in test - -  row", rows);
       return callback(rows);
     });
@@ -176,10 +176,9 @@ function broadcast_n(){
   console.log("in fun");
   
   get_uid( function(response){
-    // Here you have access to your variable
     console.log(response);
-})
-  // console.log(get_uid());
+  });
+  
 }
 
 
