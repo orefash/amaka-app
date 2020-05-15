@@ -1081,6 +1081,8 @@ app.post("/paym", (request, response) => {
             ctotal +
             ", delivery_district = '" +
             district +
+            ", pay_choice = '" +
+            district +
             "', order_info = '" +
             info +
             "'  where order_id=" +
@@ -2018,7 +2020,7 @@ app.get("/updateTable", (request, response) => {
     // db.run("ALTER TABLE userorders ADD delivery decimal(10,2)");
     
     
-    db.run("ALTER TABLE userorders ADD pay_choice text");
+    // db.run("ALTER TABLE userorders ADD pay_choice text");
     
   });
 
