@@ -167,14 +167,19 @@ function get_uid(callback){
   
     db.all("SELECT DISTINCT chat_id FROM userorders ", (err, rows) => {
       // console.log("in test - -  row", rows);
-      return rows;
+      return callback(rows);
     });
   }
 
 
 function broadcast_n(){
   console.log("in fun");
-  console.log(get_uid());
+  
+  get_uid( function(response){
+    // Here you have access to your variable
+    console.log(response);
+})
+  // console.log(get_uid());
 }
 
 
