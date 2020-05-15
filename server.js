@@ -168,8 +168,16 @@ function get_uid(){
   var chat_token = process.env.CB_TOKEN;
   
     db.all("SELECT DISTINCT chat_id FROM userorders where chat_id != 'undefined' ", (err, rows) => {
-      // console.log("in test - -  row", rows);
-      // return callback(rows);
+      console.log("in test - -  row");
+      
+      if (rows.length > 0) {
+          rows.forEach(row => {
+            console.log(row.chat_id);
+          });
+                       
+      }
+      
+      
     });
   }
 
