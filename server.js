@@ -403,6 +403,7 @@ app.post("/confirm", function(req, res) {
             itotal: row.itotal,
             delivery: row.delivery,
             tprice: row.total_price,
+            pchoice: row.pay_choice,
 
 
 
@@ -627,6 +628,7 @@ app.post("/ps-mail", function(req, res) {
             itotal: row.itotal,
             delivery: row.delivery,
             tprice: row.total_price,
+            pchoice: row.pay_choice,
         c_amt: formatNaira(amount / 100)
       };
 
@@ -707,6 +709,7 @@ function sendConfirmMails(request_response, init_oid) {
           district: request_response.district,
           disc: request_response.disc,
           delivery: request_response.delivery,
+          pchoice: request_response.pchoice,
 
           oid: init_oid,
           cdate: cdate,
@@ -1082,7 +1085,7 @@ app.post("/paym", (request, response) => {
             ", delivery_district = '" +
             district +
             ", pay_choice = '" +
-            district +
+            payment +
             "', order_info = '" +
             info +
             "'  where order_id=" +
