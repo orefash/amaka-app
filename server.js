@@ -40,8 +40,8 @@ const prodid = process.env.PRODID;
 
 const qurl = process.env.QUR;
 
-// const ps_key = process.env.PAYSTACK_KEY;
-const ps_key= process.env.CHOP_PAYSTACK_KEY;
+const ps_key = process.env.PAYSTACK_KEY;
+// const ps_key= process.env.CHOP_PAYSTACK_KEY;
 
 //Pay params end
 
