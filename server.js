@@ -122,6 +122,14 @@ db.serialize(() => {
         "FOREIGN KEY (order_id) REFERENCES userorders (order_id)" +
         ")"
     );
+    
+    db.run(
+      "CREATE TABLE IF NOT exists push_notifications (" +
+        "nid INTEGER PRIMARY KEY AUTOINCREMENT," +
+        "msg text," +
+        "date date  NOT NULL" +
+        ")"
+    );
     // db.serialize(() => {
     //   db.run(
     //     'INSERT INTO userorders (order_id, fname, lname, date) VALUES ("O1", "John", "C Reilly", "2020/01/09")'
@@ -202,6 +210,8 @@ function get_uid(){
       if (rows.length > 0) {
           rows.forEach(row => {
             let cid = row.chat_id;
+            console.log(cid);
+            send_msgs(cid);
             
             
             
