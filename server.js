@@ -163,6 +163,11 @@ app.get("/push-notifications", (request, response) => {
 });
 
 
+function get_uid(){
+  
+  
+}
+
 
 app.post("/n-broadcast", (request, response) => {
   var chat_bot_id = process.env.CB_ID;
