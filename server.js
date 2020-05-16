@@ -237,7 +237,7 @@ app.get("/testingr", (request, response) => {
   response.send(JSON.stringify("DOne"));
 });
 
-app.post("/n-broadcast", (request, response) => {
+app.post("/push-msg", (request, response) => {
   var msg = request.body.message;
   
   var query_vals = `("${msg}")`;
