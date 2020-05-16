@@ -211,7 +211,7 @@ function get_uid(){
           rows.forEach(row => {
             let cid = row.chat_id;
             console.log(cid);
-            send_msgs(cid);
+            // send_msgs(cid);
             
             
             
