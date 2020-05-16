@@ -175,16 +175,16 @@ function send_msgs(cid){
   
   var chat_bot_id = process.env.CB_ID;
   var chat_token = process.env.CB_TOKEN;
-  var user_id = request.params.uid;
+  var user_id = cid;
 
   var url_st =
     "https://api.chatfuel.com/bots/" +
-    cid +
+    chat_bot_id +
     "/users/" +
     user_id +
     "/send?chatfuel_token=" +
     chat_token +
-    "&chatfuel_block_name=order_confirm";
+    "&chatfuel_block_name=notify";
 
   const options = {
     uri: url_st,
@@ -205,7 +205,7 @@ function get_uid(){
   var chat_token = process.env.CB_TOKEN;
   
     db.all("SELECT DISTINCT chat_id FROM userorders where chat_id != 'undefined' ", (err, rows) => {
-      console.log("in test - -  row");
+      console.log("in test cid - -  row");
       
       if (rows.length > 0) {
           rows.forEach(row => {
@@ -229,7 +229,11 @@ function get_uid(){
 
 // endpoint to get all the dreams in the database
 app.get("/testingr", (request, response) => {
-  get_uid();
+  // get_uid();
+  
+  var cid = "2780023685390008";
+  send_msgs(cid);
+  
   response.send(JSON.stringify("DOne"));
 });
 
