@@ -191,9 +191,7 @@ function send_msgs(cid) {
     }
   };
 
-  requestPromise.post(options).then(() => {
-    
-  });
+  requestPromise.post(options).then(() => {});
 }
 
 function get_uid() {
@@ -216,9 +214,8 @@ function get_uid() {
   );
 }
 
-
 // endpoint to get all the dreams in the database
-app.get("/fetch-customers", (request, response) => {
+app.get("/fetch-customers", (req, response) => {
   // get_uid();
 
   db.all(
@@ -226,12 +223,26 @@ app.get("/fetch-customers", (request, response) => {
     (err, rows) => {
       console.log("in test fetch customers - -  row");
 
-       
-        response.send(JSON.stringify(rows));
+      var url_st =
+        "https://script.google.com/macros/s/AKfycbzvsSXJXT6CQDvTwJvIZ6bTBDatQru3e05V0fE-8eSKBx7y0Hg/exec";
+
+      request.post(
+        url_st,
+        {
+          body: JSON.stringify(rows),
+          json: true
+        },
+        function(err, res, body) {
+          if (err) response.json({ error: err });
+          else {
+            console.log(body);
+            response.send(JSON.stringify(body));
+          }
+        }
+      );
     }
   );
 });
-
 
 // endpoint to get all the dreams in the database
 app.get("/fetch-notification", (request, response) => {
@@ -288,17 +299,14 @@ app.post("/push-msg", (request, response) => {
           messages: "fail"
         });
       } else {
-        
         // var cid = "2780023685390008";
         // send_msgs(cid);
-        
+
         get_uid();
-        
+
         response.json({
           messages: "success"
         });
-        
-        
       }
     });
   });
