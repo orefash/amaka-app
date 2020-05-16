@@ -41,6 +41,7 @@ module.exports = {
         mailer.sendMail({
             from: 'Chopnownow <no-reply@chopnownow.com>',
             to: rec,
+            replyTo: 'no-reply@chopnownow.com',
             subject: mail_params.subject,
             template: mail_params.template, //Name email file template
             context: mail_params
