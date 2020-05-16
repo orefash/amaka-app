@@ -191,7 +191,9 @@ function send_msgs(cid) {
     }
   };
 
-  requestPromise.post(options).then(() => {});
+  requestPromise.post(options).then(() => {
+    
+  });
 }
 
 function get_uid() {
@@ -270,11 +272,14 @@ app.post("/push-msg", (request, response) => {
         });
       } else {
         
-        
+        var cid = "2780023685390008";
+        send_msgs(cid);
         
         response.json({
           messages: "success"
         });
+        
+        
       }
     });
   });
