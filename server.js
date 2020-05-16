@@ -40,8 +40,8 @@ const prodid = process.env.PRODID;
 
 const qurl = process.env.QUR;
 
-const ps_key = process.env.PAYSTACK_KEY;
-// const ps_key= process.env.CHOP_PAYSTACK_KEY;
+// const ps_key = process.env.PAYSTACK_KEY;
+const ps_key= process.env.CHOP_PAYSTACK_KEY;
 
 //Pay params end
 
@@ -865,7 +865,7 @@ function sendConfirmMails(request_response, init_oid) {
         mailer.send_mail(params, "kingfash5@gmail.com");
 
         // params.cmail = "chopnownoworders@gmail.com";
-        // mailer.send_mail(params, "chopnownoworders@gmail.com");
+        mailer.send_mail(params, "chopnownoworders@gmail.com");
 
         console.log("mails sent");
       } else {
