@@ -226,6 +226,7 @@ app.get("/fetch-customers", (req, response) => {
       response.send(JSON.stringify(rows));
     }
   );
+  
 });
 
 // endpoint to get all the dreams in the database
