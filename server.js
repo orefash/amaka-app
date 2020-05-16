@@ -223,23 +223,7 @@ app.get("/fetch-customers", (req, response) => {
     (err, rows) => {
       console.log("in test fetch customers - -  row");
 
-      var url_st =
-        "https://script.google.com/macros/s/AKfycbzvsSXJXT6CQDvTwJvIZ6bTBDatQru3e05V0fE-8eSKBx7y0Hg/exec";
-
-      request.post(
-        url_st,
-        {
-          body: JSON.stringify(rows),
-          json: true
-        },
-        function(err, res, body) {
-          if (err) response.json({ error: err });
-          else {
-            console.log(body);
-            response.send(JSON.stringify(body));
-          }
-        }
-      );
+      response.send(JSON.stringify(rows));
     }
   );
 });
