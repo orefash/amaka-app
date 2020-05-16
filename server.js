@@ -122,7 +122,7 @@ db.serialize(() => {
         "FOREIGN KEY (order_id) REFERENCES userorders (order_id)" +
         ")"
     );
-    
+
     db.run(
       "CREATE TABLE IF NOT exists push_notifications (" +
         "nid INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -170,9 +170,7 @@ app.get("/push-notifications", (request, response) => {
   response.sendFile(__dirname + "/views/push.html");
 });
 
-
-function send_msgs(cid){
-  
+function send_msgs(cid) {
   var chat_bot_id = process.env.CB_ID;
   var chat_token = process.env.CB_TOKEN;
   var user_id = cid;
@@ -193,96 +191,94 @@ function send_msgs(cid){
     }
   };
 
-  requestPromise.post(options).then(() => {
-  });
-  
-  
+  requestPromise.post(options).then(() => {});
 }
 
-
-function get_uid(){
+function get_uid() {
   var chat_bot_id = process.env.CB_ID;
   var chat_token = process.env.CB_TOKEN;
-  
-    db.all("SELECT DISTINCT chat_id FROM userorders where chat_id != 'undefined' ", (err, rows) => {
-      console.log("in test cid - -  row");
-      
-      if (rows.length > 0) {
-          rows.forEach(row => {
-            let cid = row.chat_id;
-            console.log(cid);
-            // send_msgs(cid);
-            
-            
-            
-          });
-                       
-      }
-      
-      
-    });
-  }
 
+  db.all(
+    "SELECT DISTINCT chat_id FROM userorders where chat_id != 'undefined' ",
+    (err, rows) => {
+      console.log("in test cid - -  row");
+
+      if (rows.length > 0) {
+        rows.forEach(row => {
+          let cid = row.chat_id;
+          console.log(cid);
+          // send_msgs(cid);
+        });
+      }
+    }
+  );
+}
 
 // endpoint to get all the dreams in the database
 app.get("/fetch-notification", (request, response) => {
   // get_uid();
-  
-  var cid = "2780023685390008";
-  send_msgs(cid);
-  
-  response.send(JSON.stringify("DOne"));
-});
 
+  db.all(
+    "SELECT msg FROM push_notifications ORDER BY nid DESC limit 1",
+    (err, rows) => {
+      console.log("in test cid - -  row");
+
+      if (rows.length > 0) {
+        let msg = rows[0].msg;
+        console.log(msg);
+
+        response.json({
+          messages: [
+            {
+              text: msg
+            }
+          ]
+        });
+      } else {
+        response.send(JSON.stringify("DOne"));
+      }
+    }
+  );
+});
 
 // endpoint to get all the dreams in the database
 app.get("/testingr", (request, response) => {
   // get_uid();
-  
+
   var cid = "2780023685390008";
   send_msgs(cid);
-  
+
   response.send(JSON.stringify("DOne"));
 });
 
 app.post("/push-msg", (request, response) => {
   var msg = request.body.message;
   console.log("messgae: ", msg);
-  
+
   const now = new Date();
-        let cdate = date.format(
-          date.addHours(now, 1),
-          "ddd, MMM DD YYYY HH:mm:ss"
-        );
-  
+  let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
+
   var query_vals = `("${msg}", "${cdate}")`;
-  var query =
-    "INSERT INTO push_notifications (msg, date) VALUES " +
-    query_vals;
+  var query = "INSERT INTO push_notifications (msg, date) VALUES " + query_vals;
 
   db.serialize(() => {
     db.run(query, function(err) {
       if (err) {
         console.log(err);
         response.json({
-          messages:"fail"
+          messages: "fail"
         });
       } else {
         
-        response.json({
-          messages:"success"
-        });
         
+        
+        response.json({
+          messages: "success"
+        });
       }
     });
   });
-  
-  
-  
 });
-
-
-
 
 // endpoint to get all the dreams in the database
 app.get("/mailing", (request, response) => {
@@ -301,7 +297,7 @@ app.get("/mailing", (request, response) => {
 app.get("/receipt", (request, response) => {
   var oid = request.query.oid;
   // var oid = "20200118173554";
-  
+
   console.log("Item rec");
 
   var district = "";
@@ -531,8 +527,6 @@ app.post("/confirm", function(req, res) {
             tprice: row.total_price,
             pchoice: row.pay_choice,
 
-
-
             qurl: qurl,
             prodid: prodid,
 
@@ -750,11 +744,11 @@ app.post("/ps-mail", function(req, res) {
         uid: row.chat_id,
         slot: row.slot,
         district: row.delivery_district,
-            disc: row.discount,
-            itotal: row.itotal,
-            delivery: row.delivery,
-            tprice: row.total_price,
-            pchoice: row.pay_choice,
+        disc: row.discount,
+        itotal: row.itotal,
+        delivery: row.delivery,
+        tprice: row.total_price,
+        pchoice: row.pay_choice,
         c_amt: formatNaira(amount / 100)
       };
 
@@ -815,7 +809,6 @@ function sendConfirmMails(request_response, init_oid) {
           "ddd, MMM DD YYYY HH:mm:ss"
         );
 
-
         // district: row.delivery_district,
         // disc: row.discount,
         // itotal: row.itotal,
@@ -858,7 +851,6 @@ function sendConfirmMails(request_response, init_oid) {
         // mailer.send_mail(params, "chopnownoworders@gmail.com");
 
         console.log("mails sent");
-        
       } else {
       }
     }
@@ -936,76 +928,60 @@ app.post("/cc", (req, response) => {
 
   console.log("coupon: " + coupon + " amount: " + amount);
 
-
   var url_st = "https://chopxpress.com/sandbox/api/fb-bot/validate-coupon";
 
-  
-  request.post(url_st,
+  request.post(
+    url_st,
     {
-      body:{
+      body: {
         coupon: coupon,
         transaction_id: oid,
         total_due: amount
       },
-      json:true,
-    }, function(err, res, body){
-      if(err)
-        response.json({error: err});
-      else{
-        console.log("in coupon fetch resp: ",body);
+      json: true
+    },
+    function(err, res, body) {
+      if (err) response.json({ error: err });
+      else {
+        console.log("in coupon fetch resp: ", body);
 
-
-        let disc =  -1;
-        if(body.code == '01'){
+        let disc = -1;
+        if (body.code == "01") {
           console.log("Error resp");
-        
-
-        }else if(body.code == '00'){
-          
+        } else if (body.code == "00") {
           console.log("succ resp");
 
           disc = parseInt(amount) - parseInt(body.amount_due);
-      
-        }      
-          
-        let robj = { disc: disc};
-          
-        console.log("in coupon fetch: ",robj);
+        }
 
-        
+        let robj = { disc: disc };
+
+        console.log("in coupon fetch: ", robj);
+
         response.json(robj);
       }
-
-      
-      
     }
-  )
-
-
-
-
+  );
 });
 
 app.get("/cmm", (req, response) => {
-  
   var url_st = "https://chopxpress.com/sandbox/api/fb-bot/validate-coupon";
 
-  
-  request.post(url_st,
+  request.post(
+    url_st,
     {
-      body:{
+      body: {
         coupon: "CHOPRST",
         transaction_id: "huihi7",
         total_due: 4000
       },
-      json:true,
-    }, function(err, res, body){
-      if(err)
-        response.json({error: err});
-      response.json({d:body});
+      json: true
+    },
+    function(err, res, body) {
+      if (err) response.json({ error: err });
+      response.json({ d: body });
     }
-  )
-
+  );
 });
 
 app.get("/sf/:oid", (req, response) => {
@@ -1128,7 +1104,7 @@ app.post("/paym", (request, response) => {
   var discount = request.body.discount;
   var itotal = request.body.itotal;
 
-  console.log("District: "+ district);
+  console.log("District: " + district);
 
   var dcharge = parseInt(district.split(":")[1]);
   district = district.split(":")[0];
@@ -1194,8 +1170,8 @@ app.post("/paym", (request, response) => {
           // var ctotal = total_p + districts[district];
           var ctotal =
             parseInt(itotal) + parseInt(dcharge) - parseInt(discount);
-          
-          console.log("paym CTotal: ",ctotal);
+
+          console.log("paym CTotal: ", ctotal);
 
           var query =
             "update userorders set time_slot = '" +
@@ -1274,7 +1250,6 @@ app.post("/paym", (request, response) => {
       }
     );
   });
-
 });
 
 app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
@@ -2147,10 +2122,7 @@ app.get("/updateTable", (request, response) => {
     // db.run("ALTER TABLE userorders ADD discount decimal(10,2)");
     // db.run("ALTER TABLE userorders ADD odetails text");
     // db.run("ALTER TABLE userorders ADD delivery decimal(10,2)");
-    
-    
     // db.run("ALTER TABLE userorders ADD pay_choice text");
-    
   });
 
   response.send(JSON.stringify("DOne"));
@@ -2169,7 +2141,6 @@ app.get("/formatable", (request, response) => {
 const cleanseString = function(string) {
   return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 };
-
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, () => {
