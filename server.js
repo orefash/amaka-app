@@ -209,7 +209,7 @@ function get_uid() {
         rows.forEach(row => {
           let cid = row.chat_id;
           console.log(cid);
-          // send_msgs(cid);
+          send_msgs(cid);
         });
       }
     }
@@ -223,7 +223,7 @@ app.get("/fetch-notification", (request, response) => {
   db.all(
     "SELECT msg FROM push_notifications ORDER BY nid DESC limit 1",
     (err, rows) => {
-      console.log("in test cid - -  row");
+      console.log("in test fetch notifications - -  row");
 
       if (rows.length > 0) {
         let msg = rows[0].msg;
@@ -272,8 +272,10 @@ app.post("/push-msg", (request, response) => {
         });
       } else {
         
-        var cid = "2780023685390008";
-        send_msgs(cid);
+        // var cid = "2780023685390008";
+        // send_msgs(cid);
+        
+        get_uid();
         
         response.json({
           messages: "success"
