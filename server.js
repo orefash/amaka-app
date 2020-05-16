@@ -240,7 +240,26 @@ app.get("/testingr", (request, response) => {
 app.post("/n-broadcast", (request, response) => {
   var msg = request.body.message;
   
-  
+  var query_vals = `("${msg}")`;
+  var query =
+    "INSERT INTO push_notifications (msg) VALUES " +
+    query_vals;
+
+  db.serialize(() => {
+    db.run(query, function(err) {
+      if (err) {
+        response.json({
+          messages:"fail"
+        });
+      } else {
+        
+        response.json({
+          messages:"success"
+        });
+        
+      }
+    });
+  });
   
   
   
