@@ -224,7 +224,15 @@ function get_uid(){
   }
 
 
-
+// endpoint to get all the dreams in the database
+app.get("/fetch-notification", (request, response) => {
+  // get_uid();
+  
+  var cid = "2780023685390008";
+  send_msgs(cid);
+  
+  response.send(JSON.stringify("DOne"));
+});
 
 
 // endpoint to get all the dreams in the database
@@ -239,15 +247,23 @@ app.get("/testingr", (request, response) => {
 
 app.post("/push-msg", (request, response) => {
   var msg = request.body.message;
+  console.log("messgae: ", msg);
   
-  var query_vals = `("${msg}")`;
+  const now = new Date();
+        let cdate = date.format(
+          date.addHours(now, 1),
+          "ddd, MMM DD YYYY HH:mm:ss"
+        );
+  
+  var query_vals = `("${msg}", "${cdate}")`;
   var query =
-    "INSERT INTO push_notifications (msg) VALUES " +
+    "INSERT INTO push_notifications (msg, date) VALUES " +
     query_vals;
 
   db.serialize(() => {
     db.run(query, function(err) {
       if (err) {
+        console.log(err);
         response.json({
           messages:"fail"
         });
