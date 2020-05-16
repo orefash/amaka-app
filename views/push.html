@@ -21,12 +21,12 @@
 	<div class="container-contact100">
 
 		<div class="wrap-contact100">
-			<form class="contact100-form validate-form">
+			<form id="push-form" class="contact100-form validate-form">
 				<span class="contact100-form-title">
 					Send Notification
 				</span>
         
-        <p id="alert">
+        <p class="mb-2 text-center" id="alert">
           
         </p>
 
@@ -76,6 +76,12 @@
   
     <script>
       
+      function updateAlert(msg){
+        
+        document.getElementById('alert').innerText = msg;
+        
+      }
+      
       function submitForm() {
         // alert("IN form process");
 
@@ -93,7 +99,19 @@
              
              if(status=="success"){
                
+               if(data.messages == "success"){
+                 
+                 document.getElementById("push-form").reset(); 
+                 updateAlert("Message sent successfully!!");
+                 
+                 
+               }else{
+                 updateAlert("Message not sent!! Please try again");
+               }
+               
              }else{
+               
+               updateAlert("Message not sent!! Please try again");
                
              }
 
@@ -107,11 +125,6 @@
           
           
         }
-        
-        
-        
-        
-       
         
       }
       
