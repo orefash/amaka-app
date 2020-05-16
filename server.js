@@ -216,6 +216,23 @@ function get_uid() {
   );
 }
 
+
+// endpoint to get all the dreams in the database
+app.get("/fetch-customers", (request, response) => {
+  // get_uid();
+
+  db.all(
+    "SELECT DISTINCT fname, lname, email, phone FROM userorders ",
+    (err, rows) => {
+      console.log("in test fetch customers - -  row");
+
+       
+        response.send(JSON.stringify(rows));
+    }
+  );
+});
+
+
 // endpoint to get all the dreams in the database
 app.get("/fetch-notification", (request, response) => {
   // get_uid();
