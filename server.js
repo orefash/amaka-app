@@ -238,29 +238,12 @@ app.get("/testingr", (request, response) => {
 });
 
 app.post("/n-broadcast", (request, response) => {
-  var chat_bot_id = process.env.CB_ID;
-  var chat_token = process.env.CB_TOKEN;
-  var user_id = request.params.uid;
-
-  var url_st =
-    "https://api.chatfuel.com/bots/" +
-    chat_bot_id +
-    "/users/" +
-    user_id +
-    "/send?chatfuel_token=" +
-    chat_token +
-    "&chatfuel_block_name=order_confirm";
-
-  const options = {
-    uri: url_st,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
-
-  requestPromise.post(options).then(() => {
-    response.json({});
-  });
+  var msg = request.body.message;
+  
+  
+  
+  
+  
 });
 
 
