@@ -41,7 +41,7 @@ const prodid = process.env.PRODID;
 const qurl = process.env.QUR;
 
 // const ps_key = process.env.PAYSTACK_KEY;
-const ps_key= process.env.CHOP_PAYSTACK_KEY;
+const ps_key = process.env.CHOP_PAYSTACK_KEY;
 
 //Pay params end
 
@@ -204,14 +204,33 @@ function get_uid() {
       console.log("in test cid - -  row");
 
       if (rows.length > 0) {
-        rows.forEach(row => {
-          
-          let cid = row.chat_id;
+        const delay = amount => {
+          return new Promise(resolve => {
+            setTimeout(resolve, amount);
+          });
+        };
+
+        let ln = rows.length;
+
+        async function loop() {
+          console.log("In loop");
+          for (let i = 0; i < ln; i++) {
+            let row = rows[i];
+            console.log("In loop test");
+             let cid = row.chat_id;
           console.log(cid);
           send_msgs(cid);
-          
-          
-        });
+            await delay(3000);
+          }
+        }
+
+        loop();
+
+        // rows.forEach(row => {
+        //   let cid = row.chat_id;
+        //   console.log(cid);
+        //   send_msgs(cid);
+        // });
       }
     }
   );
@@ -229,7 +248,6 @@ app.get("/fetch-customers", (req, response) => {
       response.send(JSON.stringify(rows));
     }
   );
-  
 });
 
 // endpoint to get all the dreams in the database
@@ -2123,15 +2141,15 @@ app.get("/updateQuantity", (request, response) => {
 app.get("/cgatey", function(req, res) {
   console.log("In test");
 
-//   const now = new Date();
-//   let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
-//   console.log(cdate);
+  //   const now = new Date();
+  //   let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
+  //   console.log(cdate);
 
-    db.all("SELECT * from userorders ", (err, rows) => {
-      console.log("in test - -  row", rows);
+  db.all("SELECT * from userorders ", (err, rows) => {
+    console.log("in test - -  row", rows);
 
-      res.send(JSON.stringify(rows));
-    });
+    res.send(JSON.stringify(rows));
+  });
 });
 
 // endpoint to get all the dreams in the database
