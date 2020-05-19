@@ -205,9 +205,12 @@ function get_uid() {
 
       if (rows.length > 0) {
         rows.forEach(row => {
+          
           let cid = row.chat_id;
           console.log(cid);
           send_msgs(cid);
+          
+          
         });
       }
     }
@@ -2120,15 +2123,15 @@ app.get("/updateQuantity", (request, response) => {
 app.get("/cgatey", function(req, res) {
   console.log("In test");
 
-  const now = new Date();
-  let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
-  console.log(cdate);
+//   const now = new Date();
+//   let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
+//   console.log(cdate);
 
-  //   db.all("SELECT * from userorders ", (err, rows) => {
-  //     console.log("in test - -  row", rows);
+    db.all("SELECT * from userorders ", (err, rows) => {
+      console.log("in test - -  row", rows);
 
-  //     res.send(JSON.stringify(rows));
-  //   });
+      res.send(JSON.stringify(rows));
+    });
 });
 
 // endpoint to get all the dreams in the database
