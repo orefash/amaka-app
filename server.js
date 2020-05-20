@@ -174,6 +174,9 @@ function send_msgs(cid) {
   var chat_bot_id = process.env.CB_ID;
   var chat_token = process.env.CB_TOKEN;
   var user_id = cid;
+  
+  
+  
 
   var url_st =
     "https://api.chatfuel.com/bots/" +
