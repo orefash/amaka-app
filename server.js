@@ -220,7 +220,7 @@ function get_uid() {
              let cid = row.chat_id;
           console.log(cid);
           send_msgs(cid);
-            await delay(3000);
+            await delay(10000);
           }
         }
 
