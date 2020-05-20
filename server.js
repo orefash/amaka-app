@@ -191,7 +191,13 @@ function send_msgs(cid) {
     }
   };
 
-  requestPromise.post(options).then(() => {});
+  requestPromise.post(options).then((parsedBody) => {
+    console.log(parsedBody);
+    
+  })
+    .catch(function (err) {
+                console.log("Post error: ",err);
+            });
 }
 
 function get_uid() {
