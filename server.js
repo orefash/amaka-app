@@ -40,8 +40,8 @@ const prodid = process.env.PRODID;
 
 const qurl = process.env.QUR;
 
-// const ps_key = process.env.PAYSTACK_KEY;
-const ps_key = process.env.CHOP_PAYSTACK_KEY;
+const ps_key = process.env.PAYSTACK_KEY;
+// const ps_key = process.env.CHOP_PAYSTACK_KEY;
 
 //Pay params end
 
@@ -176,7 +176,7 @@ function send_msgs(cid) {
   var user_id = cid;
   
   
-  
+  console.log("In sendmsg: ",cid);
 
   var url_st =
     "https://api.chatfuel.com/bots/" +
@@ -269,13 +269,13 @@ app.get("/fetch-notification", (request, response) => {
       console.log("in test fetch notifications - -  row");
 
       if (rows.length > 0) {
-        let msg = rows[0].msg;
-        console.log(msg);
+        // let msg = rows[0].msg;
+        // console.log(msg);
 
         response.json({
           messages: [
             {
-              text: msg
+              text: rows[0].msg
             }
           ]
         });
