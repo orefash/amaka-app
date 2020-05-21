@@ -573,6 +573,7 @@ app.post("/confirm", function(req, res) {
             delivery: row.delivery,
             tprice: row.total_price,
             pchoice: row.pay_choice,
+            info: row.order_info,
 
             qurl: qurl,
             prodid: prodid,
@@ -635,6 +636,7 @@ app.get("/cgate-callback", function(req, res) {
             email: row.email,
             uid: row.chat_id,
             slot: row.slot,
+            info: row.order_info,
             amt: amt,
             oid: oid,
             district: row.delivery_district,
@@ -790,6 +792,7 @@ app.post("/ps-mail", function(req, res) {
         email: row.email,
         uid: row.chat_id,
         slot: row.slot,
+        info: row.order_info,
         district: row.delivery_district,
         disc: row.discount,
         itotal: row.itotal,
@@ -848,7 +851,6 @@ function sendConfirmMails(request_response, init_oid) {
           elements.push(row);
         });
         total_p = formatNaira(total_p);
-        // var dfee = formatNaira(districts[row.delivery_district]);
 
         const now = new Date();
         let cdate = date.format(
@@ -856,11 +858,6 @@ function sendConfirmMails(request_response, init_oid) {
           "ddd, MMM DD YYYY HH:mm:ss"
         );
 
-        // district: row.delivery_district,
-        // disc: row.discount,
-        // itotal: row.itotal,
-        // delivery: row.delivery,
-        // tprice: row.total_price,
 
         var params = {
           subject: "Chopnownow Order Successful",
@@ -876,6 +873,7 @@ function sendConfirmMails(request_response, init_oid) {
           disc: request_response.disc,
           delivery: request_response.delivery,
           pchoice: request_response.pchoice,
+          info: request_response.info,
 
           oid: init_oid,
           cdate: cdate,
