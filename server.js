@@ -636,6 +636,7 @@ app.get("/cgate-callback", function(req, res) {
             email: row.email,
             uid: row.chat_id,
             slot: row.slot,
+            pchoice: row.pay_choice,
             info: row.order_info,
             amt: amt,
             oid: oid,
