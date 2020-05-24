@@ -1011,15 +1011,15 @@ app.post("/cc", (req, response) => {
 });
 
 app.get("/cmm", (req, response) => {
-  var url_st = "https://chopxpress.com/sandbox/api/fb-bot/validate-coupon";
+  var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
 
   request.post(
     url_st,
     {
       body: {
-        coupon: "CHOPRST",
-        transaction_id: "huihi7",
-        total_due: 4000
+        email_address: "orefash@gmail.com",
+        subject: "Test Mail",
+        message: "Test content"
       },
       json: true
     },
