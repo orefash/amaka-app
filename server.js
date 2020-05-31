@@ -887,15 +887,15 @@ function sendConfirmMails(request_response, init_oid) {
         const mustache   = require('mustache');
   // const fs = require('fs'); //Filesystem    
   //...
-        var content = fs.readFileSync("views/mails/customer.html","utf-8").toString();
+        var cus_content = fs.readFileSync("views/mails/customer.html","utf-8").toString();
         
-        var content = fs.readFileSync("views/mails/customer.html","utf-8").toString();
+        var ord_content = fs.readFileSync("views/mails/order.html","utf-8").toString();
 
 
-        // console.log("COntent: ", content);
-
-        var view = { name:"01/01/1990"};
-        var output = mustache.render(content, view);
+        var cus_output = mustache.render(cus_content, params);
+        
+        
+        var ord_output = mustache.render(ord_content, params);
 
         console.log("mails sent");
       } else {
