@@ -12,6 +12,7 @@ dependencies:
   js-sha512: 0.8.0
   moment: 2.24.0
   moment-timezone: 0.5.27
+  mustache: 4.0.1
   nodemailer: 6.4.2
   nodemailer-express-handlebars: 3.1.0
   openpgp: 4.10.1
@@ -1064,6 +1065,13 @@ packages:
     dev: false
     resolution:
       integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
+  /mustache/4.0.1:
+    dev: false
+    engines:
+      npm: '>=1.4.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-yL5VE97+OXn4+Er3THSmTdCFCtx5hHWzrolvH+JObZnUYwuaG7XV+Ch4fR2cIrcYI0tFHxS7iyFYl14bW8y2sA==
   /nan/2.9.2:
     dev: false
     resolution:
@@ -1842,6 +1850,7 @@ specifiers:
   js-sha512: ^0.8.0
   moment: ^2.14.1
   moment-timezone: ^0.5.27
+  mustache: 4.0.1
   nodemailer: 6.4.2
   nodemailer-express-handlebars: ^3.1.0
   openpgp: 4.10.1

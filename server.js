@@ -327,19 +327,6 @@ app.post("/push-msg", (request, response) => {
   });
 });
 
-// endpoint to get all the dreams in the database
-app.get("/mailing", (request, response) => {
-  var params = {
-    subject: "ChopNowNow Order Successful",
-    cname: "Ore Faseru",
-    cmail: "orefash@gmail.com",
-    template: "customer"
-  };
-  mailer.send_mail(params, params.cmail);
-  // console.log("Value: "+value);
-
-  response.send(JSON.stringify("DOne"));
-});
 
 app.get("/receipt", (request, response) => {
   var oid = request.query.oid;
@@ -1008,6 +995,21 @@ app.post("/cc", (req, response) => {
       }
     }
   );
+});
+
+
+// endpoint to get all the dreams in the database
+app.get("/mailing", (request, response) => {
+  var params = {
+    subject: "ChopNowNow Order Successful",
+    cname: "Ore Faseru",
+    cmail: "orefash@gmail.com",
+    template: "customer"
+  };
+  mailer.send_mail(params, params.cmail);
+  // console.log("Value: "+value);
+
+  response.send(JSON.stringify("DOne"));
 });
 
 app.get("/cmm", (req, response) => {
