@@ -31,7 +31,8 @@
     "frameguard":"3.1.0",
     "date-and-time":"0.13.1",
     "query-string":"6.12.1",
-    "mustache":"4.0.1"
+    "mustache":"4.0.1",
+    "handlebars":"4.7.6"
   },
   "engines": {
     "node": "8.x"

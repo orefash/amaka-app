@@ -7,6 +7,7 @@ dependencies:
   express: 4.16.3
   frameguard: 3.1.0
   gpg: 0.6.0
+  handlebars: 4.7.6
   helmet: 3.21.2
   http-build-query: 0.7.0
   js-sha512: 0.8.0
@@ -701,6 +702,20 @@ packages:
       uglify-js: 3.7.6
     resolution:
       integrity: sha512-4PwqDL2laXtTWZghzzCtunQUTLbo31pcCJrd/B/9JP8XbhVzpS5ZXuKqlOzsd1rtcaLo4KqAn8nl8mkknS4MHw==
+  /handlebars/4.7.6:
+    dependencies:
+      minimist: 1.2.5
+      neo-async: 2.6.1
+      source-map: 0.6.1
+      wordwrap: 1.0.0
+    dev: false
+    engines:
+      node: '>=0.4.7'
+    hasBin: true
+    optionalDependencies:
+      uglify-js: 3.9.4
+    resolution:
+      integrity: sha512-1f2BACcBfiwAfStCKZNrUCgqNZkGsAT7UM3kkYtXuLo0KnaVfjKOyf7PRzB6++aK9STyT1Pd2ZCPe3EGOXleXA==
   /har-schema/2.0.0:
     dev: false
     engines:
@@ -1051,6 +1066,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-3j+YVD2/lggr5IrRoMfNqDYwHc8=
+  /minimist/1.2.5:
+    dev: false
+    resolution:
+      integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
   /moment-timezone/0.5.27:
     dependencies:
       moment: 2.24.0
@@ -1731,6 +1750,16 @@ packages:
     optional: true
     resolution:
       integrity: sha512-yYqjArOYSxvqeeiYH2VGjZOqq6SVmhxzaPjJC1W2F9e+bqvFL9QXQ2osQuKUFjM2hGjKG2YclQnRKWQSt/nOTQ==
+  /uglify-js/3.9.4:
+    dependencies:
+      commander: 2.20.3
+    dev: false
+    engines:
+      node: '>=0.8.0'
+    hasBin: true
+    optional: true
+    resolution:
+      integrity: sha512-8RZBJq5smLOa7KslsNsVcSH+KOXf1uDU8yqLeNuVKwmT0T3FA0ZoXlinQfRad7SDcbZZRZE4ov+2v71EnxNyCA==
   /uglify-to-browserify/1.0.2:
     dev: false
     optional: true
@@ -1806,6 +1835,10 @@ packages:
       node: '>=0.4.0'
     resolution:
       integrity: sha1-o9XabNXAvAAI03I0u68b7WMFkQc=
+  /wordwrap/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha1-J1hIEIkUVqQXHI0CJkQa3pDLyus=
   /wrappy/1.0.2:
     dev: false
     resolution:
@@ -1845,6 +1878,7 @@ specifiers:
   express: ^4.16.3
   frameguard: 3.1.0
   gpg: 0.6.0
+  handlebars: 4.7.6
   helmet: ^3.21.2
   http-build-query: ^0.7.0
   js-sha512: ^0.8.0
