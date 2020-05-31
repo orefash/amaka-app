@@ -1006,8 +1006,15 @@ app.get("/mailing", (request, response) => {
     cmail: "orefash@gmail.com",
     template: "customer"
   };
-  mailer.send_mail(params, params.cmail);
+  // mailer.send_mail(params, params.cmail);
   // console.log("Value: "+value);
+  
+  const mustache   = require('mustache');
+  // const fs = require('fs'); //Filesystem    
+  //...
+  var content = fs.readFileSync("path/to/File/file.html","utf-8");
+  var view = {formatted:{latitude: 0,longitude:0}, formattedDate:"01/01/1990"}
+  var output = mustache.render(content, view);
 
   response.send(JSON.stringify("DOne"));
 });
