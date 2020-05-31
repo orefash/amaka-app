@@ -1013,7 +1013,7 @@ app.get("/mailing", (request, response) => {
   // const fs = require('fs'); //Filesystem    
   //...
   var content = fs.readFileSync("views/mails/customer.html","utf-8").toString();
-  var view = { name:"01/01/1990"}
+  var view = { name:"01/01/1990"};
   var output = mustache.render(content, view);
 
   response.send(JSON.stringify(content));
