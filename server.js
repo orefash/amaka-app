@@ -163,7 +163,7 @@ app.use(
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/confirm.html");
+  response.json("iews/confirm.html");
 });
 
 app.get("/push-notifications", (request, response) => {
