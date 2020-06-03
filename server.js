@@ -1011,7 +1011,7 @@ app.post("/cc", (req, response) => {
 
 
 // endpoint to get all the dreams in the database
-app.get("/mailing", (request, response) => {
+app.get("/mailing", (req, response) => {
   var params = {
     subject: "ChopNowNow Order Successful",
     cname: "Ore Faseru",
