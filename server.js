@@ -1039,17 +1039,18 @@ app.get("/mailing", (req, response) => {
       body: {
         email_address: "orefash@gmail.com",
         subject: "Test Mail",
-        message: output
+        message: "Hello there"
       },
       json: true
     },
     function(err, res, body) {
-      if (err) console.log({ error: err });
+      if (err) response.send({ error: err });
       console.log({ d: body });
+      response.send(JSON.stringify("Successfull"));
     }
   );
 
-  response.send(JSON.stringify(output));
+  
 });
 
 app.get("/cmm", (req, response) => {
