@@ -1030,6 +1030,24 @@ app.get("/mailing", (request, response) => {
   
   var view = { name:"01/01/1990"};
   var output = mustache.render(content, view);
+  
+  var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
+
+  request.post(
+    url_st,
+    {
+      body: {
+        email_address: "orefash@gmail.com",
+        subject: "Test Mail",
+        message: output
+      },
+      json: true
+    },
+    function(err, res, body) {
+      if (err) console.log({ error: err });
+      console.log({ d: body });
+    }
+  );
 
   response.send(JSON.stringify(output));
 });
