@@ -1038,8 +1038,8 @@ app.get("/mailing", (req, response) => {
     {
       body: {
         email_address: "orefash@gmail.com",
-        subject: "Test Mail",
-        message: "Hello there"
+        subject: "Chopnownow",
+        message: output
       },
       json: true
     },
