@@ -1031,6 +1031,8 @@ app.get("/mailing", (req, response) => {
   var view = { name:"01/01/1990"};
   var output = mustache.render(content, view);
   
+  console.log("Output:  ", output);
+  
   var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
 
   request.post(
