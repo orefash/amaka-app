@@ -1403,7 +1403,11 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
   requestPromise.post(options)
     .then(() => {
     response.json({});
-  });
+  }).catch(function (err) {
+        console.log("broadcast: ",err); // line 8
+    
+    response.json({error: err});
+    });
 });
 
 
