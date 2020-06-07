@@ -1,4 +1,4 @@
-            console.log({ d: "cus: "+,            console.log({ d: "cus: "+,// where your node app starts
+// where your node app starts
 
 // init project
 const express = require("express");
@@ -905,10 +905,9 @@ function sendConfirmMails(request_response, init_oid) {
             },
             json: true
           },
-          function(            
-            console.log({ d: "cus: %j"err, res, body) {
-            if (err) console.log({ error: "cus: "+err });
-            console.log({ d: "cus: "+body });
+          function(err, res, body) {
+            if (err) console.log({ error: "cus: ",err });
+            console.log({ d: "cus: %j",body });
             // response.send(JSON.stringify("Successfull"));
           }
         );
@@ -2109,5 +2108,6 @@ const cleanseString = function(string) {
 };
 
 // listen for requests :)
-var listener = app.listen(rt ${listener.address().port}`);
+var listener = app.listen(process.env.PORT, () => {
+  console.log(`server listening on port ${listener.address().port}`);
 });
