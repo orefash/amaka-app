@@ -1419,7 +1419,7 @@ app.get("/fetchl", (req, response) => {
 });
 
 
-app.get("/menu_categorys", (request, response) => {
+app.get("/menu_categorys22", (request, response) => {
   var oid = request.query.oid;
 
   const options = {
@@ -1439,12 +1439,14 @@ app.get("/menu_categorys", (request, response) => {
     var messages = [];
 
     var count = 1;
+    var en = 0;
 
     parsedResponse.forEach(function(value) {
       var title = value.title;
       var tid = value.itemid;
 
       if (value.enable == "Yes") {
+        en++;
         var object = {
           title: title,
           subtitle: "Menu cateogry",
@@ -1495,6 +1497,9 @@ app.get("/menu_categorys", (request, response) => {
         count++;
       }
     });
+    
+    
+    
 
     response.json({
       messages: messages
@@ -1506,7 +1511,7 @@ app.get("/menu_categorys", (request, response) => {
 
 
 
-app.get("/menu_categorys1", (request, response) => {
+app.get("/menu_categorys", (request, response) => {
   var oid = request.query.oid;
 
   const options = {
@@ -1526,12 +1531,14 @@ app.get("/menu_categorys1", (request, response) => {
     var messages = [];
 
     var count = 1;
+    var en =0;
 
     parsedResponse.forEach(function(value) {
       var title = value.title;
       var tid = value.itemid;
 
       if (value.enable == "Yes") {
+        en++;
         var object = {
           title: title,
           subtitle: "Menu cateogry",
@@ -1578,10 +1585,13 @@ app.get("/menu_categorys1", (request, response) => {
             messages.push(message);
           }
         }
-        console.log("Elements: " + elements);
+        // console.log("Elements: " + elements);
         count++;
       }
     });
+    
+    console.log("Enabled: "+en);
+    console.log("COunted: "+count);
 
     response.json({
       messages: messages
