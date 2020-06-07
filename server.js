@@ -895,22 +895,22 @@ function sendConfirmMails(request_response, init_oid) {
         
         var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
 
-  request.post(
-    url_st,
-    {
-      body: {
-        email_address: "orefash@gmail.com",
-        subject: "Chopnownow",
-        message: output
-      },
-      json: true
-    },
-    function(err, res, body) {
-      if (err) response.send({ error: err });
-      console.log({ d: body });
-      response.send(JSON.stringify("Successfull"));
-    }
-  );
+  // request.post(
+  //   url_st,
+  //   {
+  //     body: {
+  //       email_address: "orefash@gmail.com",
+  //       subject: "Chopnownow",
+  //       message: output
+  //     },
+  //     json: true
+  //   },
+  //   function(err, res, body) {
+  //     if (err) response.send({ error: err });
+  //     console.log({ d: body });
+  //     response.send(JSON.stringify("Successfull"));
+  //   }
+  // );
 
         
 
@@ -1076,22 +1076,37 @@ app.get("/mailing", (req, response) => {
 
 app.get("/cmm", (req, response) => {
   var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
-
-  request.post(
-    url_st,
-    {
-      body: {
+  
+  var rOPt = {
         email_address: "orefash@gmail.com",
         subject: "Test Mail",
         message: "Test content"
-      },
-      json: true
-    },
-    function(err, res, body) {
-      if (err) response.json({ error: err });
-      response.json({ d: body });
-    }
-  );
+      };
+  
+  var reqOpt = {
+    uri: url_st,
+    method: 'POST',
+    body: rOPt
+  };
+
+  // requestPromise(
+  //   reqOpt,
+  //   function(err, res, body) {
+  //     if (err) response.json({ error: err });
+  //     response.json({ d: body });
+  //   }
+  // );
+  
+  requestPromise(reqOpt)
+    .then(function(body) {
+        response.json({ d: body });
+    })
+    .catch(function(err) {
+        response.json({ error: err });
+        // console.log(console.dir);
+    });
+  
+  
 });
 
 app.get("/sf/:oid", (req, response) => {
