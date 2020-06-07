@@ -895,22 +895,22 @@ function sendConfirmMails(request_response, init_oid) {
         
         var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
 
-        request.post(
-          url_st,
-          {
-            body: {
-              email_address: request_response.email,
-              subject: "Chopnownow",
-              message: cus_output
-            },
-            json: true
-          },
-          function(err, res, body) {
-            if (err) console.log({ error: "cus: ",err });
-            console.log({ d: "cus: %j",body });
-            // response.send(JSON.stringify("Successfull"));
-          }
-        );
+        // request.post(
+        //   url_st,
+        //   {
+        //     body: {
+        //       email_address: request_response.email,
+        //       subject: "Chopnownow",
+        //       message: cus_output
+        //     },
+        //     json: true
+        //   },
+        //   function(err, res, body) {
+        //     if (err) console.log({ error: "cus: ",err });
+        //     console.log({ d: "cus: %j",body });
+        //     // response.send(JSON.stringify("Successfull"));
+        //   }
+        // );
 
         
 
