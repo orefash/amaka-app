@@ -1,4 +1,4 @@
-// where your node app starts
+            console.log({ d: "cus: "+,            console.log({ d: "cus: "+,// where your node app starts
 
 // init project
 const express = require("express");
@@ -895,22 +895,23 @@ function sendConfirmMails(request_response, init_oid) {
         
         var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
 
-  // request.post(
-  //   url_st,
-  //   {
-  //     body: {
-  //       email_address: "orefash@gmail.com",
-  //       subject: "Chopnownow",
-  //       message: output
-  //     },
-  //     json: true
-  //   },
-  //   function(err, res, body) {
-  //     if (err) response.send({ error: err });
-  //     console.log({ d: body });
-  //     response.send(JSON.stringify("Successfull"));
-  //   }
-  // );
+        request.post(
+          url_st,
+          {
+            body: {
+              email_address: request_response.email,
+              subject: "Chopnownow",
+              message: cus_output
+            },
+            json: true
+          },
+          function(            
+            console.log({ d: "cus: %j"err, res, body) {
+            if (err) console.log({ error: "cus: "+err });
+            console.log({ d: "cus: "+body });
+            // response.send(JSON.stringify("Successfull"));
+          }
+        );
 
         
 
@@ -2108,6 +2109,5 @@ const cleanseString = function(string) {
 };
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, () => {
-  console.log(`server listening on port ${listener.address().port}`);
+var listener = app.listen(rt ${listener.address().port}`);
 });
