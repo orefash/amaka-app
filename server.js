@@ -47,8 +47,8 @@ const qurl = process.env.QURL;
 
 // const qurl = process.env.QURL_DEMO;
 
-const ps_key = process.env.PAYSTACK_KEY;
-// const ps_key = process.env.CHOP_PAYSTACK_KEY;
+// const ps_key = process.env.PAYSTACK_KEY;
+const ps_key = process.env.CHOP_PAYSTACK_KEY;
 
 //Pay params end
 
@@ -658,19 +658,19 @@ app.get("/cgate-callback", function(req, res) {
 });
 
 function testFn(res, amt, oid) {
-  let un = "chopnownow";
-  let pass = "2009011220@012#8";
-  let mid = "1057CH020000002";
-  let tid = "1057CH02";
-  let uri = "https://testdev.coralpay.com/CgatePayV2/api/Pay";
-  let pk = "0030ceb3-484b-41b6-bd47-febc63e521d4";
-
   // let un = "chopnownow";
-  // let pass = "2018040920@002#2";
-  // let mid = "405804301004851";
-  // let tid = "40580431";
-  // let uri = "https://cgateweb.coralpay.com/api/pay";
-  // let pk = "40fd5ed0-264c-4fee-b069-f19e9735f680";
+  // let pass = "2009011220@012#8";
+  // let mid = "1057CH020000002";
+  // let tid = "1057CH02";
+  // let uri = "https://testdev.coralpay.com/CgatePayV2/api/Pay";
+  // let pk = "0030ceb3-484b-41b6-bd47-febc63e521d4";
+
+  let un = "chopnownow";
+  let pass = "2018040920@002#2";
+  let mid = "405804301004851";
+  let tid = "40580431";
+  let uri = "https://cgateweb.coralpay.com/api/pay";
+  let pk = "40fd5ed0-264c-4fee-b069-f19e9735f680";
 
   // let amt = "400";
   let rtUrl = "https://amaka-server.glitch.me/cgate-callback";
@@ -786,7 +786,7 @@ app.post("/ps-mail", function(req, res) {
         phone: row.phone,
         email: row.email,
         uid: row.chat_id,
-        slot: row.slot,
+        slot: row.time_slot,
         info: row.order_info,
         district: row.delivery_district,
         disc: row.discount,
@@ -868,7 +868,7 @@ function sendConfirmMails(request_response, init_oid) {
           c_amt: request_response.c_amt,
           district: request_response.district,
           disc: request_response.disc,
-          tslot: request_response.slot,
+          slot: request_response.slot,
           delivery: request_response.delivery,
           pchoice: request_response.pchoice,
           info: request_response.info,
@@ -926,8 +926,8 @@ function sendConfirmMails(request_response, init_oid) {
           {
             body: {
               
-              // email_address: "chopnownoworders@gmail.com",
-              email_address: "orefash@gmail.com",
+              email_address: "chopnownoworders@gmail.com",
+              // email_address: "orefash@gmail.com",
               subject: "New Product Order - " + init_oid,
               message: ord_output
             },
