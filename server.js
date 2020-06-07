@@ -1418,60 +1418,6 @@ app.get("/fetchl", (req, response) => {
   });
 });
 
-app.get("/menu_categories", (request, response) => {
-  var oid = request.query.oid;
-
-  const options = {
-    uri: base_url + "list-menu-category",
-    // uri: base_url + "&action=get_items&type=Product_Category&limit=80",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
-
-  requestPromise.post(options).then(function(data) {
-    var parsedResponse = JSON.parse(data);
-    console.log(parsedResponse);
-    var elements = [];
-
-    parsedResponse.forEach(function(value) {
-      var title = value.title;
-      var tid = value.itemid;
-
-      var object = {
-        title: title,
-        subtitle: "Menu cateogry",
-        buttons: [
-          {
-            type: "json_plugin_url",
-            url:
-              "https://amaka-server.glitch.me/getMenuItem?cat_id=" +
-              tid +
-              "&oid=" +
-              oid,
-            title: "Show"
-          }
-        ]
-      };
-
-      elements.push(object);
-    });
-
-    response.json({
-      messages: [
-        {
-          attachment: {
-            type: "template",
-            payload: {
-              template_type: "generic",
-              elements: elements
-            }
-          }
-        }
-      ]
-    });
-  });
-});
 
 app.get("/menu_categorys", (request, response) => {
   var oid = request.query.oid;
@@ -1555,6 +1501,96 @@ app.get("/menu_categorys", (request, response) => {
     });
   });
 });
+
+
+
+
+
+app.get("/menu_categorys1", (request, response) => {
+  var oid = request.query.oid;
+
+  const options = {
+    uri: "https://chopxpress.com/sandbox/api/fb-bot/list-menu-category",
+    // uri: base_url + "&action=get_items&type=Product_Category&limit=80",
+    headers: {
+      // "Content-Type": "application/json"
+    }
+  };
+
+  requestPromise.get(options).then(function(data) {
+    // console.log(data);
+
+    var parsedResponse = JSON.parse(data).records;
+    console.log("Category Length: "+parsedResponse.length);
+    var elements = [];
+    var messages = [];
+
+    var count = 1;
+
+    parsedResponse.forEach(function(value) {
+      var title = value.title;
+      var tid = value.itemid;
+
+      if (value.enable == "Yes") {
+        var object = {
+          title: title,
+          subtitle: "Menu cateogry",
+          buttons: [
+            {
+              type: "json_plugin_url",
+              url:
+                "https://amaka-server.glitch.me/getMenuItem?cat_id=" +
+                tid +
+                "&oid=" +
+                oid,
+              title: "Show"
+            }
+          ]
+        };
+
+        elements.push(object);
+
+        if (count % 10 === 0) {
+          console.log("counter: " + count);
+          var message = {
+            attachment: {
+              type: "template",
+              payload: {
+                template_type: "generic",
+                elements: elements
+              }
+            }
+          };
+          messages.push(message);
+          elements = [];
+        }
+        if (count === parsedResponse.length) {
+          if (count % 10 !== 0) {
+            var message = {
+              attachment: {
+                type: "template",
+                payload: {
+                  template_type: "generic",
+                  elements: elements
+                }
+              }
+            };
+            messages.push(message);
+          }
+        }
+        console.log("Elements: " + elements);
+        count++;
+      }
+    });
+
+    response.json({
+      messages: messages
+    });
+  });
+});
+
+
+
 
 // endpoint to get all the dreams in the database
 app.get("/getMenuItem", (request, response) => {
