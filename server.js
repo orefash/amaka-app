@@ -866,13 +866,13 @@ function sendConfirmMails(request_response, init_oid) {
           c_amt: request_response.c_amt,
           district: request_response.district,
           disc: request_response.disc,
+          slot: request_response.slot,
           delivery: request_response.delivery,
           pchoice: request_response.pchoice,
           info: request_response.info,
 
           oid: init_oid,
-          cdate: cdate,
-          slot: request_response.slot
+          cdate: cdate
         };
 
         console.log("Mail Params: %j", params);
@@ -919,7 +919,22 @@ function sendConfirmMails(request_response, init_oid) {
           }
         );
 
-        
+        request.post(
+          url_st,
+          {
+            body: {
+              email_address: "chopnownoworders@gmail.com",
+              subject: "Chopnownow",
+              message: ord_output
+            },
+            json: true
+          },
+          function(err, res, body) {
+            if (err) console.log({ error: "cus: ",err });
+            console.log({ d: "cus: %j",body });
+            // response.send(JSON.stringify("Successfull"));
+          }
+        );
 
         console.log("mails sent");
       } else {
