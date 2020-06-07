@@ -1400,7 +1400,8 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
     }
   };
 
-  requestPromise.post(options).then(() => {
+  requestPromise.post(options)
+    .then(() => {
     response.json({});
   });
 });
@@ -1408,6 +1409,7 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
 
 
 function formatNaira(num) {
+  
   var p = num.toFixed(2).split(".");
   return (
     "N " +
