@@ -34,11 +34,18 @@ const { fetch_loc } = require("./fetch.js");
 
 //Interswitch params
 
-const mac = process.env.INTERSWITCH_KEY;
+// const mac = process.env.INTERSWITCH_KEY;
 
-const prodid = process.env.PRODID;
+// const prodid = process.env.PRODID;
 
-const qurl = process.env.QURL;
+// const qurl = process.env.QURL;
+
+
+const mac = process.env.INTERSWITCH_KEY_DEMO;
+
+const prodid = process.env.PRODID_DEMO;
+
+const qurl = process.env.QURL_DEMO;
 
 const ps_key = process.env.PAYSTACK_KEY;
 // const ps_key = process.env.CHOP_PAYSTACK_KEY;
