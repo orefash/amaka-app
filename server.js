@@ -1391,7 +1391,7 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
     chat_token +
     "&chatfuel_block_name=order_confirm";
   
-  console.log()
+  console.log("User Id: ",user_id);
 
   const options = {
     uri: url_st,
