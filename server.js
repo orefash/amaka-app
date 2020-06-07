@@ -777,7 +777,7 @@ app.post("/ps-mail", function(req, res) {
   db.all(
     "SELECT * from userorders where order_id='" + oid + "'",
     (err, rows) => {
-      // console.log("in redirect - -  row", row);
+      console.log("in psmail - -  row", row);
       var row = rows[0];
 
       request_response = {
@@ -852,6 +852,8 @@ function sendConfirmMails(request_response, init_oid) {
           date.addHours(now, 1),
           "ddd, MMM DD YYYY HH:mm:ss"
         );
+        
+        console.log("Response: %j", request_response);
 
 
         var params = {
@@ -866,7 +868,7 @@ function sendConfirmMails(request_response, init_oid) {
           c_amt: request_response.c_amt,
           district: request_response.district,
           disc: request_response.disc,
-          slot: request_response.slot,
+          tslot: request_response.slot,
           delivery: request_response.delivery,
           pchoice: request_response.pchoice,
           info: request_response.info,
@@ -907,7 +909,7 @@ function sendConfirmMails(request_response, init_oid) {
           {
             body: {
               email_address: request_response.email,
-              subject: "Chopnownow",
+              subject: "Chopnownow Order Successful",
               message: cus_output
             },
             json: true
@@ -923,8 +925,10 @@ function sendConfirmMails(request_response, init_oid) {
           url_st,
           {
             body: {
-              email_address: "chopnownoworders@gmail.com",
-              subject: "Chopnownow",
+              
+              // email_address: "chopnownoworders@gmail.com",
+              email_address: "orefash@gmail.com",
+              subject: "New Product Order - " + init_oid,
               message: ord_output
             },
             json: true
