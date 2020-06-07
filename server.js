@@ -760,7 +760,7 @@ app.post("/cpay-fn", function(req, res) {
 });
 
 app.post("/ps-mail", function(req, res) {
-  console.log("In post");
+  console.log("In send paystack mail");
 
   var oid = req.body.oid;
   var amount = req.body.amount;
@@ -1390,6 +1390,8 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
     "/send?chatfuel_token=" +
     chat_token +
     "&chatfuel_block_name=order_confirm";
+  
+  console.log()
 
   const options = {
     uri: url_st,
