@@ -34,18 +34,18 @@ const { fetch_loc } = require("./fetch.js");
 
 //Interswitch params
 
-// const mac = process.env.INTERSWITCH_KEY;
+const mac = process.env.INTERSWITCH_KEY;
 
-// const prodid = process.env.PRODID;
+const prodid = process.env.PRODID;
 
-// const qurl = process.env.QURL;
+const qurl = process.env.QURL;
 
 
-const mac = process.env.INTERSWITCH_KEY_DEMO;
+// const mac = process.env.INTERSWITCH_KEY_DEMO;
 
-const prodid = process.env.PRODID_DEMO;
+// const prodid = process.env.PRODID_DEMO;
 
-const qurl = process.env.QURL_DEMO;
+// const qurl = process.env.QURL_DEMO;
 
 const ps_key = process.env.PAYSTACK_KEY;
 // const ps_key = process.env.CHOP_PAYSTACK_KEY;
@@ -658,19 +658,19 @@ app.get("/cgate-callback", function(req, res) {
 });
 
 function testFn(res, amt, oid) {
-  // let un = "chopnownow";
-  // let pass = "2009011220@012#8";
-  // let mid = "1057CH020000002";
-  // let tid = "1057CH02";
-  // let uri = "https://testdev.coralpay.com/CgatePayV2/api/Pay";
-  // let pk = "0030ceb3-484b-41b6-bd47-febc63e521d4";
-
   let un = "chopnownow";
-  let pass = "2018040920@002#2";
-  let mid = "405804301004851";
-  let tid = "40580431";
-  let uri = "https://cgateweb.coralpay.com/api/pay";
-  let pk = "40fd5ed0-264c-4fee-b069-f19e9735f680";
+  let pass = "2009011220@012#8";
+  let mid = "1057CH020000002";
+  let tid = "1057CH02";
+  let uri = "https://testdev.coralpay.com/CgatePayV2/api/Pay";
+  let pk = "0030ceb3-484b-41b6-bd47-febc63e521d4";
+
+  // let un = "chopnownow";
+  // let pass = "2018040920@002#2";
+  // let mid = "405804301004851";
+  // let tid = "40580431";
+  // let uri = "https://cgateweb.coralpay.com/api/pay";
+  // let pk = "40fd5ed0-264c-4fee-b069-f19e9735f680";
 
   // let amt = "400";
   let rtUrl = "https://amaka-server.glitch.me/cgate-callback";
