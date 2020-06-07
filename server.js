@@ -870,16 +870,16 @@ function sendConfirmMails(request_response, init_oid) {
 
         console.log("Mail Params: %j", params);
 
-        mailer.send_mail(params, request_response.email);
+        // mailer.send_mail(params, request_response.email);
 
         params.template = "order";
         params.subject = "New Product Order - " + init_oid;
         
 
-        mailer.send_mail(params, "kingfash5@gmail.com");
+        // mailer.send_mail(params, "kingfash5@gmail.com");
 
         // params.cmail = "chopnownoworders@gmail.com";
-        mailer.send_mail(params, "chopnownoworders@gmail.com");
+        // mailer.send_mail(params, "chopnownoworders@gmail.com");
         
         
         const mustache   = require('mustache');
@@ -892,6 +892,26 @@ function sendConfirmMails(request_response, init_oid) {
         
         var ord_output = mustache.render(ord_content, params);
         
+        
+        var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
+
+  request.post(
+    url_st,
+    {
+      body: {
+        email_address: "orefash@gmail.com",
+        subject: "Chopnownow",
+        message: output
+      },
+      json: true
+    },
+    function(err, res, body) {
+      if (err) response.send({ error: err });
+      console.log({ d: body });
+      response.send(JSON.stringify("Successfull"));
+    }
+  );
+
         
 
         console.log("mails sent");
