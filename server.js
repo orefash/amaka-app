@@ -47,7 +47,7 @@ const qurl = process.env.QURL;
 
 // const qurl = process.env.QURL_DEMO;
 
-// const ps_key = process.env.PAYSTACK_KEY;
+//const ps_key = process.env.PAYSTACK_KEY;
 const ps_key = process.env.CHOP_PAYSTACK_KEY;
 
 //Pay params end
