@@ -207,12 +207,7 @@
         var total = $("#ototal").val();
         var pkey = $("#pkey").val();
         var uid = $("#uid").val();
-        
-        
-//         function showPaystack(key, email, amount, ref) {
-          
-          
-//         }
+    
         
         function showPaystack(key, email, amount, ref) {
           
@@ -282,19 +277,27 @@
         let dom = document.getElementById("pay-btn");
         dom.addEventListener("click", function() {
           makepayment(pkey, email, total, order_id); 
-//           let x = dom;
-//           if (x.style.display === "none") {
-//             x.style.display = "block";
-//           } else {
-//             x.style.display = "none";
-//             // document.getElementById("pstack").style.display = "block";
-//             showPaystack(pkey, email, total, order_id); 
-            
-            
-            
-//           }
         });
       };
+    </script>
+          
+          
+    <script>
+      
+      
+      window.extAsyncInit = function() {
+        
+        
+        let dom = document.getElementById("pod");
+        dom.addEventListener("click", function() {
+          
+          
+          
+        });
+        
+      };
+          
+          
     </script>
   </body>
 </html>
