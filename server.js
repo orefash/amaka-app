@@ -1135,6 +1135,16 @@ app.get("/cmm", (req, response) => {
   
 });
 
+
+app.get("/finish-order/:oid", (req, response) => {
+  response.setHeader("Access-Control-Allow-Origin", "*");
+
+  var oid = req.params.oid;
+  
+  
+  
+});
+
 app.get("/sf/:oid", (req, response) => {
   response.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -1430,7 +1440,7 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
     .then(() => {
     response.json({});
   }).catch(function (err) {
-        console.log("broadcast: ",err); // line 8
+      console.log("broadcast: ",err); // line 8
     
     response.json({error: err});
     });
