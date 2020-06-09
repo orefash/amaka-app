@@ -348,6 +348,7 @@ app.get("/receipt", (request, response) => {
   var phone = "";
   var email = "";
   var total = "";
+  var pchoice = "";
 
   var elements = [];
 
@@ -362,6 +363,7 @@ app.get("/receipt", (request, response) => {
         email = row.email;
         total = row.total_price;
         district = row.delivery_district;
+        pchoice = row.pay_choice;
       }
     );
 
@@ -399,7 +401,7 @@ app.get("/receipt", (request, response) => {
                     merchant_name: "Chopnownow",
                     order_number: oid,
                     currency: "NGN",
-                    payment_method: "Online Payment",
+                    payment_method: pchoice,
                     order_url:
                       "https://rockets.chatfuel.com/store?order_id=12345678901",
                     timestamp: timestamp,
