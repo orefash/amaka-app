@@ -1605,7 +1605,7 @@ app.get("/menu_categorys", (request, response) => {
       var title = value.title;
       var tid = value.itemid;
 
-      // if (value.enable == "Yes") {
+      if (value.enable == "Yes") {
         en++;
         var object = {
           title: title,
@@ -1655,7 +1655,7 @@ app.get("/menu_categorys", (request, response) => {
         }
         // console.log("Elements: " + elements);
         count++;
-      // }
+      }
     });
     
     console.log("Enabled: "+en);
