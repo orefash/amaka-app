@@ -881,16 +881,9 @@ function sendConfirmMails(request_response, init_oid) {
 
         console.log("Mail Params: %j", params);
 
-        // mailer.send_mail(params, request_response.email);
-
         params.template = "order";
         params.subject = "New Product Order - " + init_oid;
         
-
-        // mailer.send_mail(params, "kingfash5@gmail.com");
-
-        // params.cmail = "chopnownoworders@gmail.com";
-        // mailer.send_mail(params, "chopnownoworders@gmail.com");
         
         
         const mustache   = require('mustache');
@@ -1065,8 +1058,6 @@ app.get("/mailing", (req, response) => {
     cmail: "orefash@gmail.com",
     template: "customer"
   };
-  // mailer.send_mail(params, params.cmail);
-  // console.log("Value: "+value);
   
   const mustache   = require('mustache');
   // const fs = require('fs'); //Filesystem    
@@ -1117,13 +1108,6 @@ app.get("/cmm", (req, response) => {
     body: rOPt
   };
 
-  // requestPromise(
-  //   reqOpt,
-  //   function(err, res, body) {
-  //     if (err) response.json({ error: err });
-  //     response.json({ d: body });
-  //   }
-  // );
   
   requestPromise(reqOpt)
     .then(function(body) {
@@ -1255,7 +1239,6 @@ app.get("/sf/:oid", (req, response) => {
 
 app.post("/paym", (request, response) => {
   var oid = request.body.oid;
-  // var oid = "20200118173554";
 
   console.log("From confirm: ", request.body);
 
@@ -1577,9 +1560,6 @@ app.get("/menu_categorys22", (request, response) => {
         count++;
       }
     });
-    
-    
-    
 
     response.json({
       messages: messages
@@ -1698,10 +1678,9 @@ app.get("/getMenuItem", (request, response) => {
   };
 
   requestPromise.post(options).then(function(data) {
-    // console.log(data);
+    
     var parsedResponse = data.records;
-    // var parsedResponse = JSON.parse(data);
-    // console.log(parsedResponse);
+    
     var elements = [];
     var messages = [];
 
@@ -1714,9 +1693,8 @@ app.get("/getMenuItem", (request, response) => {
       price = price.split("/")[0];
       var img_url = value.image_url;
       if (img_url.length == 0) {
-        // console.log("No image: ",title);
-        img_url =
-          "https://cdn.glitch.com/11cdb0eb-be82-41ef-820d-46c73f500ac1%2Fthumbnails%2Flogo_fade.png?1587384063339";
+        
+        img_url = "https://cdn.glitch.com/11cdb0eb-be82-41ef-820d-46c73f500ac1%2Fthumbnails%2Flogo_fade.png?1587384063339";
       }
       var take = value.takeaway_charge;
 
