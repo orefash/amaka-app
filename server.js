@@ -1583,7 +1583,6 @@ app.get("/menu_categorys", (request, response) => {
   };
 
   requestPromise.get(options).then(function(data) {
-    // console.log(data);
 
     var parsedResponse = JSON.parse(data).records;
     console.log("Category Length: "+parsedResponse.length);
@@ -1591,7 +1590,7 @@ app.get("/menu_categorys", (request, response) => {
     var messages = [];
 
     var count = 1;
-    var en =0;
+    var en = 0;
 
     parsedResponse.forEach(function(value) {
       var title = value.title;
@@ -1601,7 +1600,7 @@ app.get("/menu_categorys", (request, response) => {
         en++;
         var object = {
           title: title,
-          subtitle: "Menu cateogry",
+          subtitle: "Menu category",
           buttons: [
             {
               type: "json_plugin_url",
@@ -1631,6 +1630,7 @@ app.get("/menu_categorys", (request, response) => {
           messages.push(message);
           elements = [];
         }
+        
         if (count === parsedResponse.length) {
           if (count % 10 !== 0) {
             var message = {
@@ -1656,6 +1656,7 @@ app.get("/menu_categorys", (request, response) => {
     response.json({
       messages: messages
     });
+    
   });
 });
 
