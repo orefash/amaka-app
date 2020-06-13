@@ -259,6 +259,8 @@
        
         let dom = document.getElementById("pay-btn");
         dom.addEventListener("click", function() {
+          
+          console.log("in paystack");
           makepayment(pkey, email, total, order_id); 
         });
       };
