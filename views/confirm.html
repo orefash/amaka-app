@@ -27,7 +27,7 @@
         <!--         <form class="contact100-form validate-form"> -->
         <div class="clearfix ">
           <img
-            style="float:left"
+            style="float:left; width:80%"
             src="https://cdn.glitch.com/11cdb0eb-be82-41ef-820d-46c73f500ac1%2Fchoplogo.png?v=1579883798548"
           />
         </div>
@@ -278,24 +278,12 @@
           makepayment(pkey, email, total, order_id); 
 
         });
-      };
-    </script>
-          
-          
-          
-          
-     <script>
-      
-      
-      window.extAsyncInit = function() {
-        
-         var ref = $("#oid").val();
-        var amount = $("#ototal").val();
-        var uid = $("#uid").val();
         
         
-        let dom = document.getElementById("pod");
-        dom.addEventListener("click", function() {
+        
+        
+        let pod = document.getElementById("pod");
+        pod.addEventListener("click", function() {
           
           console.log("In pay on delivery");
           
@@ -323,9 +311,14 @@
           
         });
         
+        
       };
-          
-          
     </script>
+          
+          
+          
+     
+          
+          
   </body>
 </html>
