@@ -103,7 +103,7 @@
         <input type="hidden" id="uid" value="<%= uid %>" />
 
           
-        <button id="pay-btn" class="contact100-form-btn bgred">
+        <button id="pbtn" class="contact100-form-btn bgred">
           Complete Order
         </button>
           
@@ -135,6 +135,23 @@
             
             
           </div>
+          
+          
+
+        <% } else if (ptype == "pay on delivery"){ %>
+
+         <input id="oid" type="hidden" name="oid" value="<%= pay_ref %>" />
+        <input type="hidden" id="email" value="<%= email %>" />
+        <input type="hidden" id="ototal" value="<%= amt %>" />
+        <input type="hidden" id="uid" value="<%= uid %>" />
+
+          
+          
+        <button id="pod" class="contact100-form-btn bgred">
+          Complete Order
+        </button>
+          
+        
           
           
 
@@ -191,25 +208,7 @@
         var total = $("#ototal").val();
         var pkey = $("#pkey").val();
         var uid = $("#uid").val();
-     
-        
-        function showPaystack(key, email, amount, ref) {
-          
-          PaystackPop.setup({
-           key: key,
-           email: email,
-           amount: amount,
-           container: 'paystackEmbedContainer',
-           callback: function(response){
-             
-              alert('successfully subscribed. transaction ref is ' + response.reference);         
-             
-            }
-          });
-          
-          
-        };
-
+    
         function makepayment(key, email, amount, ref) {
           console.log(
             "in payment Key: " + key + " TOtal: " + amount + " Email: " + email
@@ -258,12 +257,58 @@
         }
 
        
-        let dom = document.getElementById("pay-btn");
+        let dom = document.getElementById("pbtn");
         dom.addEventListener("click", function() {
+          
+          console.log("in paystack");
           makepayment(pkey, email, total, order_id); 
-
         });
       };
+    </script>
+          
+          
+    <script>
+      
+      
+      window.extAsyncInit = function() {
+        
+         var ref = $("#oid").val();
+        var amount = $("#ototal").val();
+        var uid = $("#uid").val();
+        
+        
+        let dom = document.getElementById("pod");
+        dom.addEventListener("click", function() {
+          
+          console.log("In pay on delivery");
+          
+          
+           $.post("/ps-mail", { oid: ref, amount: amount}, function(
+                  result
+                ) {
+                  console.log("Result:"+result);
+                });
+
+                $.post("/broadcast-to-chatfuel/" + uid, function(data) {
+                  MessengerExtensions.requestCloseBrowser(
+                    function success() {
+                      window.close();
+                      console.log("Window will be closed");
+                    },
+                    function error(error) {
+                      console.log("There is an error");
+                      console.log(error);
+                    }
+                  );
+                });
+          
+          
+          
+        });
+        
+      };
+          
+          
     </script>
   </body>
 </html>
