@@ -2044,7 +2044,7 @@ app.get("/showCart", (request, response) => {
           count++;
         });
 
-        let bu = request.protocol+"://"+req.headers.host;
+        let bu = request.protocol+"://"+request.headers.host;
 
         var action_obj = {
           attachment: {
