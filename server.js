@@ -672,19 +672,19 @@ app.get("/cgate-callback", function(req, res) {
 });
 
 function testFn(req, res, amt, oid) {
-  // let un = "chopnownow";
-  // let pass = "2009011220@012#8";
-  // let mid = "1057CH020000002";
-  // let tid = "1057CH02";
-  // let uri = "https://testdev.coralpay.com/CgatePayV2/api/Pay";
-  // let pk = "0030ceb3-484b-41b6-bd47-febc63e521d4";
-
   let un = "chopnownow";
-  let pass = "2018040920@002#2";
-  let mid = "405804301004851";
-  let tid = "40580431";
-  let uri = "https://cgateweb.coralpay.com/api/pay";
-  let pk = "40fd5ed0-264c-4fee-b069-f19e9735f680";
+  let pass = "2009011220@012#8";
+  let mid = "1057CH020000002";
+  let tid = "1057CH02";
+  let uri = "https://testdev.coralpay.com/CgatePayV2/api/Pay";
+  let pk = "0030ceb3-484b-41b6-bd47-febc63e521d4";
+
+  // let un = "chopnownow";
+  // let pass = "2018040920@002#2";
+  // let mid = "405804301004851";
+  // let tid = "40580431";
+  // let uri = "https://cgateweb.coralpay.com/api/pay";
+  // let pk = "40fd5ed0-264c-4fee-b069-f19e9735f680";
 
   // let amt = "400";
 
