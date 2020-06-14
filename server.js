@@ -2133,6 +2133,6 @@ const cleanseString = function(string) {
 };
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, () => {
+var listener = app.listen(process.env.PORT||8500, () => {
   console.log(`server listening on port ${listener.address().port}`);
 });

@@ -2,7 +2,7 @@
   "//1": "describes your app and its dependencies",
   "//2": "https://docs.npmjs.com/files/package.json",
   "//3": "updating this file will download and update your packages",
-  "name": "Amaka Bot",
+  "name": "Amaka-Bot",
   "version": "0.0.1",
   "description": "A simple Node app with SQLite as a database management system, instantly up and running.",
   "main": "server.js",
@@ -28,11 +28,11 @@
     "openpgp": "4.10.1",
     "gpg": "0.6.0",
     "cors": "2.8.5",
-    "frameguard":"3.1.0",
-    "date-and-time":"0.13.1",
-    "query-string":"6.12.1",
-    "mustache":"4.0.1",
-    "handlebars":"4.7.6"
+    "frameguard": "3.1.0",
+    "date-and-time": "0.13.1",
+    "query-string": "6.12.1",
+    "mustache": "4.0.1",
+    "handlebars": "4.7.6"
   },
   "engines": {
     "node": "8.x"
