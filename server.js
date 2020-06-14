@@ -1720,7 +1720,7 @@ app.get("/getMenuItem", (request, response) => {
       }
       var take = value.takeaway_charge;
 
-      let bu = req.protocol+"://"+req.headers.host;
+      let bu = request.protocol+"://"+request.headers.host;
 
 
       var url =
