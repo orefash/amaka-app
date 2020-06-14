@@ -668,7 +668,7 @@ app.get("/cgate-callback", function(req, res) {
   );
 });
 
-function testFn(res, amt, oid) {
+function testFn(req, res, amt, oid) {
   // let un = "chopnownow";
   // let pass = "2009011220@012#8";
   // let mid = "1057CH020000002";
@@ -778,7 +778,7 @@ app.post("/cpay-fn", function(req, res) {
   var amount = req.body.amt;
   amount = parseInt(amount) / 100;
 
-  testFn(res, amount, oid);
+  testFn(req, res, amount, oid);
 });
 
 app.post("/ps-mail", function(req, res) {
@@ -1367,7 +1367,7 @@ app.post("/paym", (request, response) => {
           var amount = +(Math.round(amtt + "e+2") + "e-2");
           console.log("AMOUNT: ", amount);
 
-          let bu = req.protocol+"://"+req.headers.host;
+          let bu = request.protocol+"://"+request.headers.host;
 
 
           var site_redirect_url =
@@ -1524,7 +1524,7 @@ app.get("/menu_categorys22", (request, response) => {
       var title = value.title;
       var tid = value.itemid;
 
-      let bu = req.protocol+"://"+req.headers.host;
+      let bu = request.protocol+"://"+request.headers.host;
 
 
       if (value.enable == "Yes") {
@@ -1617,7 +1617,7 @@ app.get("/menu_categorys", (request, response) => {
 
       if (value.enable == "Yes") {
         en++;
-        let bu = req.protocol+"://"+req.headers.host;
+        let bu = request.protocol+"://"+request.headers.host;
 
         var object = {
           title: title,
@@ -1988,7 +1988,7 @@ app.get("/showCart", (request, response) => {
 
           total_p += t_price;
 
-          let bu = req.protocol+"://"+req.headers.host;
+          let bu = request.protocol+"://"+request.headers.host;
 
 
           var object = {
@@ -2044,7 +2044,7 @@ app.get("/showCart", (request, response) => {
           count++;
         });
 
-        let bu = req.protocol+"://"+req.headers.host;
+        // let bu = request.protocol+"://"+req.headers.host;
 
         var action_obj = {
           attachment: {
@@ -2055,7 +2055,7 @@ app.get("/showCart", (request, response) => {
               buttons: [
                 {
                   type: "web_url",
-                  url: bu+"/sf/" + oid,
+                  url: `${bu}/sf/${oid}`,
                   title: "Checkout",
                   messenger_extensions: true,
                   webview_height_ratio: "tall"
