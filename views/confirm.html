@@ -140,14 +140,15 @@
 
          <% } else if (ptype == "pay on delivery"){ %>
 
-         <input id="oid" type="hidden" name="oid" value="<%= pay_ref %>" />
-        <input type="hidden" id="email" value="<%= email %>" />
-        <input type="hidden" id="ototal" value="<%= amt %>" />
-        <input type="hidden" id="uid" value="<%= uid %>" />
+          <input id="oid" type="hidden" name="oid" value="<%= pay_ref %>" />
+          <input type="hidden" id="email" value="<%= email %>" />
+          <input type="hidden" id="ototal" value="<%= amt %>" />
+          <input type="hidden" id="pkey" value="<%= ps_key %>" />
+          <input type="hidden" id="uid" value="<%= uid %>" />
 
           
           
-        <button id="pod" class="contact100-form-btn bgred">
+        <button id="pod" onclick="podClick()" class="contact100-form-btn bgred">
           Complete Order
         </button>        
          
@@ -207,23 +208,6 @@
         var pkey = $("#pkey").val();
         var uid = $("#uid").val();
      
-        
-        function showPaystack(key, email, amount, ref) {
-          
-          PaystackPop.setup({
-           key: key,
-           email: email,
-           amount: amount,
-           container: 'paystackEmbedContainer',
-           callback: function(response){
-             
-              alert('successfully subscribed. transaction ref is ' + response.reference);         
-             
-            }
-          });
-          
-          
-        };
 
         function makepayment(key, email, amount, ref) {
           console.log(
@@ -280,10 +264,8 @@
         });
         
         
-        
-        
-        let pod = document.getElementById("pod");
-        pod.addEventListener("click", function() {
+        function podClick(){
+
           
           console.log("In pay on delivery");
           
@@ -306,10 +288,16 @@
                     }
                   );
                 });
+
+        };
+        
+        // let pod = document.getElementById("pod");
+        // pod.addEventListener("click", function() {
           
           
           
-        });
+          
+        // });
         
         
       };
