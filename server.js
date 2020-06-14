@@ -18,6 +18,9 @@ var request = require("request");
 
 var httpBuildQuery = require("http-build-query");
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 var compression = require("compression");
 var helmet = require("helmet");
 
@@ -175,7 +178,7 @@ app.get("/", (req, response) => {
   let bu = req.protocol+"://"+req.headers.host;
 
 
-  response.json("request: "+bu);
+  response.json("request: "+bu+" chop: "+base_url);
 });
 
 app.get("/push-notifications", (request, response) => {
