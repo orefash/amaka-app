@@ -169,8 +169,13 @@ app.use(
 );
 
 // http://expressjs.com/en/starter/basic-routing.html
-app.get("/", (request, response) => {
-  response.json("iews/confirm.html");
+app.get("/", (req, response) => {
+
+
+  let bu = req.protocol+"://"+req.headers.host;
+
+
+  response.json("request: "+bu);
 });
 
 app.get("/push-notifications", (request, response) => {
@@ -493,8 +498,12 @@ app.post("/confirm", function(req, res) {
           if (err) {
             console.log("Update oid error: ", err);
           } else {
+
+            let bu = req.protocol+"://"+req.headers.host;
+
+
             var site_redirect_url =
-              "https://amaka-server.glitch.me/confirm?oid=" + init_oid;
+              bu+"/confirm?oid=" + init_oid;
 
             // hash value computation
             var hashv =
@@ -675,7 +684,11 @@ function testFn(res, amt, oid) {
   let pk = "40fd5ed0-264c-4fee-b069-f19e9735f680";
 
   // let amt = "400";
-  let rtUrl = "https://amaka-server.glitch.me/cgate-callback";
+
+  let bu = req.protocol+"://"+req.headers.host;
+
+
+  let rtUrl = bu+"/cgate-callback";
   let tt = "0";
 
   let signStr =
@@ -1354,8 +1367,11 @@ app.post("/paym", (request, response) => {
           var amount = +(Math.round(amtt + "e+2") + "e-2");
           console.log("AMOUNT: ", amount);
 
+          let bu = req.protocol+"://"+req.headers.host;
+
+
           var site_redirect_url =
-            "https://amaka-server.glitch.me/confirm?oid=" + oid;
+            bu+"/confirm?oid=" + oid;
 
           // hash value computation
           var hashv =
@@ -1508,6 +1524,9 @@ app.get("/menu_categorys22", (request, response) => {
       var title = value.title;
       var tid = value.itemid;
 
+      let bu = req.protocol+"://"+req.headers.host;
+
+
       if (value.enable == "Yes") {
         en++;
         var object = {
@@ -1517,7 +1536,7 @@ app.get("/menu_categorys22", (request, response) => {
             {
               type: "json_plugin_url",
               url:
-                "https://amaka-server.glitch.me/getMenuItem?cat_id=" +
+                bu+"/getMenuItem?cat_id=" +
                 tid +
                 "&oid=" +
                 oid,
@@ -1598,6 +1617,8 @@ app.get("/menu_categorys", (request, response) => {
 
       if (value.enable == "Yes") {
         en++;
+        let bu = req.protocol+"://"+req.headers.host;
+
         var object = {
           title: title,
           subtitle: "Menu category",
@@ -1605,7 +1626,7 @@ app.get("/menu_categorys", (request, response) => {
             {
               type: "json_plugin_url",
               url:
-                "https://amaka-server.glitch.me/getMenuItem?cat_id=" +
+                bu+"/getMenuItem?cat_id=" +
                 tid +
                 "&oid=" +
                 oid,
@@ -1699,8 +1720,11 @@ app.get("/getMenuItem", (request, response) => {
       }
       var take = value.takeaway_charge;
 
+      let bu = req.protocol+"://"+req.headers.host;
+
+
       var url =
-        "https://amaka-server.glitch.me/addItem?title=" +
+        bu+"/addItem?title=" +
         title +
         "&tid=" +
         tid +
@@ -1964,6 +1988,9 @@ app.get("/showCart", (request, response) => {
 
           total_p += t_price;
 
+          let bu = req.protocol+"://"+req.headers.host;
+
+
           var object = {
             title: title,
             subtitle: subtitle,
@@ -1971,12 +1998,12 @@ app.get("/showCart", (request, response) => {
             buttons: [
               {
                 type: "json_plugin_url",
-                url: "https://amaka-server.glitch.me/updateQuantity?tid=" + tid,
+                url: bu+"/updateQuantity?tid=" + tid,
                 title: "Update Quantity"
               },
               {
                 type: "json_plugin_url",
-                url: "https://amaka-server.glitch.me/deleteItem?tid=" + tid,
+                url: bu+"/deleteItem?tid=" + tid,
                 title: "Remove"
               }
             ]
@@ -2017,6 +2044,8 @@ app.get("/showCart", (request, response) => {
           count++;
         });
 
+        let bu = req.protocol+"://"+req.headers.host;
+
         var action_obj = {
           attachment: {
             type: "template",
@@ -2026,7 +2055,7 @@ app.get("/showCart", (request, response) => {
               buttons: [
                 {
                   type: "web_url",
-                  url: "https://amaka-server.glitch.me/sf/" + oid,
+                  url: bu+"/sf/" + oid,
                   title: "Checkout",
                   messenger_extensions: true,
                   webview_height_ratio: "tall"
