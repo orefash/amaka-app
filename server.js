@@ -1027,9 +1027,14 @@ app.post("/cc", (req, response) => {
   var amount = req.body.amount;
   var oid = req.body.transaction_id;
 
+
+  // var coupon = "CHOPWXYZ";
+  // var amount = 2000;
+  // var oid = "req.body.transaction_id";
+
   console.log("coupon: " + coupon + " amount: " + amount);
 
-  var url_st = "https://chopxpress.com/sandbox/api/fb-bot/validate-coupon";
+  var url_st = "https://chopnownow.com/api/fb-bot/validate-coupon";
 
   request.post(
     url_st,
@@ -1410,7 +1415,13 @@ app.post("/paym", (request, response) => {
 
           console.log("PAY DATA: ", resp_data);
 
-          response.render("confirm.html", resp_data);
+          if(payment=="pay on delivery"){
+            response.render("cfh.html", resp_data);
+          } else {
+            response.render("confirm.html", resp_data);
+          }
+
+          
         }
       }
     );

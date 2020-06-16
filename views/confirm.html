@@ -138,22 +138,9 @@
           
           
 
-         <% } else if (ptype == "pay on delivery"){ %>
-
-          <input id="oid" type="hidden" name="oid" value="<%= pay_ref %>" />
-          <input type="hidden" id="email" value="<%= email %>" />
-          <input type="hidden" id="ototal" value="<%= amt %>" />
-          <input type="hidden" id="pkey" value="<%= ps_key %>" />
-          <input type="hidden" id="uid" value="<%= uid %>" />
+         <% }  %>
 
           
-          
-        <button id="pod" onclick="podClick()" class="contact100-form-btn bgred">
-          Complete Order
-        </button>        
-         
-
-        <% } %>
 
 
       </div>
@@ -310,3 +297,4 @@
           
   </body>
 </html>
+

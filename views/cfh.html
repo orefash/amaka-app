@@ -1,0 +1,160 @@
+<html>
+  <head>
+    <title>Confirm Order</title>
+    <link rel="stylesheet" href="/bootstrap.css" />
+    <link rel="stylesheet" href="/main.css" />
+
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+  </head>
+
+  <body>
+    <script>
+      (function(d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "Messenger");
+    </script>
+
+    <div class="container-contact100">
+      <div class="wrap-contact100">
+        <!--         <form class="contact100-form validate-form"> -->
+        <div class="clearfix ">
+          <img
+            style="float:left; width:80%"
+            src="https://cdn.glitch.com/11cdb0eb-be82-41ef-820d-46c73f500ac1%2Fchoplogo.png?v=1579883798548"
+          />
+        </div>
+
+        <div class="wrap-input100 validate-input bg1">
+          <h5 class=" text-center">
+            Chopnownow Order
+          </h5>
+
+          <p class="m-2 text-center">
+            <b>Click Complete Order to Continue</b>
+          </p>
+
+          <% items.forEach(function(item, i) { %>
+
+          <p class="p-1 text-dark">
+            <%= item[0] %> <br />
+            <span class=""><b><%= item[1] %></b></span>
+          </p>
+
+          <% });%>
+
+          <p class="text-dark">
+            <b>
+              Cart Total: N <%= total %> <br />
+              Discount: -N <%= discount %> <br /><br />
+              Delivery Fee: <%= delivery %> <br />
+              Total Due: <%= ctotal %>
+            </b>
+          </p>
+
+          <p class="mt-2">
+            Customer Name: <%= nm %> <br />
+            Delivery Time: <%= slot %> <br />
+            Delivery District: <%= district %> <br />
+            Delivery Address: <%= address %> <br />
+            Transaction ID/Ref: <%= orderid %>
+          </p>
+        </div>
+
+
+          <input id="oid" type="hidden" name="oid" value="<%= pay_ref %>" />
+          <input type="hidden" id="email" value="<%= email %>" />
+          <input type="hidden" id="ototal" value="<%= amt %>" />
+          <input type="hidden" id="pkey" value="<%= ps_key %>" />
+          <input type="hidden" id="uid" value="<%= uid %>" />
+
+          
+          
+        <button id="pod"  class="contact100-form-btn bgred">
+          Complete Order
+        </button>        
+         
+
+
+      </div>
+    </div>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+          
+
+    <script type="text/javascript">
+      window.extAsyncInit = function() {
+        // the Messenger Extensions JS SDK is done loading
+        console.log("sdk open");
+
+        var ref = $("#oid").val();
+        var email = $("#email").val();
+        var amount = $("#ototal").val();
+        var pkey = $("#pkey").val();
+        var uid = $("#uid").val();
+    
+        
+        
+        function podClick(){
+
+          
+          console.log("In pay on delivery");
+          
+          
+           $.post("/ps-mail", { oid: ref, amount: amount}, function(
+                  result
+                ) {
+                  console.log("Result:"+result);
+                });
+
+                $.post("/broadcast-to-chatfuel/" + uid, function(data) {
+                  MessengerExtensions.requestCloseBrowser(
+                    function success() {
+                      window.close();
+                      console.log("Window will be closed");
+                    },
+                    function error(error) {
+                      console.log("There is an error");
+                      console.log(error);
+                    }
+                  );
+                });
+
+        };
+        
+        let pod = document.getElementById("pod");
+        pod.addEventListener("click", function() {
+          
+          podClick();          
+          
+        });
+        
+        
+      };
+    </script>
+          
+          
+          
+     
+          
+          
+  </body>
+</html>
+
