@@ -900,8 +900,7 @@ function sendConfirmMails(request_response, init_oid) {
         console.log("Mail Params: %j", params);
 
         params.template = "order";
-        params.subject = "New Product Order - " + init_oid;
-        
+        params.subject = "New Product Order - " + init_oid;        
         
         
         const mustache   = require('mustache');
@@ -1908,6 +1907,8 @@ app.get("/addItem", (request, response) => {
   var query =
     "INSERT INTO order_items (order_id, item_id, title, price, takeaway, img_url, quantity) VALUES " +
     query_vals;
+  
+    console.log("Insert query: ", query);
 
   db.serialize(() => {
     db.run(query, function(err) {
