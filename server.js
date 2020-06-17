@@ -1294,6 +1294,7 @@ app.post("/paym", (request, response) => {
   var email = "";
   var pay_ref = "";
   var uid = "";
+  var takeaway_charge = 0;
 
   var elements = [];
   var total_p = 0;
@@ -1318,6 +1319,10 @@ app.post("/paym", (request, response) => {
         console.log("Row ln: " + rows.length);
         if (rows.length > 0) {
           rows.forEach(row => {
+
+            var take = row.takeaway * row.quantity;
+            takeaway_charge += take;
+
             var price = row.price;
             var t_price = price * row.quantity;
 
@@ -1340,6 +1345,8 @@ app.post("/paym", (request, response) => {
             parseInt(itotal) + parseInt(dcharge) - parseInt(discount);
 
           console.log("paym CTotal: ", ctotal);
+
+          console.log("takeaway total: ",takeaway_charge);
 
           var query =
             "update userorders set time_slot = '" +
