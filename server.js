@@ -1342,7 +1342,7 @@ app.post("/paym", (request, response) => {
 
           // var ctotal = total_p + districts[district];
           var ctotal =
-            parseInt(itotal) + parseInt(dcharge) - parseInt(discount);
+            parseInt(itotal) + parseInt(dcharge) - parseInt(discount) + parseInt(takeaway_charge);
 
           console.log("paym CTotal: ", ctotal);
 
@@ -1355,6 +1355,8 @@ app.post("/paym", (request, response) => {
             itotal +
             ", discount = " +
             discount +
+            ", takeaway = " +
+            takeaway_charge +
             ", delivery = " +
             dcharge +
             ", total_price = " +
@@ -1415,6 +1417,7 @@ app.post("/paym", (request, response) => {
             slot: slot,
             orderid: oid,
             ctotal: ctotal,
+            takeaway: formatNaira(takeaway_charge),
             pay_ref: pay_ref,
             ps_key: ps_key,
             ptype: payment,
