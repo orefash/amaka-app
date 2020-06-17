@@ -584,6 +584,7 @@ app.post("/confirm", function(req, res) {
             tprice: row.total_price,
             pchoice: row.pay_choice,
             info: row.order_info,
+            takeaway: row.takeaway,
 
             qurl: qurl,
             prodid: prodid,
@@ -648,6 +649,7 @@ app.get("/cgate-callback", function(req, res) {
             slot: row.slot,
             pchoice: row.pay_choice,
             info: row.order_info,
+            takeaway: row.takeaway,
             amt: amt,
             oid: oid,
             district: row.delivery_district,
@@ -808,6 +810,7 @@ app.post("/ps-mail", function(req, res) {
         uid: row.chat_id,
         slot: row.time_slot,
         info: row.order_info,
+        takeaway: row.takeaway,
         district: row.delivery_district,
         disc: row.discount,
         itotal: row.itotal,
@@ -892,6 +895,7 @@ function sendConfirmMails(request_response, init_oid) {
           delivery: request_response.delivery,
           pchoice: request_response.pchoice,
           info: request_response.info,
+          takeaway: request_response.takeaway,
 
           oid: init_oid,
           cdate: cdate
