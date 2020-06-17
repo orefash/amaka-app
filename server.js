@@ -69,6 +69,8 @@ app.engine("html", require("ejs").renderFile);
 
 const base_url = process.env.BASE_URLX;
 
+const chop_url = "https://chopnownow.com/api/fb-bot/";
+
 // init sqlite db
 const dbFile = "./.data/sqlite.db";
 const exists = fs.existsSync(dbFile);
@@ -913,7 +915,7 @@ function sendConfirmMails(request_response, init_oid) {
         var ord_output = mustache.render(ord_content, params);
         
         
-        var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
+        var url_st = `${chop_url}send-mail`;
 
         request.post(
           url_st,
@@ -1092,7 +1094,7 @@ app.get("/mailing", (req, response) => {
   
   console.log("Output:  ", output);
   
-  var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
+  var url_st = `${chop_url}send-mail`;
 
   request.post(
     url_st,
@@ -1115,7 +1117,7 @@ app.get("/mailing", (req, response) => {
 });
 
 app.get("/cmm", (req, response) => {
-  var url_st = "https://chopxpress.com/sandbox/api/fb-bot/send-mail";
+  var url_st = chop_url+"send-mail";
   
   var rOPt = {
         email_address: "orefash@gmail.com",
@@ -1203,7 +1205,7 @@ app.get("/sf/:oid", (req, response) => {
 
             const options = {
               url:
-                "https://chopxpress.com/sandbox/api/fb-bot/list-delivery-locations",
+                chop_url+"list-delivery-locations",
               method: "GET",
               headers: {
                 Accept: "application/json",
@@ -1486,7 +1488,7 @@ app.get("/get-order", (request, response) => {
 
 app.get("/fetchl", (req, response) => {
   const options = {
-    url: "https://chopxpress.com/sandbox/api/fb-bot/list-delivery-locations",
+    url: chop_url+"list-delivery-locations",
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -1512,95 +1514,6 @@ app.get("/fetchl", (req, response) => {
 });
 
 
-app.get("/menu_categorys22", (request, response) => {
-  var oid = request.query.oid;
-
-  const options = {
-    uri: "https://chopxpress.com/sandbox/api/fb-bot/list-menu-category",
-    // uri: base_url + "&action=get_items&type=Product_Category&limit=80",
-    headers: {
-      // "Content-Type": "application/json"
-    }
-  };
-
-  requestPromise.get(options).then(function(data) {
-    console.log(data);
-
-    var parsedResponse = JSON.parse(data).records;
-    console.log(parsedResponse);
-    var elements = [];
-    var messages = [];
-
-    var count = 1;
-    var en = 0;
-
-    parsedResponse.forEach(function(value) {
-      var title = value.title;
-      var tid = value.itemid;
-
-      let bu = request.protocol+"://"+request.headers.host;
-
-
-      if (value.enable == "Yes") {
-        en++;
-        var object = {
-          title: title,
-          subtitle: "Menu cateogry",
-          buttons: [
-            {
-              type: "json_plugin_url",
-              url:
-                bu+"/getMenuItem?cat_id=" +
-                tid +
-                "&oid=" +
-                oid,
-              title: "Show"
-            }
-          ]
-        };
-
-        elements.push(object);
-
-        if (count % 10 === 0) {
-          console.log("counter: " + count);
-          var message = {
-            attachment: {
-              type: "template",
-              payload: {
-                template_type: "generic",
-                elements: elements
-              }
-            }
-          };
-          messages.push(message);
-          elements = [];
-        }
-        if (count === parsedResponse.length) {
-          if (count % 10 !== 0) {
-            var message = {
-              attachment: {
-                type: "template",
-                payload: {
-                  template_type: "generic",
-                  elements: elements
-                }
-              }
-            };
-            messages.push(message);
-          }
-        }
-        console.log("Elements: " + elements);
-        count++;
-      }
-    });
-
-    response.json({
-      messages: messages
-    });
-  });
-});
-
-
 
 
 
@@ -1608,8 +1521,7 @@ app.get("/menu_categorys", (request, response) => {
   var oid = request.query.oid;
 
   const options = {
-    uri: "https://chopxpress.com/sandbox/api/fb-bot/list-menu-category",
-    // uri: base_url + "&action=get_items&type=Product_Category&limit=80",
+    uri: chop_url+"list-menu-category",
     headers: {
       // "Content-Type": "application/json"
     }
@@ -1698,13 +1610,107 @@ app.get("/menu_categorys", (request, response) => {
 
 
 
+app.get("/menu_categorys2", (request, response) => {
+  var oid = request.query.oid;
+
+  const options = {
+    uri: chop_url+"list-menu-category",
+    headers: {
+      // "Content-Type": "application/json"
+    }
+  };
+
+  requestPromise.get(options).then(function(data) {
+
+    var parsedResponse = JSON.parse(data).records;
+    console.log("Category Length: "+parsedResponse.length);
+    var elements = [];
+    var messages = [];
+
+    var count = 1;
+    var en = 0;
+
+    parsedResponse.forEach(function(value) {
+      var title = value.title;
+      var tid = value.itemid;
+
+      if (value.enable == "Yes") {
+        en++;
+        let bu = request.protocol+"://"+request.headers.host;
+
+        var object = {
+          title: title,
+          subtitle: "Menu category",
+          buttons: [
+            {
+              type: "json_plugin_url",
+              url:
+                bu+"/getMenuItem?cat_id=" +
+                tid +
+                "&oid=" +
+                oid,
+              title: "Show"
+            }
+          ]
+        };
+
+        elements.push(object);
+
+        if (count % 10 === 0) {
+          console.log("counter: " + count);
+          var message = {
+            attachment: {
+              type: "template",
+              payload: {
+                template_type: "generic",
+                elements: elements
+              }
+            }
+          };
+          messages.push(message);
+          elements = [];
+        }
+        
+        if (count === parsedResponse.length) {
+          if (count % 10 !== 0) {
+            var message = {
+              attachment: {
+                type: "template",
+                payload: {
+                  template_type: "generic",
+                  elements: elements
+                }
+              }
+            };
+            messages.push(message);
+          }
+        }
+        // console.log("Elements: " + elements);
+        count++;
+      }
+    });
+    
+    console.log("Enabled: "+en);
+    console.log("COunted: "+count);
+
+    response.json({
+      messages: messages
+    });
+    
+  });
+});
+
+
+
+
+
 // endpoint to get all the dreams in the database
 app.get("/getMenuItem", (request, response) => {
   var category_id = request.query.cat_id;
   var order_id = request.query.oid;
 
   const options = {
-    uri: "https://chopxpress.com/sandbox/api/fb-bot/list-menu-items",
+    uri: `${chop_url}list-menu-items`,
     json: true,
     body: {
       branch: 1,
