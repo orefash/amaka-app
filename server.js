@@ -1534,10 +1534,14 @@ app.get("/menu_categorys", (request, response) => {
     var elements = [];
     var messages = [];
 
-    var count = 1;
+    var count = 0;
     var en = 0;
 
-    parsedResponse.forEach(function(value) {
+    for (let i =1; i<=parsedResponse.length; i++){
+
+      let value = parsedResponse[i-1];
+      // console.log(value);
+
       var title = value.title;
       var tid = value.itemid;
 
@@ -1552,19 +1556,18 @@ app.get("/menu_categorys", (request, response) => {
             {
               type: "json_plugin_url",
               url:
-                bu+"/getMenuItem?cat_id=" +
-                tid +
-                "&oid=" +
-                oid,
+                `${bu}/getMenuItem?cat_id=${tid}&oid=${oid}`,
               title: "Show"
             }
           ]
         };
 
         elements.push(object);
+        count++;
 
         if (count % 10 === 0) {
-          console.log("counter: " + count);
+          console.log("At 10 counter: " + count);
+          console.log("At 10 counter elem: " + elements.length);
           var message = {
             attachment: {
               type: "template",
@@ -1578,8 +1581,11 @@ app.get("/menu_categorys", (request, response) => {
           elements = [];
         }
         
-        if (count === parsedResponse.length) {
+        if (i === parsedResponse.length) {
+          console.log("At end: "+count);
+          console.log("At end: elem: "+elements.length);
           if (count % 10 !== 0) {
+            console.log("After end: "+count);
             var message = {
               attachment: {
                 type: "template",
@@ -1593,105 +1599,18 @@ app.get("/menu_categorys", (request, response) => {
           }
         }
         // console.log("Elements: " + elements);
-        count++;
+        // count++;
       }
-    });
-    
-    console.log("Enabled: "+en);
-    console.log("COunted: "+count);
 
-    response.json({
-      messages: messages
-    });
-    
-  });
-});
-
-
-
-
-app.get("/menu_categorys2", (request, response) => {
-  var oid = request.query.oid;
-
-  const options = {
-    uri: chop_url+"list-menu-category",
-    headers: {
-      // "Content-Type": "application/json"
     }
-  };
 
-  requestPromise.get(options).then(function(data) {
-
-    var parsedResponse = JSON.parse(data).records;
-    console.log("Category Length: "+parsedResponse.length);
-    var elements = [];
-    var messages = [];
-
-    var count = 1;
-    var en = 0;
-
-    parsedResponse.forEach(function(value) {
-      var title = value.title;
-      var tid = value.itemid;
-
-      if (value.enable == "Yes") {
-        en++;
-        let bu = request.protocol+"://"+request.headers.host;
-
-        var object = {
-          title: title,
-          subtitle: "Menu category",
-          buttons: [
-            {
-              type: "json_plugin_url",
-              url:
-                bu+"/getMenuItem?cat_id=" +
-                tid +
-                "&oid=" +
-                oid,
-              title: "Show"
-            }
-          ]
-        };
-
-        elements.push(object);
-
-        if (count % 10 === 0) {
-          console.log("counter: " + count);
-          var message = {
-            attachment: {
-              type: "template",
-              payload: {
-                template_type: "generic",
-                elements: elements
-              }
-            }
-          };
-          messages.push(message);
-          elements = [];
-        }
-        
-        if (count === parsedResponse.length) {
-          if (count % 10 !== 0) {
-            var message = {
-              attachment: {
-                type: "template",
-                payload: {
-                  template_type: "generic",
-                  elements: elements
-                }
-              }
-            };
-            messages.push(message);
-          }
-        }
-        // console.log("Elements: " + elements);
-        count++;
-      }
-    });
+    // parsedResponse.forEach(function(value) {
+      
+    // });
     
     console.log("Enabled: "+en);
     console.log("COunted: "+count);
+    console.log("Msgs: "+messages.length);
 
     response.json({
       messages: messages
@@ -1699,6 +1618,101 @@ app.get("/menu_categorys2", (request, response) => {
     
   });
 });
+
+
+
+
+// app.get("/menu_categorys2", (request, response) => {
+//   var oid = request.query.oid;
+
+//   const options = {
+//     uri: chop_url+"list-menu-category",
+//     headers: {
+//       // "Content-Type": "application/json"
+//     }
+//   };
+
+//   requestPromise.get(options).then(function(data) {
+
+//     var parsedResponse = JSON.parse(data).records;
+//     console.log("Category Length: "+parsedResponse.length);
+//     var elements = [];
+//     var messages = [];
+
+//     var count = 1;
+//     var en = 0;
+
+//     parsedResponse.forEach(function(value) {
+//       var title = value.title;
+//       var tid = value.itemid;
+
+//       if (value.enable == "Yes") {
+//         en++;
+//         let bu = request.protocol+"://"+request.headers.host;
+
+//         var object = {
+//           title: title,
+//           subtitle: "Menu category",
+//           buttons: [
+//             {
+//               type: "json_plugin_url",
+//               url:
+//                 bu+"/getMenuItem?cat_id=" +
+//                 tid +
+//                 "&oid=" +
+//                 oid,
+//               title: "Show"
+//             }
+//           ]
+//         };
+
+//         elements.push(object);
+
+//         if (count % 10 === 0) {
+//           console.log("counter: " + count);
+//           var message = {
+//             attachment: {
+//               type: "template",
+//               payload: {
+//                 template_type: "generic",
+//                 elements: elements
+//               }
+//             }
+//           };
+//           messages.push(message);
+//           elements = [];
+//         }
+        
+//         if (count === parsedResponse.length) {
+//           if (count % 10 !== 0) {
+
+//             console.log("After len: "+count);
+//             var message = {
+//               attachment: {
+//                 type: "template",
+//                 payload: {
+//                   template_type: "generic",
+//                   elements: elements
+//                 }
+//               }
+//             };
+//             messages.push(message);
+//           }
+//         }
+//         // console.log("Elements: " + elements);
+//         count++;
+//       }
+//     });
+    
+//     console.log("Enabled: "+en);
+//     console.log("COunted: "+count);
+
+//     response.json({
+//       messages: messages
+//     });
+    
+//   });
+// });
 
 
 
