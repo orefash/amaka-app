@@ -1185,6 +1185,7 @@ app.get("/sf/:oid", (req, response) => {
     } else {
       var elements = [];
       var total_p = 0;
+      var ototal = 0;
 
       db.all(
         "SELECT * from order_items where order_id='" +
@@ -1202,6 +1203,24 @@ app.get("/sf/:oid", (req, response) => {
               row.price = formatNaira(price);
               elements.push(row);
             });
+
+            ototal = total_p;
+
+            if (ototal < 1000){
+
+              response.json({
+                messages: [
+                  {
+                    text: "Your total order must be a minimum of N1000 to checkout!"
+                  }
+                ],
+                redirect_to_blocks: ["order-opt"]
+              });
+
+            }
+
+
+
             total_p = formatNaira(total_p);
 
             var timeslot = getTimeSlots();
@@ -1323,6 +1342,9 @@ app.post("/paym", (request, response) => {
         console.log("Row ln: " + rows.length);
         if (rows.length > 0) {
           rows.forEach(row => {
+
+            // console.log("order Item: ", row);
+            // console.log("");
 
             var take = row.takeaway * row.quantity;
             takeaway_charge += take;
