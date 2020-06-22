@@ -1169,19 +1169,23 @@ app.get("/sf/:oid", (req, response) => {
     console.log("in redirect - -  row", rows);
     var row = rows[0];
 
-    if (row.tstatus == 1) {
-      let request_response = {
-        address: row.address,
-        cname: row.fname + " " + row.lname,
-        phone: row.phone,
-        email: row.email,
-        uid: row.chat_id,
-        slot: row.slot,
-        amt: row.total_price,
-        oid: oid
-      };
+    let my_resp = {};
 
-      response.render("cpay.html", request_response);
+    my_resp = {
+      address: row.address,
+      cname: row.fname + " " + row.lname,
+      phone: row.phone,
+      email: row.email,
+      uid: row.chat_id,
+      slot: row.slot,
+      amt: row.total_price,
+      oid: oid
+    };
+
+    if (row.tstatus == 1) {
+     
+
+      response.render("cpay.html", my_resp);
     } else {
       var elements = [];
       var total_p = 0;
@@ -1208,14 +1212,8 @@ app.get("/sf/:oid", (req, response) => {
 
             if (ototal < 1000){
 
-              response.json({
-                messages: [
-                  {
-                    text: "Your total order must be a minimum of N1000 to checkout!"
-                  }
-                ],
-                redirect_to_blocks: ["order-opt"]
-              });
+             
+              response.render("below.html", my_resp);
 
             }
 

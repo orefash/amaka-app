@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <title>Checkout</title>
+    <link rel="stylesheet" href="/bootstrap.css" />
+    <link rel="stylesheet" href="/main.css" />
+  </head>
+
+  <body>
+    <script>
+      (function(d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "Messenger");
+    </script>
+
+    <div class="container-contact100">
+      <div class="wrap-contact100">
+        <!--         <form class="contact100-form validate-form"> -->
+        <div class="clearfix ">
+          <img
+            style="float:left"
+            src="https://cdn.glitch.com/11cdb0eb-be82-41ef-820d-46c73f500ac1%2Fchoplogo.png?v=1579883798548"
+          />
+        </div>
+
+        <div class="wrap-input100 validate-input bg1">
+          <h5 class=" text-center">
+            Your total order must be a minimum of N1000 to checkout!
+          </h5>
+            
+<!--             <p class="m-2 text-center">
+              Click Make Payment to Continue
+            </p> -->
+            
+            <p class="m-2 text-center">
+              <b>Please add more items to your cart</b>
+            </p>
+            
+          
+
+          
+        </div>
+
+        <form
+              id="finish-form"
+          action=""
+          method="POST"
+        >
+          
+                        <input id="uid" name="uid" type="hidden" value="<%= uid %>">
+          <div class="container-contact100-form-btn">
+            <input
+              class="contact100-form-btn bgred"
+              type="submit"
+              value="Return"
+            />
+
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+                
+                
+                <script>
+                  window.extAsyncInit = function() {
+                    
+                    $('#finish-form').submit(function(e) {
+                    e.preventDefault();    
+                      
+                      let uid = document.getElementById("uid").value;
+                      
+                     $.post('/broadcast-to-chatfuel/'+uid, function (data) {
+            MessengerExtensions.requestCloseBrowser(function success() {
+              window.close();
+              console.log('Window will be closed');
+            }, function error(error) {
+              console.log('There is an error');
+              console.log(error);
+            });
+          });
+                    
+                  });
+                    
+                  };
+                  
+                </script>
+  </body>
+</html>
