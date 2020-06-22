@@ -89,7 +89,7 @@
                       
                       let uid = document.getElementById("uid").value;
                       
-                     $.post('/broadcast-to-chatfuel/'+uid, function (data) {
+                     $.post('/return-to-chatfuel/'+uid, function (data) {
             MessengerExtensions.requestCloseBrowser(function success() {
               window.close();
               console.log('Window will be closed');

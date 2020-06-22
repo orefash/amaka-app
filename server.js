@@ -1498,6 +1498,41 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
 
 
 
+app.post("/return-to-chatfuel/:uid", (request, response) => {
+  var chat_bot_id = process.env.CB_ID;
+  var chat_token = process.env.CB_TOKEN;
+  var user_id = request.params.uid;
+
+  var url_st =
+    "https://api.chatfuel.com/bots/" +
+    chat_bot_id +
+    "/users/" +
+    user_id +
+    "/send?chatfuel_token=" +
+    chat_token +
+    "&chatfuel_block_name=";
+  
+  console.log("User Id: ",user_id);
+
+  const options = {
+    uri: url_st,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  requestPromise.post(options)
+    .then(() => {
+    response.json({});
+  }).catch(function (err) {
+      console.log("broadcast: ",err); // line 8
+    
+    response.json({error: err});
+    });
+});
+
+
+
 function formatNaira(num) {
   
   var p = num.toFixed(2).split(".");
