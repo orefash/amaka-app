@@ -1148,6 +1148,54 @@ app.get("/cmm", (req, response) => {
 });
 
 
+app.get("/check-time", (req, response) => {
+  let current = moment.tz('Africa/Lagos'); // Now in two hours
+  
+  let startOfDay = moment().format('YYYY-MM-DD 07:30:01'); // set this date to 12:00am today
+
+  let closing = moment().format('YYYY-MM-DD 20:00:00'); // set this date to 12:00am today
+
+  let opening = moment.tz(startOfDay, 'Africa/Lagos');
+
+  let closingT = moment.tz(closing, 'Africa/Lagos');
+
+
+  console.log("Current: ", current);
+
+  console.log("Start: ", startOfDay);
+
+  console.log("oppening: ", opening);
+  console.log("closing: ", closing);
+  console.log("closing: ", closingT);
+
+  let a = moment(opening).isBefore(current);
+  console.log("status : ", a);
+
+  
+  let msg = "";
+  let red = "";
+
+  if (moment(current).isAfter(opening) && moment(current).isBefore(closingT)){
+    red = "show-menu";
+  }else{
+    red = "Default Redirect";
+    msg = "Sorry you can't place orders now. We're open from 7.30am - 8pm"
+  }
+
+  let resp = {
+    messages: [
+      {
+        text: msg
+      }
+    ],
+    redirect_to_blocks: [red]
+  };
+  
+  
+  response.json(resp);           
+});
+
+
 app.get("/finish-order/:oid", (req, response) => {
   response.setHeader("Access-Control-Allow-Origin", "*");
 
