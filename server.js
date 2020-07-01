@@ -1179,7 +1179,7 @@ app.get("/check-time", (req, response) => {
     red = "show-menu";
   }else{
     red = "Default Redirect";
-    msg = "Sorry you can't place orders now. We're open from 7.30am - 8pm"
+    msg = "Sorry we are currently closed at the moment, our opening hours are 7:30am to 8pm (Mondays to Fridays) and 9am to 8pm (Saturdays & Sundays). Thank you."
   }
 
   let resp = {
