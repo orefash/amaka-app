@@ -1738,100 +1738,6 @@ app.get("/menu_categorys", (request, response) => {
 
 
 
-// app.get("/menu_categorys2", (request, response) => {
-//   var oid = request.query.oid;
-
-//   const options = {
-//     uri: chop_url+"list-menu-category",
-//     headers: {
-//       // "Content-Type": "application/json"
-//     }
-//   };
-
-//   requestPromise.get(options).then(function(data) {
-
-//     var parsedResponse = JSON.parse(data).records;
-//     console.log("Category Length: "+parsedResponse.length);
-//     var elements = [];
-//     var messages = [];
-
-//     var count = 1;
-//     var en = 0;
-
-//     parsedResponse.forEach(function(value) {
-//       var title = value.title;
-//       var tid = value.itemid;
-
-//       if (value.enable == "Yes") {
-//         en++;
-//         let bu = request.protocol+"://"+request.headers.host;
-
-//         var object = {
-//           title: title,
-//           subtitle: "Menu category",
-//           buttons: [
-//             {
-//               type: "json_plugin_url",
-//               url:
-//                 bu+"/getMenuItem?cat_id=" +
-//                 tid +
-//                 "&oid=" +
-//                 oid,
-//               title: "Show"
-//             }
-//           ]
-//         };
-
-//         elements.push(object);
-
-//         if (count % 10 === 0) {
-//           console.log("counter: " + count);
-//           var message = {
-//             attachment: {
-//               type: "template",
-//               payload: {
-//                 template_type: "generic",
-//                 elements: elements
-//               }
-//             }
-//           };
-//           messages.push(message);
-//           elements = [];
-//         }
-        
-//         if (count === parsedResponse.length) {
-//           if (count % 10 !== 0) {
-
-//             console.log("After len: "+count);
-//             var message = {
-//               attachment: {
-//                 type: "template",
-//                 payload: {
-//                   template_type: "generic",
-//                   elements: elements
-//                 }
-//               }
-//             };
-//             messages.push(message);
-//           }
-//         }
-//         // console.log("Elements: " + elements);
-//         count++;
-//       }
-//     });
-    
-//     console.log("Enabled: "+en);
-//     console.log("COunted: "+count);
-
-//     response.json({
-//       messages: messages
-//     });
-    
-//   });
-// });
-
-
-
 
 
 // endpoint to get all the dreams in the database
@@ -1856,9 +1762,96 @@ app.get("/getMenuItem", (request, response) => {
     var elements = [];
     var messages = [];
 
-    var count = 1;
+    // var count = 1;
 
-    parsedResponse.forEach(function(value) {
+    // parsedResponse.forEach(function(value) {
+    //   var title = value.title;
+    //   var tid = value.itemid;
+    //   var price = value.price;
+    //   price = price.split("/")[0];
+    //   var img_url = value.image_url;
+    //   if (img_url.length == 0) {
+        
+    //     img_url = "https://cdn.glitch.com/11cdb0eb-be82-41ef-820d-46c73f500ac1%2Fthumbnails%2Flogo_fade.png?1587384063339";
+    //   }
+    //   var take = value.takeaway_charge;
+
+    
+
+    //   let bu = request.protocol+"://"+request.headers.host;
+
+
+    //   var url =
+    //     bu+"/addItem?title=" +
+    //     title +
+    //     "&tid=" +
+    //     tid +
+    //     "&price=" +
+    //     price +
+    //     "&img_url=" +
+    //     img_url +
+    //     "&oid=" +
+    //     order_id +
+    //     "&take=" +
+    //     take;
+    //   url = encodeURI(url);
+
+    //   var object = {
+    //     title: title,
+    //     subtitle: "N" + price,
+    //     image_url: img_url,
+    //     buttons: [
+    //       {
+    //         type: "json_plugin_url",
+    //         url: url,
+    //         title: "Add To Cart"
+    //       }
+    //     ]
+    //   };
+
+    //   elements.push(object);
+
+    //   if (count % 10 === 0) {
+    //     console.log("counter: " + count);
+    //     var message = {
+    //       attachment: {
+    //         type: "template",
+    //         payload: {
+    //           template_type: "generic",
+    //           elements: elements
+    //         }
+    //       }
+    //     };
+    //     messages.push(message);
+    //     elements = [];
+    //   }
+    //   if (count === parsedResponse.length) {
+    //     if (count % 10 !== 0) {
+    //       var message = {
+    //         attachment: {
+    //           type: "template",
+    //           payload: {
+    //             template_type: "generic",
+    //             elements: elements
+    //           }
+    //         }
+    //       };
+    //       messages.push(message);
+    //     }
+    //   }
+    //   console.log("Elements: " + elements);
+    //   count++;
+    // });
+
+
+
+    var count = 0;
+    var en = 0;
+
+    for (let i =1; i<=parsedResponse.length; i++){
+
+      let value = parsedResponse[i-1];
+      
       var title = value.title;
       var tid = value.itemid;
       var price = value.price;
@@ -1869,6 +1862,8 @@ app.get("/getMenuItem", (request, response) => {
         img_url = "https://cdn.glitch.com/11cdb0eb-be82-41ef-820d-46c73f500ac1%2Fthumbnails%2Flogo_fade.png?1587384063339";
       }
       var take = value.takeaway_charge;
+
+    
 
       let bu = request.protocol+"://"+request.headers.host;
 
@@ -1888,37 +1883,31 @@ app.get("/getMenuItem", (request, response) => {
         take;
       url = encodeURI(url);
 
-      var object = {
-        title: title,
-        subtitle: "N" + price,
-        image_url: img_url,
-        buttons: [
-          {
-            type: "json_plugin_url",
-            url: url,
-            title: "Add To Cart"
-          }
-        ]
-      };
 
-      elements.push(object);
 
-      if (count % 10 === 0) {
-        console.log("counter: " + count);
-        var message = {
-          attachment: {
-            type: "template",
-            payload: {
-              template_type: "generic",
-              elements: elements
+      if (value.enable == "Yes") {
+        en++;
+
+        var object = {
+          title: title,
+          subtitle: "N" + price,
+          image_url: img_url,
+          buttons: [
+            {
+              type: "json_plugin_url",
+              url: url,
+              title: "Add To Cart"
             }
-          }
+          ]
         };
-        messages.push(message);
-        elements = [];
-      }
-      if (count === parsedResponse.length) {
-        if (count % 10 !== 0) {
+  
+
+        elements.push(object);
+        count++;
+
+        if (count % 10 === 0) {
+          console.log("At 10 counter: " + count);
+          console.log("At 10 counter elem: " + elements.length);
           var message = {
             attachment: {
               type: "template",
@@ -1929,11 +1918,43 @@ app.get("/getMenuItem", (request, response) => {
             }
           };
           messages.push(message);
+          elements = [];
         }
+        
+        if (i === parsedResponse.length) {
+          console.log("At end: "+count);
+          console.log("At end: elem: "+elements.length);
+          if (count % 10 !== 0) {
+            console.log("After end: "+count);
+            var message = {
+              attachment: {
+                type: "template",
+                payload: {
+                  template_type: "generic",
+                  elements: elements
+                }
+              }
+            };
+            messages.push(message);
+          }
+        }
+        // console.log("Elements: " + elements);
+        // count++;
       }
-      console.log("Elements: " + elements);
-      count++;
-    });
+
+    }
+
+    // parsedResponse.forEach(function(value) {
+      
+    // });
+    
+    console.log("Enabled: "+en);
+    console.log("COunted: "+count);
+    console.log("Msgs: "+messages.length);
+
+
+
+
 
     response.json({
       messages: messages
@@ -2314,6 +2335,6 @@ const cleanseString = function(string) {
 };
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT||8500, () => {
+var listener = app.listen(process.env.PORT||8200, () => {
   console.log(`server listening on port ${listener.address().port}`);
 });
