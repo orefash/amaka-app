@@ -1726,7 +1726,7 @@ app.get("/menu_categorys", (request, response) => {
     
     console.log("Enabled: "+en);
     console.log("COunted: "+count);
-    console.log("Msgs: "+messages.length);
+    console.log("Msgs: "+messages);
 
     response.json({
       messages: messages
@@ -2335,6 +2335,6 @@ const cleanseString = function(string) {
 };
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT||8200, () => {
+var listener = app.listen(process.env.PORT||8500, () => {
   console.log(`server listening on port ${listener.address().port}`);
 });
