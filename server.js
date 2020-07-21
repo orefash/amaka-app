@@ -1238,6 +1238,8 @@ app.get("/sf/:oid", (req, response) => {
       var elements = [];
       var total_p = 0;
       var ototal = 0;
+      var takeaway_charge = 0;
+      var total_value = 0;
 
       db.all(
         "SELECT * from order_items where order_id='" +
@@ -1253,6 +1255,11 @@ app.get("/sf/:oid", (req, response) => {
 
               total_p += t_price;
               row.price = formatNaira(price);
+
+              var take = row.takeaway * row.quantity;
+              takeaway_charge += take;
+
+
               elements.push(row);
             });
 
@@ -1265,6 +1272,7 @@ app.get("/sf/:oid", (req, response) => {
 
             }
 
+            total_value = ototal + takeaway_charge;
 
 
             total_p = formatNaira(total_p);
@@ -1301,15 +1309,17 @@ app.get("/sf/:oid", (req, response) => {
                   del[key] = key + ":" + del[key];
                 }
 
-                // console.log("describe del: ", del);
-
-                response.render("of.html", {
+                let yet =  {
                   items: elements,
                   total: total_p,
                   districts: del,
                   timeslots: timeslot,
-                  orderid: oid
-                });
+                  orderid: oid,
+                  tv: total_value
+                }; 
+                console.log("describe return: ", yet);
+
+                response.render("of.html", yet);
               }
             });
           } else {
@@ -1761,88 +1771,6 @@ app.get("/getMenuItem", (request, response) => {
     
     var elements = [];
     var messages = [];
-
-    // var count = 1;
-
-    // parsedResponse.forEach(function(value) {
-    //   var title = value.title;
-    //   var tid = value.itemid;
-    //   var price = value.price;
-    //   price = price.split("/")[0];
-    //   var img_url = value.image_url;
-    //   if (img_url.length == 0) {
-        
-    //     img_url = "https://cdn.glitch.com/11cdb0eb-be82-41ef-820d-46c73f500ac1%2Fthumbnails%2Flogo_fade.png?1587384063339";
-    //   }
-    //   var take = value.takeaway_charge;
-
-    
-
-    //   let bu = request.protocol+"://"+request.headers.host;
-
-
-    //   var url =
-    //     bu+"/addItem?title=" +
-    //     title +
-    //     "&tid=" +
-    //     tid +
-    //     "&price=" +
-    //     price +
-    //     "&img_url=" +
-    //     img_url +
-    //     "&oid=" +
-    //     order_id +
-    //     "&take=" +
-    //     take;
-    //   url = encodeURI(url);
-
-    //   var object = {
-    //     title: title,
-    //     subtitle: "N" + price,
-    //     image_url: img_url,
-    //     buttons: [
-    //       {
-    //         type: "json_plugin_url",
-    //         url: url,
-    //         title: "Add To Cart"
-    //       }
-    //     ]
-    //   };
-
-    //   elements.push(object);
-
-    //   if (count % 10 === 0) {
-    //     console.log("counter: " + count);
-    //     var message = {
-    //       attachment: {
-    //         type: "template",
-    //         payload: {
-    //           template_type: "generic",
-    //           elements: elements
-    //         }
-    //       }
-    //     };
-    //     messages.push(message);
-    //     elements = [];
-    //   }
-    //   if (count === parsedResponse.length) {
-    //     if (count % 10 !== 0) {
-    //       var message = {
-    //         attachment: {
-    //           type: "template",
-    //           payload: {
-    //             template_type: "generic",
-    //             elements: elements
-    //           }
-    //         }
-    //       };
-    //       messages.push(message);
-    //     }
-    //   }
-    //   console.log("Elements: " + elements);
-    //   count++;
-    // });
-
 
 
     var count = 0;

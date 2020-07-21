@@ -136,6 +136,8 @@
               
           <input type="hidden" name="itotal" id="itotal" value="<%= total %>"/>
 
+          <input type="hidden" name="tv" id="tv" value="<%= tv %>"/>
+
           
         </form>
             
@@ -213,6 +215,8 @@
         document.getElementById('itotal').value = tamt;
         // console.log("Ittotal: ", document.getElementById('itotal').value);
         // console.log(tamt);
+
+        var tv = document.getElementById("tv").value;
         
         var fr = "";
       
@@ -221,7 +225,7 @@
           var cdata = {
             coupon: coupon.value,
             transaction_id: oid.value,
-            amount: tamt
+            amount: tv
           };
           
           console.log(cdata);
