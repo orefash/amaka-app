@@ -1979,6 +1979,7 @@ app.get("/addItem", (request, response) => {
   db.serialize(() => {
     db.run(query, function(err) {
       if (err) {
+        console.log("Error: ");
         response.json({
           messages: [
             {
@@ -1987,7 +1988,7 @@ app.get("/addItem", (request, response) => {
           ]
         });
       } else {
-        // console.log("val  " + this.lastID);
+        console.log("val  " + this.lastID);
         response.json({
           set_attributes: {
             selected_item: this.lastID
