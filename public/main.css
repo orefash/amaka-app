@@ -274,6 +274,23 @@ iframe {
   text-transform: uppercase;
 }
 
+.input50 {
+  display: block;
+  width: 50%;
+  background: transparent;
+  font-family: Montserrat-SemiBold;
+  font-size: 18px;
+  color: #555555;
+  line-height: 1.2;
+  padding-right: 15px;
+}
+
+
+/*---------------------------------------------*/
+input.input50 {
+  height: 40px;
+}
+
 .input100 {
   display: block;
   width: 100%;

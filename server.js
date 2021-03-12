@@ -1,6 +1,7 @@
 // where your node app starts
 
 // init project
+const fs = require("fs");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -34,6 +35,8 @@ var mailer = require("./my-mailer.js");
 var m_security = require("./security.js");
 
 const { fetch_loc } = require("./fetch.js");
+const { db } = require("./dbhelper.js");
+const { handleMsg } = require("./utils.js");
 
 //Interswitch params
 
@@ -50,12 +53,11 @@ const qurl = process.env.QURL;
 
 // const qurl = process.env.QURL_DEMO;
 
-//const ps_key = process.env.PAYSTACK_KEY;
-const ps_key = process.env.CHOP_PAYSTACK_KEY;
+const ps_key = process.env.PAYSTACK_KEY;
+// const ps_key = process.env.CHOP_PAYSTACK_KEY;
 
 //Pay params end
 
-const fs = require("fs");
 
 app.use(compression()); //Compress all routes
 app.use(helmet());
@@ -71,92 +73,6 @@ const base_url = process.env.BASE_URLX;
 
 const chop_url = "https://chopnownow.com/api/fb-bot/";
 
-// init sqlite db
-const dbFile = "./.data/sqlite.db";
-const exists = fs.existsSync(dbFile);
-const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database(dbFile);
-
-// if ./.data/sqlite.db does not exist, create it, otherwise print records to console
-db.serialize(() => {
-  if (!exists) {
-  } else {
-    // db.run("Drop Table order_items");
-    // db.run("Drop Table userorders");
-    // db.run("Drop Table ctokens");
-
-    db.run(
-      "CREATE TABLE IF NOT EXISTS userorders (" +
-        "order_id varchar(30) NOT NULL," +
-        "pay_ref varchar(30)," +
-        "fname varchar(30) NOT NULL," +
-        "lname varchar(30) NOT NULL," +
-        "email varchar(50) DEFAULT NULL," +
-        "phone varchar(15) DEFAULT NULL," +
-        "address text," +
-        "delivery_district varchar(30) DEFAULT NULL," +
-        "total_price decimal(10,2) DEFAULT NULL," +
-        "takeaway decimal(10,2) DEFAULT NULL," +
-        "status varchar(30) DEFAULT NULL," +
-        "time_slot varchar(30) DEFAULT NULL," +
-        "chat_id varchar(30) DEFAULT NULL," +
-        "order_info text," +
-        "date date NOT NULL," +
-        "PRIMARY KEY (order_id)" +
-        ")"
-    );
-    console.log("New table User ORders created!");
-
-    db.run(
-      "CREATE TABLE IF NOT exists order_items (" +
-        "oitem_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-        "order_id varchar(30) NOT NULL," +
-        "item_id int(11) NOT NULL," +
-        "title varchar(30) NOT NULL," +
-        "price decimal(10,2) NOT NULL," +
-        "takeaway decimal(10,2) NOT NULL," +
-        "img_url varchar(50) NOT NULL," +
-        "meal_opt_lbl varchar(20) DEFAULT NULL," +
-        "meal_opt varchar(20) DEFAULT NULL," +
-        "side_option varchar(20) DEFAULT NULL," +
-        "sauce_option varchar(20) DEFAULT NULL," +
-        "quantity int(11) DEFAULT NULL," +
-        "FOREIGN KEY (order_id) REFERENCES userorders (order_id)" +
-        ")"
-    );
-
-    db.run(
-      "CREATE TABLE IF NOT exists ctokens (" +
-        "tid INTEGER PRIMARY KEY AUTOINCREMENT," +
-        "order_id varchar(30) NOT NULL," +
-        "cid varchar(30)  NOT NULL," +
-        "amount decimal(10,2) NOT NULL," +
-        "FOREIGN KEY (order_id) REFERENCES userorders (order_id)" +
-        ")"
-    );
-
-    db.run(
-      "CREATE TABLE IF NOT exists push_notifications (" +
-        "nid INTEGER PRIMARY KEY AUTOINCREMENT," +
-        "msg text," +
-        "date date  NOT NULL" +
-        ")"
-    );
-    // db.serialize(() => {
-    //   db.run(
-    //     'INSERT INTO userorders (order_id, fname, lname, date) VALUES ("O1", "John", "C Reilly", "2020/01/09")'
-    //   );
-    // });
-    console.log('Database "User Orders" ready to go!');
-    db.each("SELECT * from userorders", (err, row) => {
-      if (row) {
-        console.log(`record: ${row.order_id}`);
-      } else {
-        console.log("error: " + err);
-      }
-    });
-  }
-});
 
 const frameguard = require("frameguard");
 
@@ -193,7 +109,7 @@ function send_msgs(cid) {
   var user_id = cid;
   
   
-  console.log("In sendmsg: ",cid);
+  // console.log("In sendmsg: ",cid);
 
   var url_st =
     "https://api.chatfuel.com/bots/" +
@@ -212,11 +128,11 @@ function send_msgs(cid) {
   };
 
   requestPromise.post(options).then((parsedBody) => {
-    console.log(parsedBody);
+    // console.log(parsedBody);
     
   })
     .catch(function (err) {
-                console.log("Post error: ",err);
+                // console.log("Post error: ",err);
             });
 }
 
@@ -227,7 +143,7 @@ function get_uid() {
   db.all(
     "SELECT DISTINCT chat_id FROM userorders where chat_id != 'undefined' ",
     (err, rows) => {
-      console.log("in test cid - -  row");
+      // console.log("in test cid - -  row");
 
       if (rows.length > 0) {
         const delay = amount => {
@@ -239,12 +155,12 @@ function get_uid() {
         let ln = rows.length;
 
         async function loop() {
-          console.log("In loop");
+          // console.log("In loop");
           for (let i = 0; i < ln; i++) {
             let row = rows[i];
-            console.log("In loop test");
+            // console.log("In loop test");
              let cid = row.chat_id;
-          console.log(cid);
+          // console.log(cid);
           send_msgs(cid);
             await delay(10000);
           }
@@ -269,7 +185,7 @@ app.get("/fetch-customers", (req, response) => {
   db.all(
     "SELECT DISTINCT fname, lname, email, phone FROM userorders ",
     (err, rows) => {
-      console.log("in test fetch customers - -  row");
+      // console.log("in test fetch customers - -  row");
 
       response.send(JSON.stringify(rows));
     }
@@ -283,7 +199,7 @@ app.get("/fetch-notification", (request, response) => {
   db.all(
     "SELECT msg FROM push_notifications ORDER BY nid DESC limit 1",
     (err, rows) => {
-      console.log("in test fetch notifications - -  row");
+      // console.log("in test fetch notifications - -  row");
 
       if (rows.length > 0) {
         // let msg = rows[0].msg;
@@ -315,7 +231,7 @@ app.get("/testingr", (request, response) => {
 
 app.post("/push-msg", (request, response) => {
   var msg = request.body.message;
-  console.log("messgae: ", msg);
+  // console.log("messgae: ", msg);
 
   const now = new Date();
   let cdate = date.format(date.addHours(now, 1), "ddd, MMM DD YYYY HH:mm:ss");
@@ -349,7 +265,7 @@ app.get("/receipt", (request, response) => {
   var oid = request.query.oid;
   // var oid = "20200118173554";
 
-  console.log("Item rec");
+  console.log("Item receipt");
 
   var district = "";
 
@@ -366,7 +282,7 @@ app.get("/receipt", (request, response) => {
     db.each(
       "SELECT * from userorders where order_id='" + oid + "'",
       (err, row) => {
-        console.log("row", row);
+        // console.log("row", row);
         address = row.address;
         cname = row.fname + " " + row.lname;
         phone = row.phone;
@@ -443,7 +359,7 @@ app.get("/receipt", (request, response) => {
 
 app.post("/confirm", function(req, res) {
   console.log("In post");
-  console.log(req.body); // req data
+  // console.log(req.body); // req data
   var xtxn = req.body.txnref; // txnref posted from webpay redirect
   var amount = req.body.amount; // amount posted from webpay redirect
   var parameters = {
@@ -452,7 +368,7 @@ app.post("/confirm", function(req, res) {
     amount: amount
   };
 
-  console.log("PARAMS: ", parameters);
+  // console.log("PARAMS: ", parameters);
 
   var init_oid = req.query.oid;
 
@@ -489,7 +405,7 @@ app.post("/confirm", function(req, res) {
     var uid = "";
 
     if (rst.ResponseCode !== "00") {
-      console.log("unsuccessful");
+      // console.log("unsuccessful");
       var new_oid = createOid();
 
       var query =
@@ -501,7 +417,7 @@ app.post("/confirm", function(req, res) {
       db.serialize(() => {
         db.run(query, function(err) {
           if (err) {
-            console.log("Update oid error: ", err);
+            // console.log("Update oid error: ", err);
           } else {
 
             let bu = req.protocol+"://"+req.headers.host;
@@ -520,7 +436,7 @@ app.post("/confirm", function(req, res) {
               (err, rows) => {
                 var row = rows[0];
 
-                console.log("in redirect - -  row", row);
+                // console.log("in redirect - -  row", row);
 
                 var request_response = {
                   hash: hash,
@@ -550,7 +466,7 @@ app.post("/confirm", function(req, res) {
                   c_respDsc: rst.ResponseDescription,
                   c_date: rst.TransactionDate
                 };
-                console.log("R_RESP: %j", request_response);
+                // console.log("R_RESP: %j", request_response);
 
                 // return payment status page; webpay status return before confrimation leg and return after confirmation leg
                 res.render("redirect.html", request_response);
@@ -560,7 +476,7 @@ app.post("/confirm", function(req, res) {
         });
       });
     } else {
-      console.log("successful");
+      // console.log("successful");
 
       var request_response = {};
 
@@ -617,15 +533,15 @@ app.post("/confirm", function(req, res) {
 });
 
 app.get("/cgate-callback", function(req, res) {
-  console.log("In cgate callback");
-  console.log("query ", req.query);
+  // console.log("In cgate callback");
+  // console.log("query ", req.query);
 
   const rcode = req.query.ResponseCode;
 
   db.all(
     "SELECT * from ctokens where ctokens.cid='" + req.query.TransactionID + "'",
     (err, rows) => {
-      console.log("in cgate redirect - -  row", rows);
+      // console.log("in cgate redirect - -  row", rows);
       var row = rows[0];
 
       const oid = row.order_id;
@@ -634,10 +550,10 @@ app.get("/cgate-callback", function(req, res) {
       if (rcode === "00") {
         let query = "SELECT * from userorders where order_id='" + oid + "'";
 
-        console.log("Select q: ", query);
+        // console.log("Select q: ", query);
 
         db.all(query, (err, rows) => {
-          console.log("in redirect - -  row", rows);
+          // console.log("in redirect - -  row", rows);
           var row = rows[0];
 
           let request_response = {
@@ -731,7 +647,7 @@ function testFn(req, res, amt, oid) {
     signature: hash
   };
 
-  console.log(pObj);
+  // console.log(pObj);
   const options = {
     uri: uri,
     json: true,
@@ -742,7 +658,7 @@ function testFn(req, res, amt, oid) {
     // console.log(data);
     var parsedResponse = data;
 
-    console.log(parsedResponse);
+    // console.log(parsedResponse);
 
     let status = data.Header.ResponseMessage;
 
@@ -751,14 +667,14 @@ function testFn(req, res, amt, oid) {
       var query =
         "INSERT INTO ctokens (order_id, cid , amount) VALUES " + query_vals;
 
-      console.log("QUery: " + query);
+      // console.log("QUery: " + query);
 
       // db.serialize(() => {
       db.run(query, (err, res) => {
         if (err) {
-          console.log("Token error: " + err);
+          // console.log("Token error: " + err);
         } else {
-          console.log("Token result: " + res);
+          // console.log("Token result: " + res);
         }
       });
       // });
@@ -789,7 +705,7 @@ app.post("/cpay-fn", function(req, res) {
 });
 
 app.post("/ps-mail", function(req, res) {
-  console.log("In send paystack mail");
+  // console.log("In send paystack mail");
 
   var oid = req.body.oid;
   var amount = req.body.amount;
@@ -799,7 +715,7 @@ app.post("/ps-mail", function(req, res) {
   db.all(
     "SELECT * from userorders where order_id='" + oid + "'",
     (err, rows) => {
-      console.log("in psmail - -  row", row);
+      // console.log("in psmail - -  row", row);
       var row = rows[0];
 
       request_response = {
@@ -828,23 +744,23 @@ app.post("/ps-mail", function(req, res) {
 });
 
 function setTransaction(init_oid) {
-  console.log("Transaction setter");
+  // console.log("Transaction setter");
 
   var query = "update userorders set tstatus = 1 where order_id=" + init_oid;
 
   db.serialize(() => {
     db.run(query, function(err) {
       if (err) {
-        console.log("Error in tstatus set");
+        // console.log("Error in tstatus set");
       } else {
-        console.log("Tstatus success");
+        // console.log("Tstatus success");
       }
     });
   });
 }
 
 function sendConfirmMails(request_response, init_oid) {
-  console.log("In mail sender");
+  // console.log("In mail sender");
   setTransaction(init_oid);
 
   var elements = [];
@@ -855,7 +771,7 @@ function sendConfirmMails(request_response, init_oid) {
       init_oid +
       "' AND quantity > 0",
     (err, rows) => {
-      console.log("Row ln: " + rows.length);
+      // console.log("Row ln: " + rows.length);
       if (rows.length > 0) {
         rows.forEach(row => {
           var price = row.price;
@@ -876,7 +792,7 @@ function sendConfirmMails(request_response, init_oid) {
           "ddd, MMM DD YYYY HH:mm:ss"
         );
         
-        console.log("Response: %j", request_response);
+        // console.log("Response: %j", request_response);
 
 
         var params = {
@@ -901,7 +817,7 @@ function sendConfirmMails(request_response, init_oid) {
           cdate: cdate
         };
 
-        console.log("Mail Params: %j", params);
+        // console.log("Mail Params: %j", params);
 
         params.template = "order";
         params.subject = "New Product Order - " + init_oid;        
@@ -951,12 +867,12 @@ function sendConfirmMails(request_response, init_oid) {
           },
           function(err, res, body) {
             if (err) console.log({ error: "cus: ",err });
-            console.log({ d: "cus: %j",body });
+            // console.log({ d: "cus: %j",body });
             // response.send(JSON.stringify("Successfull"));
           }
         );
 
-        console.log("mails sent");
+        // console.log("mails sent");
       } else {
       }
     }
@@ -1037,7 +953,7 @@ app.post("/cc", (req, response) => {
   // var amount = 2000;
   // var oid = "req.body.transaction_id";
 
-  console.log("coupon: " + coupon + " amount: " + amount);
+  // console.log("coupon: " + coupon + " amount: " + amount);
 
   var url_st = "https://chopnownow.com/api/fb-bot/validate-coupon";
 
@@ -1054,20 +970,20 @@ app.post("/cc", (req, response) => {
     function(err, res, body) {
       if (err) response.json({ error: err });
       else {
-        console.log("in coupon fetch resp: ", body);
+        // console.log("in coupon fetch resp: ", body);
 
         let disc = -1;
         if (body.code == "01") {
-          console.log("Error resp");
+          // console.log("Error resp");
         } else if (body.code == "00") {
-          console.log("succ resp");
+          // console.log("succ resp");
 
           disc = parseInt(amount) - parseInt(body.amount_due);
         }
 
         let robj = { disc: disc };
 
-        console.log("in coupon fetch: ", robj);
+        // console.log("in coupon fetch: ", robj);
 
         response.json(robj);
       }
@@ -1090,12 +1006,12 @@ app.get("/mailing", (req, response) => {
   //...
   var content = fs.readFileSync("views/mails/customer.html","utf-8").toString();
   
-  console.log("COntent: ", content);
+  // console.log("COntent: ", content);
   
   var view = { name:"01/01/1990"};
   var output = mustache.render(content, view);
   
-  console.log("Output:  ", output);
+  // console.log("Output:  ", output);
   
   var url_st = `${chop_url}send-mail`;
 
@@ -1111,7 +1027,7 @@ app.get("/mailing", (req, response) => {
     },
     function(err, res, body) {
       if (err) response.send({ error: err });
-      console.log({ d: body });
+      // console.log({ d: body });
       response.send(JSON.stringify("Successfull"));
     }
   );
@@ -1160,16 +1076,16 @@ app.get("/check-time", (req, response) => {
   let closingT = moment.tz(closing, 'Africa/Lagos');
 
 
-  console.log("Current: ", current);
+  // console.log("Current: ", current);
 
-  console.log("Start: ", startOfDay);
+  // console.log("Start: ", startOfDay);
 
-  console.log("oppening: ", opening);
-  console.log("closing: ", closing);
-  console.log("closing: ", closingT);
+  // console.log("oppening: ", opening);
+  // console.log("closing: ", closing);
+  // console.log("closing: ", closingT);
 
   let a = moment(opening).isBefore(current);
-  console.log("status : ", a);
+  // console.log("status : ", a);
 
   
   let msg = "";
@@ -1196,12 +1112,38 @@ app.get("/check-time", (req, response) => {
 });
 
 
-app.get("/finish-order/:oid", (req, response) => {
-  response.setHeader("Access-Control-Allow-Origin", "*");
-
-  var oid = req.params.oid;
+app.post("/hook", async (req, res) => {
+  var reqBody = req.body;
   
+  // console.log("Body: ", reqBody);
+  var msg = reqBody.umsg;
+  var mid = reqBody.mid;
+  var oid = reqBody.oid;
   
+  if (oid=="none"){
+    // console.log("No oid");
+    var oid = createOid();
+    
+    res.json({
+      set_attributes: {
+        order_id: oid
+      },
+      messages: [
+        {
+          text: "not it"
+        }
+      ]
+    });
+    
+  }else{
+    // console.log("in oid");
+    let bu = req.protocol+"://"+req.headers.host;
+    
+    let result = await handleMsg(bu, msg, oid);
+    
+    
+    res.json(result);
+  }  
   
 });
 
@@ -1214,7 +1156,7 @@ app.get("/sf/:oid", (req, response) => {
   let del = {};
 
   db.all(query, (err, rows) => {
-    console.log("in redirect - -  row", rows);
+    // console.log("in redirect - -  row", rows);
     var row = rows[0];
 
     let my_resp = {};
@@ -1222,6 +1164,8 @@ app.get("/sf/:oid", (req, response) => {
     my_resp = {
       address: row.address,
       cname: row.fname + " " + row.lname,
+      fname: row.fname ,
+      lname: row.lname,
       phone: row.phone,
       email: row.email,
       uid: row.chat_id,
@@ -1238,13 +1182,15 @@ app.get("/sf/:oid", (req, response) => {
       var elements = [];
       var total_p = 0;
       var ototal = 0;
+      var takeaway_charge = 0;
+      var total_value = 0;
 
       db.all(
         "SELECT * from order_items where order_id='" +
           oid +
           "' AND quantity > 0",
         (err, rows) => {
-          console.log("Row ln: " + rows.length);
+          // console.log("Row ln: " + rows.length);
           if (rows.length > 0) {
             rows.forEach(row => {
               var price = row.price;
@@ -1253,6 +1199,11 @@ app.get("/sf/:oid", (req, response) => {
 
               total_p += t_price;
               row.price = formatNaira(price);
+
+              var take = row.takeaway * row.quantity;
+              takeaway_charge += take;
+
+
               elements.push(row);
             });
 
@@ -1265,6 +1216,7 @@ app.get("/sf/:oid", (req, response) => {
 
             }
 
+            total_value = ototal + takeaway_charge;
 
 
             total_p = formatNaira(total_p);
@@ -1301,15 +1253,22 @@ app.get("/sf/:oid", (req, response) => {
                   del[key] = key + ":" + del[key];
                 }
 
-                // console.log("describe del: ", del);
-
-                response.render("of.html", {
+                let yet =  {
                   items: elements,
                   total: total_p,
                   districts: del,
                   timeslots: timeslot,
-                  orderid: oid
-                });
+                  orderid: oid,
+                  tv: total_value,
+                  fname: my_resp.fname,
+                  lname: my_resp.lname,
+                  phone: my_resp.phone,
+                  email: my_resp.email,
+                  address: my_resp.address
+                }; 
+                // console.log("describe return: ", yet);
+
+                response.render("of.html", yet);
               }
             });
           } else {
@@ -1331,7 +1290,7 @@ app.get("/sf/:oid", (req, response) => {
 app.post("/paym", (request, response) => {
   var oid = request.body.oid;
 
-  console.log("From confirm: ", request.body);
+  // console.log("From confirm: ", request.body);
 
   var slot = request.body.slot;
   var coupon = request.body.coupon;
@@ -1340,8 +1299,13 @@ app.post("/paym", (request, response) => {
   var payment = request.body.payment;
   var discount = request.body.discount;
   var itotal = request.body.itotal;
+  var fname = request.body.fname;
+  var lname = request.body.lname;
+  var email = request.body.email;
+  var phone = request.body.phone;
+  var address = request.body.address;
 
-  console.log("District: " + district);
+  // console.log("District: " + district);
 
   var dcharge = parseInt(district.split(":")[1]);
   district = district.split(":")[0];
@@ -1357,10 +1321,10 @@ app.post("/paym", (request, response) => {
       itotal
   );
 
-  var address = "";
-  var cname = "";
-  var phone = "";
-  var email = "";
+  // var address = "";
+  var cname = fname + " " + lname;
+  // var phone = "";
+  // var email = "";
   var pay_ref = "";
   var uid = "";
   var takeaway_charge = 0;
@@ -1372,11 +1336,11 @@ app.post("/paym", (request, response) => {
     db.each(
       "SELECT * from userorders where order_id='" + oid + "'",
       (err, row) => {
-        console.log("row", row);
-        address = row.address;
-        cname = row.fname + " " + row.lname;
-        phone = row.phone;
-        email = row.email;
+        // console.log("row", row);
+        // address = row.address;
+        // cname = row.fname + " " + row.lname;
+        // phone = row.phone;
+        // email = row.email;
         pay_ref = row.pay_ref;
         uid = row.chat_id;
       }
@@ -1385,7 +1349,7 @@ app.post("/paym", (request, response) => {
     db.all(
       "SELECT * from order_items where order_id='" + oid + "' AND quantity > 0",
       (err, rows) => {
-        console.log("Row ln: " + rows.length);
+        // console.log("Row ln: " + rows.length);
         if (rows.length > 0) {
           rows.forEach(row => {
 
@@ -1410,15 +1374,15 @@ app.post("/paym", (request, response) => {
             elements.push([row.title, item]);
           });
           // total_p+= districts[district];
-          console.log("District: " + district);
+          // console.log("District: " + district);
 
           // var ctotal = total_p + districts[district];
           var ctotal =
             parseInt(itotal) + parseInt(dcharge) - parseInt(discount) + parseInt(takeaway_charge);
 
-          console.log("paym CTotal: ", ctotal);
+          // console.log("paym CTotal: ", ctotal);
 
-          console.log("takeaway total: ",takeaway_charge);
+          // console.log("takeaway total: ",takeaway_charge);
 
           var query =
             "update userorders set time_slot = '" +
@@ -1439,23 +1403,33 @@ app.post("/paym", (request, response) => {
             payment +
             "', order_info = '" +
             info +
+            "', fname = '" +
+            fname +
+            "', lname = '" +
+            lname +
+            "', email = '" +
+            email +
+            "', address = '" +
+            address +
+            "', phone = '" +
+            phone +
             "'  where order_id=" +
             oid;
 
-          console.log("Udpdate query: ", query);
+          // console.log("Udpdate query: ", query);
 
           // db.serialize(() => {
           db.run(query, function(err) {
             if (err) {
-              console.log("Update userorder Error: ", err);
+              // console.log("Update userorder Error: ", err);
             }
           });
 
           var amtt = +(Math.round(ctotal + "e+2") + "e-2") * 100;
 
-          console.log("AMTT: ", amtt);
+          // console.log("AMTT: ", amtt);
           var amount = +(Math.round(amtt + "e+2") + "e-2");
-          console.log("AMOUNT: ", amount);
+          // console.log("AMOUNT: ", amount);
 
           let bu = request.protocol+"://"+request.headers.host;
 
@@ -1496,7 +1470,7 @@ app.post("/paym", (request, response) => {
             uid: uid
           };
 
-          console.log("PAY DATA: ", resp_data);
+          // console.log("PAY DATA: ", resp_data);
 
           if(payment=="pay on delivery"){
             response.render("cfh.html", resp_data);
@@ -1525,7 +1499,7 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
     chat_token +
     "&chatfuel_block_name=order_confirm";
   
-  console.log("User Id: ",user_id);
+  console.log("User Id in broadcast: ",user_id);
 
   const options = {
     uri: url_st,
@@ -1560,7 +1534,7 @@ app.post("/return-to-chatfuel/:uid", (request, response) => {
     chat_token +
     "&chatfuel_block_name=";
   
-  console.log("User Id: ",user_id);
+  // console.log("User Id: ",user_id);
 
   const options = {
     uri: url_st,
@@ -1573,7 +1547,7 @@ app.post("/return-to-chatfuel/:uid", (request, response) => {
     .then(() => {
     response.json({});
   }).catch(function (err) {
-      console.log("broadcast: ",err); // line 8
+      // console.log("broadcast: ",err); // line 8
     
     response.json({error: err});
     });
@@ -1618,7 +1592,7 @@ app.get("/fetchl", (req, response) => {
     }
 
     var rp = JSON.parse(body).records;
-    console.log(rp);
+    // console.log(rp);
     var elements = {};
 
     rp.forEach(function(value) {
@@ -1646,7 +1620,7 @@ app.get("/menu_categorys", (request, response) => {
   requestPromise.get(options).then(function(data) {
 
     var parsedResponse = JSON.parse(data).records;
-    console.log("Category Length: "+parsedResponse.length);
+    // console.log("Category Length: "+parsedResponse.length);
     var elements = [];
     var messages = [];
 
@@ -1682,8 +1656,8 @@ app.get("/menu_categorys", (request, response) => {
         count++;
 
         if (count % 10 === 0) {
-          console.log("At 10 counter: " + count);
-          console.log("At 10 counter elem: " + elements.length);
+          // console.log("At 10 counter: " + count);
+          // console.log("At 10 counter elem: " + elements.length);
           var message = {
             attachment: {
               type: "template",
@@ -1698,10 +1672,10 @@ app.get("/menu_categorys", (request, response) => {
         }
         
         if (i === parsedResponse.length) {
-          console.log("At end: "+count);
-          console.log("At end: elem: "+elements.length);
+          // console.log("At end: "+count);
+          // console.log("At end: elem: "+elements.length);
           if (count % 10 !== 0) {
-            console.log("After end: "+count);
+            // console.log("After end: "+count);
             var message = {
               attachment: {
                 type: "template",
@@ -1719,14 +1693,10 @@ app.get("/menu_categorys", (request, response) => {
       }
 
     }
-
-    // parsedResponse.forEach(function(value) {
-      
-    // });
     
-    console.log("Enabled: "+en);
-    console.log("COunted: "+count);
-    console.log("Msgs: "+messages.length);
+    // console.log("Enabled: "+en);
+    // console.log("COunted: "+count);
+    // console.log("Msgs: "+messages);
 
     response.json({
       messages: messages
@@ -1734,103 +1704,6 @@ app.get("/menu_categorys", (request, response) => {
     
   });
 });
-
-
-
-
-// app.get("/menu_categorys2", (request, response) => {
-//   var oid = request.query.oid;
-
-//   const options = {
-//     uri: chop_url+"list-menu-category",
-//     headers: {
-//       // "Content-Type": "application/json"
-//     }
-//   };
-
-//   requestPromise.get(options).then(function(data) {
-
-//     var parsedResponse = JSON.parse(data).records;
-//     console.log("Category Length: "+parsedResponse.length);
-//     var elements = [];
-//     var messages = [];
-
-//     var count = 1;
-//     var en = 0;
-
-//     parsedResponse.forEach(function(value) {
-//       var title = value.title;
-//       var tid = value.itemid;
-
-//       if (value.enable == "Yes") {
-//         en++;
-//         let bu = request.protocol+"://"+request.headers.host;
-
-//         var object = {
-//           title: title,
-//           subtitle: "Menu category",
-//           buttons: [
-//             {
-//               type: "json_plugin_url",
-//               url:
-//                 bu+"/getMenuItem?cat_id=" +
-//                 tid +
-//                 "&oid=" +
-//                 oid,
-//               title: "Show"
-//             }
-//           ]
-//         };
-
-//         elements.push(object);
-
-//         if (count % 10 === 0) {
-//           console.log("counter: " + count);
-//           var message = {
-//             attachment: {
-//               type: "template",
-//               payload: {
-//                 template_type: "generic",
-//                 elements: elements
-//               }
-//             }
-//           };
-//           messages.push(message);
-//           elements = [];
-//         }
-        
-//         if (count === parsedResponse.length) {
-//           if (count % 10 !== 0) {
-
-//             console.log("After len: "+count);
-//             var message = {
-//               attachment: {
-//                 type: "template",
-//                 payload: {
-//                   template_type: "generic",
-//                   elements: elements
-//                 }
-//               }
-//             };
-//             messages.push(message);
-//           }
-//         }
-//         // console.log("Elements: " + elements);
-//         count++;
-//       }
-//     });
-    
-//     console.log("Enabled: "+en);
-//     console.log("COunted: "+count);
-
-//     response.json({
-//       messages: messages
-//     });
-    
-//   });
-// });
-
-
 
 
 
@@ -1856,16 +1729,20 @@ app.get("/getMenuItem", (request, response) => {
     var elements = [];
     var messages = [];
 
-    var count = 1;
 
-    parsedResponse.forEach(function(value) {
+    var count = 0;
+    var en = 0;
+
+    for (let i =1; i<=parsedResponse.length; i++){
+
+      let value = parsedResponse[i-1];
+      
       var title = value.title;
       var tid = value.itemid;
       var price = value.price;
       price = price.split("/")[0];
       var img_url = value.image_url;
-      if (img_url.length == 0) {
-        
+      if (img_url.length == 0) {        
         img_url = "https://cdn.glitch.com/11cdb0eb-be82-41ef-820d-46c73f500ac1%2Fthumbnails%2Flogo_fade.png?1587384063339";
       }
       var take = value.takeaway_charge;
@@ -1888,37 +1765,31 @@ app.get("/getMenuItem", (request, response) => {
         take;
       url = encodeURI(url);
 
-      var object = {
-        title: title,
-        subtitle: "N" + price,
-        image_url: img_url,
-        buttons: [
-          {
-            type: "json_plugin_url",
-            url: url,
-            title: "Add To Cart"
-          }
-        ]
-      };
 
-      elements.push(object);
 
-      if (count % 10 === 0) {
-        console.log("counter: " + count);
-        var message = {
-          attachment: {
-            type: "template",
-            payload: {
-              template_type: "generic",
-              elements: elements
+      if (value.enable == "Yes") {
+        en++;
+
+        var object = {
+          title: title,
+          subtitle: "N" + price,
+          image_url: img_url,
+          buttons: [
+            {
+              type: "json_plugin_url",
+              url: url,
+              title: "Add To Cart"
             }
-          }
+          ]
         };
-        messages.push(message);
-        elements = [];
-      }
-      if (count === parsedResponse.length) {
-        if (count % 10 !== 0) {
+  
+
+        elements.push(object);
+        count++;
+
+        if (count % 10 === 0) {
+          // console.log("At 10 counter: " + count);
+          // console.log("At 10 counter elem: " + elements.length);
           var message = {
             attachment: {
               type: "template",
@@ -1929,11 +1800,35 @@ app.get("/getMenuItem", (request, response) => {
             }
           };
           messages.push(message);
+          elements = [];
         }
+        
+        if (i === parsedResponse.length) {
+          // console.log("At end: "+count);
+          // console.log("At end: elem: "+elements.length);
+          if (count % 10 !== 0) {
+            // console.log("After end: "+count);
+            var message = {
+              attachment: {
+                type: "template",
+                payload: {
+                  template_type: "generic",
+                  elements: elements
+                }
+              }
+            };
+            messages.push(message);
+          }
+        }
+        // console.log("Elements: " + elements);
+        // count++;
       }
-      console.log("Elements: " + elements);
-      count++;
-    });
+
+    }
+    
+    // console.log("Enabled: "+en);
+    // console.log("COunted: "+count);
+    // console.log("Msgs: "+messages.length);
 
     response.json({
       messages: messages
@@ -1980,13 +1875,13 @@ app.get("/setOrderId", (request, response) => {
     .replace("T", " ")
     .split(" ")[0];
 
-  console.log(fname + " " + lname);
+  // console.log(fname + " " + lname);
   var query_vals = `("${oid}", "${oid}", "${fname}", "${lname}", "${date}", "${email}", "${address}", "${phone}", "${user_id}")`;
   var query =
     "INSERT INTO userorders (order_id, pay_ref , fname, lname, date, email, address, phone, chat_id) VALUES " +
     query_vals;
 
-  console.log("QUery: " + query);
+  // console.log("QUery: " + query);
 
   db.serialize(() => {
     db.run(query);
@@ -2025,7 +1920,7 @@ app.get("/addItem", (request, response) => {
     "INSERT INTO order_items (order_id, item_id, title, price, takeaway, img_url, quantity) VALUES " +
     query_vals;
   
-    console.log("Insert query: ", query);
+    // console.log("Insert query: ", query);
 
   db.serialize(() => {
     db.run(query, function(err) {
@@ -2033,7 +1928,7 @@ app.get("/addItem", (request, response) => {
         response.json({
           messages: [
             {
-              text: "The item could not be added, please try again"
+              text: "I've added "+title+" to your cart. Please enter 'cart' to view cart"
             }
           ]
         });
@@ -2049,6 +1944,64 @@ app.get("/addItem", (request, response) => {
     });
   });
 });
+
+
+
+app.post("/addNItem", (request, response) => {
+  var title = request.body.title;
+  var tid = request.body.tid;
+  var price = request.body.price;
+
+  var img_url = request.body.img_url;
+  var take = request.body.take;
+  var quantity = request.body.quantity;
+
+  if (take == null || take == undefined || take.length == 0) {
+    take = 0;
+  }
+  var oid = request.body.oid;
+
+  var query_vals = `("${oid}", "${tid}", "${title}", ${price}, ${take}, "${img_url}", ${quantity})`;
+  var query =
+    "INSERT INTO order_items (order_id, item_id, title, price, takeaway, img_url, quantity) VALUES " +
+    query_vals;
+  
+    // console.log("Insert query: ", query);
+
+  db.serialize(() => {
+    db.run(query, function(err) {
+      if (err) {
+        response.json({
+          messages: [
+            {
+              text: "The item could not be added, please try again"
+            }
+          ]
+        });
+      } else {
+        // console.log("val  " + this.lastID);
+        
+        if(quantity === 0 || quantity === "0"){
+          response.json({
+            set_attributes: {
+              selected_item: this.lastID
+            },
+            redirect_to_blocks: ["no_option"]
+          });
+        }else{
+          response.json({
+            messages: [
+             {text: title+" added to cart. Please enter 'cart' to view cart"}
+           ]
+          })
+        }
+        
+      }
+    });
+  });
+});
+
+
 
 // endpoint to get all the dreams in the database
 app.get("/setQuantity", (request, response) => {
@@ -2089,7 +2042,7 @@ app.get("/clearOrder", (request, response) => {
     db.each(
       "SELECT * from order_items",
       (err, row) => {
-        console.log("row", row);
+        // console.log("row", row);
         db.run(
           `DELETE FROM order_items WHERE oitem_id=?`,
           row.oitem_id,
@@ -2164,7 +2117,7 @@ app.get("/showCart", (request, response) => {
           elements.push(object);
 
           if (count % 10 === 0) {
-            console.log("counter: " + count);
+            // console.log("counter: " + count);
             var message = {
               attachment: {
                 type: "template",
@@ -2208,14 +2161,14 @@ app.get("/showCart", (request, response) => {
                 {
                   type: "web_url",
                   url: `${bu}/sf/${oid}`,
-                  title: "Checkout",
+                  title: "Proceed to Payment",
                   messenger_extensions: true,
-                  webview_height_ratio: "tall"
+                  webview_height_ratio: "compact"
                 },
                 {
                   type: "show_block",
                   block_names: ["menu"],
-                  title: "Add Item"
+                  title: "Add Item to Cart"
                 }
               ]
             }
