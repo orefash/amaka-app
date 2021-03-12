@@ -34,7 +34,7 @@ const chatfuelBroadcast = require("chatfuel-broadcast").default;
 var mailer = require("./my-mailer.js");
 var m_security = require("./security.js");
 
-const { fetch_loc } = require("./fetch.js");
+// const { fetch_loc } = require("./fetch.js");
 const { db } = require("./dbhelper.js");
 const { handleMsg } = require("./utils.js");
 
@@ -73,6 +73,9 @@ const base_url = process.env.BASE_URLX;
 
 const chop_url = "https://chopnownow.com/api/fb-bot/";
 
+const chat_bot_id = process.env.PCB_ID;
+const chat_token = process.env.PCB_TOKEN;
+
 
 const frameguard = require("frameguard");
 
@@ -104,8 +107,8 @@ app.get("/push-notifications", (request, response) => {
 });
 
 function send_msgs(cid) {
-  var chat_bot_id = process.env.CB_ID;
-  var chat_token = process.env.CB_TOKEN;
+  // var chat_bot_id = process.env.PCB_ID;
+  // var chat_token = process.env.PCB_TOKEN;
   var user_id = cid;
   
   
@@ -137,8 +140,8 @@ function send_msgs(cid) {
 }
 
 function get_uid() {
-  var chat_bot_id = process.env.CB_ID;
-  var chat_token = process.env.CB_TOKEN;
+  // var chat_bot_id = process.env.CB_ID;
+  // var chat_token = process.env.CB_TOKEN;
 
   db.all(
     "SELECT DISTINCT chat_id FROM userorders where chat_id != 'undefined' ",
