@@ -100,7 +100,10 @@
                       
                       let uid = document.getElementById("uid").value;
                       
+                      console.log("UID: ", uid)
+                      
                      $.post('/broadcast-to-chatfuel/'+uid, function (data) {
+                       
             MessengerExtensions.requestCloseBrowser(function success() {
               window.close();
               console.log('Window will be closed');
