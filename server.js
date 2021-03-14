@@ -73,8 +73,8 @@ const base_url = process.env.BASE_URLX;
 
 const chop_url = "https://chopnownow.com/api/fb-bot/";
 
-const chat_bot_id = process.env.PCB_ID;
-const chat_token = process.env.PCB_TOKEN;
+const chat_bot_id = process.env.CB_ID;
+const chat_token = process.env.CB_TOKEN;
 
 
 const frameguard = require("frameguard");
@@ -1275,14 +1275,15 @@ app.get("/sf/:oid", (req, response) => {
               }
             });
           } else {
-            response.json({
-              messages: [
-                {
-                  text: "There are no items in your cart"
-                }
-              ],
-              redirect_to_blocks: ["order-opt"]
-            });
+            response.render("below.html", my_resp);
+            // response.json({
+            //   messages: [
+            //     {
+            //       text: "There are no items in your cart"
+            //     }
+            //   ],
+            //   redirect_to_blocks: ["order-opt"]
+            // });
           }
         }
       );
@@ -1489,8 +1490,8 @@ app.post("/paym", (request, response) => {
 });
 
 app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
-  var chat_bot_id = process.env.CB_ID;
-  var chat_token = process.env.CB_TOKEN;
+  // var chat_bot_id = process.env.CB_ID;
+  // var chat_token = process.env.CB_TOKEN;
   var user_id = request.params.uid;
 
   var url_st =
@@ -1524,8 +1525,8 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
 
 
 app.post("/return-to-chatfuel/:uid", (request, response) => {
-  var chat_bot_id = process.env.CB_ID;
-  var chat_token = process.env.CB_TOKEN;
+  // var chat_bot_id = process.env.CB_ID;
+  // var chat_token = process.env.CB_TOKEN;
   var user_id = request.params.uid;
 
   var url_st =
@@ -1535,7 +1536,7 @@ app.post("/return-to-chatfuel/:uid", (request, response) => {
     user_id +
     "/send?chatfuel_token=" +
     chat_token +
-    "&chatfuel_block_name=";
+    "&chatfuel_block_name=menu";
   
   // console.log("User Id: ",user_id);
 
@@ -1619,6 +1620,11 @@ app.get("/menu_categorys", (request, response) => {
       // "Content-Type": "application/json"
     }
   };
+  
+  try{
+    
+    
+  
 
   requestPromise.get(options).then(function(data) {
 
@@ -1706,6 +1712,21 @@ app.get("/menu_categorys", (request, response) => {
     });
     
   });
+    
+    
+  } catch (Ex){
+    console.log("Error in menu: ", Ex)
+    response.json({
+          messages: [
+            {
+              text: "It's not available at this time. Please enter 'menu' to view other meal options"
+            }
+          ]
+        });
+    
+  }
+    
+  
 });
 
 
@@ -1724,6 +1745,8 @@ app.get("/getMenuItem", (request, response) => {
       category: parseInt(category_id)
     }
   };
+  
+  try{
 
   requestPromise.post(options).then(function(data) {
     
@@ -1836,7 +1859,31 @@ app.get("/getMenuItem", (request, response) => {
     response.json({
       messages: messages
     });
+  }).catch(error => {
+    console.log("Error in menu: ", error)
+    response.json({
+          messages: [
+            {
+              text: "It's not available at this time. Please enter 'menu' to view other meal options"
+            }
+          ]
+        });
   });
+  
+  }catch(Ex){
+    console.log("Error in menu: ", Ex)
+    response.json({
+          messages: [
+            {
+              text: "It's not available at this time. Please enter 'menu' to view other meal options"
+            }
+          ]
+        });
+  }
+  
+  
+  
+  
 });
 
 function createOid() {
