@@ -73,8 +73,8 @@ const base_url = process.env.BASE_URLX;
 
 const chop_url = "https://chopnownow.com/api/fb-bot/";
 
-const chat_bot_id = process.env.CB_ID;
-const chat_token = process.env.CB_TOKEN;
+const chat_bot_id = process.env.PCB_ID;
+const chat_token = process.env.PCB_TOKEN;
 
 
 const frameguard = require("frameguard");
@@ -1711,6 +1711,15 @@ app.get("/menu_categorys", (request, response) => {
       messages: messages
     });
     
+  }).catch(error => {
+    console.log("Error in menu: ", error)
+    response.json({
+          messages: [
+            {
+              text: "It's not available at this time. Please enter 'menu' to view other meal options"
+            }
+          ]
+        });
   });
     
     
