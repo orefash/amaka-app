@@ -2139,7 +2139,7 @@ app.get("/showCart", (request, response) => {
   db.all(
     "SELECT * from order_items where order_id='" + oid + "' AND quantity > 0",
     (err, rows) => {
-      // console.log("Row ln: " + rows.length);
+      console.log("in show cart - Row ln: " + rows.length);
       if (rows.length > 0) {
         var total_p = 0;
 
