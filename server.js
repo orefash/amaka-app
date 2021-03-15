@@ -1531,6 +1531,7 @@ app.post("/broadcast-to-chatfuel/:uid", (request, response) => {
 app.post("/return-to-chatfuel/:uid", (request, response) => {
   // var chat_bot_id = process.env.CB_ID;
   // var chat_token = process.env.CB_TOKEN;
+  console.log("In return to chatfuel")
   var user_id = request.params.uid;
 
   var url_st =
@@ -1542,7 +1543,9 @@ app.post("/return-to-chatfuel/:uid", (request, response) => {
     chat_token +
     "&chatfuel_block_name=menu";
   
-  // console.log("User Id: ",user_id);
+  console.log("User Id: ",user_id);
+  console.log("bot Id: ",chat_bot_id);
+  console.log("token Id: ",chat_token);
 
   const options = {
     uri: url_st,
