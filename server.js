@@ -1115,10 +1115,10 @@ app.get("/check-time", (req, response) => {
 });
 
 
-app.post("/hook", async (req, res) => {
+app.post("/hook",  (req, res) => {
   var reqBody = req.body;
   
-  // console.log("Body: ", reqBody);
+  console.log("Body: ", reqBody);
   var msg = reqBody.umsg;
   var mid = reqBody.mid;
   var oid = reqBody.oid;
@@ -1145,10 +1145,17 @@ app.post("/hook", async (req, res) => {
     
     console.log("in hook: ", bu);
     
-    let result = await handleMsg(bu, msg, oid);
+    // let result = await handleMsg(bu, msg, oid);
     
     
-    res.json(result);
+    // res.json(result);
+    res.json({
+      messages: [
+        {
+          text: "not it"
+        }
+      ]
+    });
   }  
   
 });
@@ -2139,7 +2146,7 @@ app.get("/showCart", (request, response) => {
   db.all(
     "SELECT * from order_items where order_id='" + oid + "' AND quantity > 0",
     (err, rows) => {
-      console.log("in show cart - Row ln: " + rows.length);
+      // console.log("in show cart - Row ln: " + rows.length);
       if (rows.length > 0) {
         var total_p = 0;
 
