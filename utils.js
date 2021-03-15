@@ -365,7 +365,7 @@ async function parseFulfillment(bu, result, cs, oid){
         var check = await searchItem(mit);
         if(check !== null){
            
-          // console.log("In CHeck: ", check);
+          console.log("In CHeck for atc: ", check);
           if(check.enable==="Yes"){
             var title = check.title;
             var tid = check.id;
@@ -526,6 +526,8 @@ async function handleIntents(bu, result, oid) {
       console.log("in search");      
       resp = await parseFulfillment(bu, result, "search", oid);
       break;
+    default:
+      console.log("NO intent found")
   }
 
   return resp;
@@ -560,8 +562,11 @@ async function runSample(base_url, msg, sessionId) {
 
   // Send request and log result
   const responses = await sessionClient.detectIntent(request);
-  console.log("Detected intent");
+  console.log("Detected intent: ", responses);
   const result = responses[0].queryResult;
+
+  
+  console.log("\n\nDetected intent: ", result);
 
   console.log("Rsult: %j", result.parameters);
   console.log("");
@@ -578,7 +583,7 @@ async function runSample(base_url, msg, sessionId) {
 
   if (result.intent) {
     retResponse = await handleIntents(base_url, result, sessionId);
-    // console.log(`  Intent: ${result.intent.displayName}`); 
+    console.log(`  Intent: ${result.intent.displayName}`); 
   } else {
     console.log(`  No intent matched.`);
     

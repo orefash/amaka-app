@@ -1124,7 +1124,7 @@ app.post("/hook", async (req, res) => {
   var oid = reqBody.oid;
   
   if (oid=="none"){
-    // console.log("No oid");
+    console.log("in hook No oid");
     var oid = createOid();
     
     res.json({
@@ -1141,6 +1141,9 @@ app.post("/hook", async (req, res) => {
   }else{
     // console.log("in oid");
     let bu = req.protocol+"://"+req.headers.host;
+
+    
+    console.log("in hook: ", bu);
     
     let result = await handleMsg(bu, msg, oid);
     
