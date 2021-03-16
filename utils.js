@@ -180,7 +180,7 @@ async function searchItems(item){
       }
       
     } catch(err) {
-      console.log("Error: ", err);      
+      console.log("Error in item search: ", err);      
     }
     
   }else{
@@ -562,11 +562,11 @@ async function runSample(base_url, msg, sessionId) {
 
   // Send request and log result
   const responses = await sessionClient.detectIntent(request);
-  console.log("Detected intent: ", responses);
+  // console.log("Detected intent: ", responses);
   const result = responses[0].queryResult;
 
   
-  console.log("\n\nDetected intent: ", result);
+  // console.log("\n\nDetected intent: ", result);
 
   console.log("Rsult: %j", result.parameters);
   console.log("");
@@ -582,8 +582,9 @@ async function runSample(base_url, msg, sessionId) {
   };
 
   if (result.intent) {
+    
+    console.log(` resulting  Intent: ${result.intent.displayName}`); 
     retResponse = await handleIntents(base_url, result, sessionId);
-    console.log(`  Intent: ${result.intent.displayName}`); 
   } else {
     console.log(`  No intent matched.`);
     
