@@ -1221,9 +1221,10 @@ app.get("/sf/:oid", (req, response) => {
              
               response.render("below.html", my_resp);
 
-            }
+            }else{
 
-            total_value = ototal + takeaway_charge;
+
+              total_value = ototal + takeaway_charge;
 
 
             total_p = formatNaira(total_p);
@@ -1278,6 +1279,10 @@ app.get("/sf/:oid", (req, response) => {
                 response.render("of.html", yet);
               }
             });
+
+            }
+
+            
           } else {
             response.render("below.html", my_resp);
             // response.json({
