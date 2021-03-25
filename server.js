@@ -53,8 +53,8 @@ const qurl = process.env.QURL;
 
 // const qurl = process.env.QURL_DEMO;
 
-const ps_key = process.env.PAYSTACK_KEY;
-// const ps_key = process.env.CHOP_PAYSTACK_KEY;
+// const ps_key = process.env.PAYSTACK_KEY;
+const ps_key = process.env.CHOP_PAYSTACK_KEY;
 
 //Pay params end
 
@@ -1621,8 +1621,6 @@ app.get("/fetchl", (req, response) => {
 
 
 
-
-
 app.get("/menu_categorys", (request, response) => {
   var oid = request.query.oid;
 
@@ -1642,16 +1640,21 @@ app.get("/menu_categorys", (request, response) => {
 
     var parsedResponse = JSON.parse(data).records;
     // console.log("Category Length: "+parsedResponse.length);
+    
+    
+    // console.log("Category data: ",parsedResponse);
     var elements = [];
     var messages = [];
 
     var count = 0;
     var en = 0;
+    let i =0;
 
-    for (let i =1; i<=parsedResponse.length; i++){
+    for ( i =1; i<=parsedResponse.length; i++){
 
       let value = parsedResponse[i-1];
-      // console.log(value);
+      // console.log("Val: 'index'"+ i +" ",value);
+      console.log("Val: 'index' ", i);
 
       var title = value.title;
       var tid = value.itemid;
@@ -1675,9 +1678,10 @@ app.get("/menu_categorys", (request, response) => {
 
         elements.push(object);
         count++;
+          console.log("At counter: " + count);
 
         if (count % 10 === 0) {
-          // console.log("At 10 counter: " + count);
+          console.log("At 10 counter: " + count);
           // console.log("At 10 counter elem: " + elements.length);
           var message = {
             attachment: {
@@ -1690,9 +1694,7 @@ app.get("/menu_categorys", (request, response) => {
           };
           messages.push(message);
           elements = [];
-        }
-        
-        if (i === parsedResponse.length) {
+        }else if (i === parsedResponse.length -1) {
           // console.log("At end: "+count);
           // console.log("At end: elem: "+elements.length);
           if (count % 10 !== 0) {
@@ -1709,14 +1711,21 @@ app.get("/menu_categorys", (request, response) => {
             messages.push(message);
           }
         }
+        
+        console.log("At index: elem: "+i);
+        
+          console.log("At length: elem: "+parsedResponse.length);
+        
+        
         // console.log("Elements: " + elements);
         // count++;
       }
 
     }
     
-    // console.log("Enabled: "+en);
-    // console.log("COunted: "+count);
+    console.log("Enabled: "+en);
+    console.log("COunted: "+count);
+    console.log("index: "+i);
     // console.log("Msgs: "+messages);
 
     response.json({
@@ -1749,7 +1758,6 @@ app.get("/menu_categorys", (request, response) => {
     
   
 });
-
 
 
 // endpoint to get all the dreams in the database

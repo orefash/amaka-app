@@ -492,6 +492,16 @@ async function parseFulfillment(bu, result, cs, oid){
       
       // return res;
       break;
+
+
+          
+    case "water":
+        
+        let fItems = await searchItems("water");
+        // console.log("Found items: ", fItems);
+        res = await parseFoundItems(fItems, bu, oid);
+        
+      break;
       
       
   }
@@ -525,6 +535,10 @@ async function handleIntents(bu, result, oid) {
     case "2":
       console.log("in search");      
       resp = await parseFulfillment(bu, result, "search", oid);
+      break;
+    case "11":      
+      console.log("in add water"); 
+      resp = await parseFulfillment(bu, result, "water", oid);
       break;
     default:
       console.log("NO intent found")
