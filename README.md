@@ -54,8 +54,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://crc-clinic.glitch.me/)
-
 This is the Rest API for a demo Facebook messenger bot. Customers can interact with the restaurant, lodge complaints, place orders and make paymnets for food delivery. It leverages NLP to understand customer requests. Chatfuel was used to build the bot and the blocks call this Rest Api to extend functionality.
 
 The funtionalities included are:
@@ -73,6 +71,7 @@ The funtionalities included are:
 * [SQLite](https://sqlite.org) 
 * [Chatfuel](https://chatfuel.com)
 * [Paystack](https://paystack.com)
+* [Dialogflow](https://cloud.google.com/dialogflow)
 
 
 <!-- GETTING STARTED -->
