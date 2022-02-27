@@ -118,10 +118,6 @@ Project Link: [https://github.com/orefash/amaka-app](https://github.com/orefash/
 
 
 
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [ElaAdmin template](https://github.com/puikinsh/ElaAdmin)
-
 
 
 
