@@ -61,6 +61,8 @@ The funtionalities included are:
 * Make payments
 * Give feedback on orders placed
 
+demo link : https://m.me/100878724785586
+
 
 ### Built With
 
